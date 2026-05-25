@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>VOZ — Semana 3 | Escola Makários</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,700;0,800;1,700;1,800&amp;family=Barlow:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#ffffff;--surface:#fff;--surface2:#f5ede6;--text:#1a1a2e;--text2:#566174;
+  --accent:#2E7FBF;--accent-light:#e8f2fb;--accent-dark:#1a5a8c;
+  --correct:#2a7a4b;--correct-bg:#eaf5ee;--wrong:#a8282a;--wrong-bg:#faeaea;
+  --border:#d1dce8;--radius:14px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Barlow',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.6}
+nav{height:60px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 24px;background:#fff;position:sticky;top:0;z-index:10}
+.nav-logo img{height:46px;border-radius:12px;padding:2px 4px}
+.back-link{font-size:.82rem;font-weight:700;color:var(--accent);text-decoration:none;background:var(--accent-light);padding:6px 14px;border-radius:20px}
+.progress-wrap{height:5px;background:var(--border)}
+.progress-bar{height:5px;width:0%;background:linear-gradient(90deg,var(--accent),var(--accent-dark));transition:.35s}
+.container{max-width:760px;margin:0 auto;padding:32px 20px 80px}
+.quiz-header{text-align:center;margin-bottom:30px}
+.logo-main{height:98px;border-radius:18px;padding:4px 8px;margin-bottom:22px}
+.volume-tag{display:inline-block;font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);background:var(--accent-light);border-radius:20px;padding:6px 14px;margin-bottom:14px}
+h1{font-family:'Barlow Condensed',sans-serif;font-size:2.4rem;line-height:1.1;margin-bottom:12px}
+.quiz-header p{color:var(--text2);font-size:15px;max-width:560px;margin:0 auto}
+.question-card{border:1.5px solid var(--border);border-radius:var(--radius);padding:22px;margin-bottom:18px;background:#fff}
+.question-card.answered{border-color:rgba(46,127,191,.35)}
+.question-meta{display:flex;gap:8px;align-items:center;margin-bottom:12px;flex-wrap:wrap}
+.question-num{font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--accent)}
+.question-badge{font-size:10px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;border-radius:99px;padding:4px 10px;background:var(--accent-light);color:var(--accent)}
+.question-badge.multi{background:#e8f0fb;color:#2563a8}.question-badge.wrong{background:#f3edfb;color:#6d28a8}
+.question-text{font-size:1.06rem;font-weight:700;line-height:1.55;margin-bottom:16px}
+.options{display:flex;flex-direction:column;gap:9px}
+.option{display:flex;gap:12px;align-items:flex-start;border:1.5px solid var(--border);border-radius:12px;padding:12px 14px;cursor:pointer;transition:.15s}
+.option:hover:not(.locked){background:var(--accent-light);border-color:var(--accent)}
+.option input{display:none}
+.option-marker{width:22px;height:22px;border:1.5px solid rgba(46,127,191,.35);border-radius:999px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:11px;font-weight:800;color:var(--accent)}
+.option.selected{background:var(--accent-light);border-color:var(--accent)}
+.option.selected .option-marker{background:var(--accent);color:#fff}
+.option.correct-answer{background:var(--correct-bg)!important;border-color:var(--correct)!important}
+.option.correct-answer .option-marker{background:var(--correct)!important;color:#fff!important}
+.option.wrong-answer{background:var(--wrong-bg)!important;border-color:var(--wrong)!important}
+.option.wrong-answer .option-marker{background:var(--wrong)!important;color:#fff!important}
+.option.locked{cursor:default}
+.verify-btn{margin-top:15px;border:0;border-radius:10px;background:var(--accent);color:#fff;font-weight:800;padding:10px 20px;cursor:pointer;font-family:'Barlow',sans-serif}
+.feedback{display:none;margin-top:14px;padding:14px 16px;border-radius:12px;border:1.5px solid rgba(46,127,191,.22);background:#f7fbff;color:#1a2b3c;font-size:13.5px;line-height:1.65}
+.feedback.show{display:block}
+.score-card{margin:28px 0 18px;padding:22px;border:1.5px solid rgba(46,127,191,.22);border-radius:16px;background:linear-gradient(180deg,#fff,#f7fbff)}
+.score-card h3{font-size:1.15rem;margin-bottom:8px}.score-number{font-size:2rem;font-weight:800;color:var(--accent);margin:6px 0}.score-message{font-size:14px;line-height:1.7;color:var(--text2)}
+.submit-area{margin-top:24px;border:1.5px solid var(--border);border-radius:16px;padding:22px;background:#fff}
+.submit-area label{font-weight:800;font-size:13px;display:block;margin-bottom:8px}
+.submit-area input{width:100%;padding:12px 14px;border:1.5px solid var(--border);border-radius:10px;font-family:'Barlow',sans-serif;font-size:15px;margin-bottom:12px}
+.submit-area button{border:0;border-radius:10px;background:var(--accent);color:#fff;font-weight:800;padding:12px 20px;cursor:pointer;font-family:'Barlow',sans-serif}
+.status{display:none;margin-top:12px;color:var(--correct);font-weight:700}
+.status.show{display:block}
+@media(max-width:560px){nav{padding:0 14px}.container{padding:24px 14px 60px}h1{font-size:2rem}.question-card{padding:18px}.logo-main{height:62px}}
+</style>
+<style id="audit-css">.option.selected,.makarios-option.selected,.opt.selected{background:#E8F2FB!important;border-color:#2E7FBF!important}.option.correct-answer,.makarios-option.correct-answer,.opt.correct-answer,.option.correct,.makarios-option.correct,.opt.correct{background:#eaf5ee!important;border-color:#2a7a4b!important;color:#1f5b38!important}.option.wrong-answer,.makarios-option.wrong-answer,.opt.wrong-answer,.option.wrong,.makarios-option.wrong,.opt.wrong{background:#faeaea!important;border-color:#a8282a!important;color:#7B241C!important}.option.locked,.makarios-option.locked,.opt.locked{cursor:default!important}.question-badge,.q-badge,.q-tipo{font-weight:800!important;letter-spacing:.06em!important;text-transform:uppercase!important}.question-badge.multi,.q-badge.multi{background:#e8f0fb!important;color:#2563a8!important}.question-badge.wrong,.q-badge.wrong{background:#f3edfb!important;color:#6d28a8!important}.feedback,.makarios-feedback{font-size:13.5px!important;line-height:1.65!important;margin-top:14px!important;padding:14px 16px!important;border-radius:12px!important;border:1.5px solid rgba(46,127,191,.22)!important;background:#f7fbff!important;color:#1a2b3c!important}.feedback.show,.makarios-feedback.show{display:block!important}.makarios-score-card{max-width:760px;margin:28px auto 18px;padding:22px;border:1.5px solid rgba(46,127,191,.22);border-radius:16px;background:linear-gradient(180deg,#fff,#f7fbff);text-align:left;font-family:'Barlow',sans-serif}.makarios-score-card h3{font-size:1.15rem;margin-bottom:8px;color:#1a2b3c}.makarios-score-number{font-size:2rem;font-weight:800;color:#2E7FBF;margin:6px 0}.makarios-score-message{font-size:14px;line-height:1.7;color:#4a5568}.makarios-submit-area{max-width:760px;margin:18px auto 40px;padding:22px;border:1.5px solid #D1DCE8;border-radius:16px;background:#fff;font-family:'Barlow',sans-serif}.makarios-submit-area label{font-weight:800;font-size:13px;display:block;margin-bottom:8px}.makarios-submit-area input{width:100%;padding:12px 14px;border:1.5px solid #D1DCE8;border-radius:10px;font-family:'Barlow',sans-serif;font-size:15px;margin-bottom:12px}.makarios-submit-area button{border:0;border-radius:10px;background:#2E7FBF;color:#fff;font-weight:800;padding:12px 20px;cursor:pointer;font-family:'Barlow',sans-serif}.makarios-submit-status{display:none;margin-top:12px;color:#2a7a4b;font-weight:700}.makarios-submit-status.show{display:block}.makarios-logo-official,.header-logo-wrap img,.header-logo img,.nav-logo img,nav img.logo,.logo-main{object-fit:contain!important;background:transparent!important;box-shadow:none!important}.header-logo-wrap img,.header-logo img,.logo-main{height:110px!important;max-width:min(760px,94vw)!important;width:auto!important;padding:0!important;border-radius:0!important}nav .makarios-logo-official,.nav-logo img,nav img.logo{height:54px!important;width:auto!important;padding:0!important;border-radius:0!important}</style></head>
+<body>
+<nav>
+<a class="nav-logo" href="voz.html"><img alt="Makários" class="makarios-logo-official" src="logo-makarios-oficial-azul.png"/></a>
+<a class="back-link" href="voz.html">← Voltar</a>
+</nav>
+<div class="progress-wrap"><div class="progress-bar" id="progressBar"></div></div>
+<main class="container">
+<header class="quiz-header">
+<img alt="Makários" class="logo-main" src="logo-makarios-oficial-azul.png"/>
+<div class="volume-tag">Volume 3 · Voz · Semana 3</div>
+<h1>Perfil do Líder, Pequenos Grupos e Aconselhamento Cristão</h1>
+<p>Exercício de fixação com 12 questões. Leia com atenção: algumas questões possuem uma correta, outras pedem múltiplas respostas e outras pedem para marcar a incorreta.</p>
+</header>
+<section id="questions">
+<article class="question-card" data-correct="b" data-explanation="A liderança bíblica não começa com cargo, mas com responsabilidade e influência. Jesus é o modelo maior: Ele formou pessoas, serviu com propósito e conduziu outros à vontade do Pai." data-type="single">
+<div class="question-meta"><span class="question-num">Questão 1</span><span class="question-badge">Uma resposta correta</span></div>
+<p class="question-text">Segundo a perspectiva bíblica trabalhada na aula sobre o perfil do líder, liderança deve ser compreendida principalmente como:</p>
+<div class="options">
+<label class="option" data-value="a"><input name="q1" style="display:none" type="radio" value="a"/><span class="option-marker">A</span><span>Uma posição formal ocupada apenas por pessoas naturalmente carismáticas.</span></label>
+<label class="option" data-value="b"><input name="q1" style="display:none" type="radio" value="b"/><span class="option-marker">B</span><span>A capacidade de influenciar, servir e assumir responsabilidade diante de Deus e das pessoas.</span></label>
+<label class="option" data-value="c"><input name="q1" style="display:none" type="radio" value="c"/><span class="option-marker">C</span><span>Uma habilidade administrativa desvinculada do caráter e da vida espiritual.</span></label>
+<label class="option" data-value="d"><input name="q1" style="display:none" type="radio" value="d"/><span class="option-marker">D</span><span>Uma função reservada exclusivamente aos pastores e líderes de ministério.</span></label>
+</div>
+<button class="verify-btn">Verificar resposta</button><div class="feedback"></div>
+</article>
+<article class="question-card" data-correct="a,c,d" data-explanation="O chamado à liderança nasce do design original de Deus, envolve domínio responsável, influência e serviço. A liderança cresce quando o discípulo assume responsabilidade e desenvolve caráter, não quando busca apenas controle ou status." data-type="multi">
+<div class="question-meta"><span class="question-num">Questão 2</span><span class="question-badge multi">Marque todas as corretas</span></div>
+<p class="question-text">Sobre o chamado universal à liderança, marque todas as alternativas corretas:</p>
+<div class="options">
+<label class="option" data-value="a"><input name="q2" style="display:none" type="checkbox" value="a"/><span class="option-marker">A</span><span>Gênesis 1:28 apresenta domínio como responsabilidade, governo e mordomia sobre o que Deus confiou.</span></label>
+<label class="option" data-value="b"><input name="q2" style="display:none" type="checkbox" value="b"/><span class="option-marker">B</span><span>A liderança cristã só começa quando alguém recebe um título oficial.</span></label>
+<label class="option" data-value="c"><input name="q2" style="display:none" type="checkbox" value="c"/><span class="option-marker">C</span><span>Todo cristão é chamado a exercer influência, ainda que em níveis e contextos diferentes.</span></label>
+<label class="option" data-value="d"><input name="q2" style="display:none" type="checkbox" value="d"/><span class="option-marker">D</span><span>Responder ao chamado exige sair da passividade e assumir responsabilidade.</span></label>
+</div>
+<button class="verify-btn">Verificar resposta</button><div class="feedback"></div>
+</article>
+<article class="question-card" data-correct="c" data-explanation="A alternativa incorreta é a C. A jornada de Josué mostra justamente que influência é formada no tempo, em discipulado, submissão, fidelidade e caráter. Na Bíblia, autoridade madura não é improvisada; ela é provada no processo." data-type="incorrect">
+<div class="question-meta"><span class="question-num">Questão 3</span><span class="question-badge wrong">Marque a incorreta</span></div>
+<p class="question-text">Sobre o crescimento de Josué em influência, marque a alternativa incorreta:</p>
+<div class="options">
+<label class="option" data-value="a"><input name="q3" style="display:none" type="radio" value="a"/><span class="option-marker">A</span><span>Josué já era líder, mas sua influência ainda precisava ser desenvolvida.</span></label>
+<label class="option" data-value="b"><input name="q3" style="display:none" type="radio" value="b"/><span class="option-marker">B</span><span>Seu relacionamento com Moisés foi parte importante de sua formação.</span></label>
+<label class="option" data-value="c"><input name="q3" style="display:none" type="radio" value="c"/><span class="option-marker">C</span><span>Josué se tornou líder principal imediatamente, sem processo, mentoria ou validação.</span></label>
+<label class="option" data-value="d"><input name="q3" style="display:none" type="radio" value="d"/><span class="option-marker">D</span><span>Sua liderança cresceu por meio de caráter, submissão e fidelidade ao processo.</span></label>
+</div>
+<button class="verify-btn">Verificar resposta</button><div class="feedback"></div>
+</article>
+<article class="question-card" data-correct="d" data-explanation="Integridade sustenta confiança. Um líder íntegro não muda conforme o ambiente, humor ou conveniência. Isso reflete, de modo limitado, a constância do caráter de Deus." data-type="single">
+<div class="question-meta"><span class="question-num">Questão 4</span><span class="question-badge">Uma resposta correta</span></div>
+<p class="question-text">No caráter do líder, por que a integridade é apresentada como base da liderança?</p>
+<div class="options">
+<label class="option" data-value="a"><input name="q4" style="display:none" type="radio" value="a"/><span class="option-marker">A</span><span>Porque substitui a necessidade de prestação de contas.</span></label>
+<label class="option" data-value="b"><input name="q4" style="display:none" type="radio" value="b"/><span class="option-marker">B</span><span>Porque permite que o líder seja rígido e inflexível em todas as situações.</span></label>
+<label class="option" data-value="c"><input name="q4" style="display:none" type="radio" value="c"/><span class="option-marker">C</span><span>Porque garante resultados rápidos, mesmo sem relacionamento.</span></label>
+<label class="option" data-value="d"><input name="q4" style="display:none" type="radio" value="d"/><span class="option-marker">D</span><span>Porque gera confiança, previsibilidade e sustentação para a liderança.</span></label>
+</div>
+<button class="verify-btn">Verificar resposta</button><div class="feedback"></div>
+</article>
+<article class="question-card" data-correct="a,b,d" data-explanation="O Pequeno Grupo é ambiente de discipulado, comunhão, cuidado, oração, Palavra e desenvolvimento de dons. Ele não é apenas reunião social nem simples estudo bíblico; é vida compartilhada para edificação do corpo de Cristo." data-type="multi">
+<div class="question-meta"><span class="question-num">Questão 5</span><span class="question-badge multi">Marque todas as corretas</span></div>
+<p class="question-text">Sobre Pequenos Grupos/GRs, marque todas as alternativas corretas:</p>
+<div class="options">
+<label class="option" data-value="a"><input name="q5" style="display:none" type="checkbox" value="a"/><span class="option-marker">A</span><span>São estruturas de discipulado e relacionamento intencional.</span></label>
+<label class="option" data-value="b"><input name="q5" style="display:none" type="checkbox" value="b"/><span class="option-marker">B</span><span>Integram Palavra, oração, cuidado mútuo e comunhão.</span></label>
+<label class="option" data-value="c"><input name="q5" style="display:none" type="checkbox" value="c"/><span class="option-marker">C</span><span>Existem apenas para gerar encontros sociais sem compromisso espiritual.</span></label>
+<label class="option" data-value="d"><input name="q5" style="display:none" type="checkbox" value="d"/><span class="option-marker">D</span><span>Favorecem o amadurecimento, o discipulado e o desenvolvimento dos dons.</span></label>
+</div>
+<button class="verify-btn">Verificar resposta</button><div class="feedback"></div>
+</article>
+<article class="question-card" data-correct="b" data-explanation="O modelo bíblico mostra a grande congregação e o cuidado nas casas. Atos 2 e Atos 5 revelam uma igreja que perseverava no ensino, comunhão, orações, partir do pão e vida cotidiana." data-type="single">
+<div class="question-meta"><span class="question-num">Questão 6</span><span class="question-badge">Uma resposta correta</span></div>
+<p class="question-text">A fundamentação bíblica dos pequenos grupos mostra que a Igreja primitiva vivia:</p>
+<div class="options">
+<label class="option" data-value="a"><input name="q6" style="display:none" type="radio" value="a"/><span class="option-marker">A</span><span>Apenas reuniões públicas, sem vida comunitária nas casas.</span></label>
+<label class="option" data-value="b"><input name="q6" style="display:none" type="radio" value="b"/><span class="option-marker">B</span><span>Uma dupla dinâmica: celebração pública e cuidado/discipulado nas casas.</span></label>
+<label class="option" data-value="c"><input name="q6" style="display:none" type="radio" value="c"/><span class="option-marker">C</span><span>Uma fé individual sem compromisso com comunidade local.</span></label>
+<label class="option" data-value="d"><input name="q6" style="display:none" type="radio" value="d"/><span class="option-marker">D</span><span>Um modelo em que apenas os apóstolos podiam ministrar.</span></label>
+</div>
+<button class="verify-btn">Verificar resposta</button><div class="feedback"></div>
+</article>
+<article class="question-card" data-correct="d" data-explanation="A alternativa incorreta é a D. Multiplicação é consequência de vida, saúde, discipulado, evangelismo e relacionamentos maduros; não deve ser tratada como fim em si mesma ou como pressão numérica desvinculada de formação." data-type="incorrect">
+<div class="question-meta"><span class="question-num">Questão 7</span><span class="question-badge wrong">Marque a incorreta</span></div>
+<p class="question-text">Sobre os princípios do Pequeno Grupo, marque a alternativa incorreta:</p>
+<div class="options">
+<label class="option" data-value="a"><input name="q7" style="display:none" type="radio" value="a"/><span class="option-marker">A</span><span>O GR deve cultivar amor, presença de Deus e ministração uns aos outros.</span></label>
+<label class="option" data-value="b"><input name="q7" style="display:none" type="radio" value="b"/><span class="option-marker">B</span><span>O sacerdócio universal aponta para a cooperação de todos na edificação.</span></label>
+<label class="option" data-value="c"><input name="q7" style="display:none" type="radio" value="c"/><span class="option-marker">C</span><span>Koinonia envolve comunhão e vida compartilhada para além do encontro semanal.</span></label>
+<label class="option" data-value="d"><input name="q7" style="display:none" type="radio" value="d"/><span class="option-marker">D</span><span>A multiplicação deve ser buscada como alvo principal, mesmo sem saúde relacional e discipulado.</span></label>
+</div>
+<button class="verify-btn">Verificar resposta</button><div class="feedback"></div>
+</article>
+<article class="question-card" data-correct="a,b,c" data-explanation="O aconselhamento cristão é cuidado da alma fundamentado nas Escrituras, conduzido em amor, dependente do Espírito Santo e voltado para consolação, exortação, oração, restauração e maturidade em Cristo." data-type="multi">
+<div class="question-meta"><span class="question-num">Questão 8</span><span class="question-badge multi">Marque todas as corretas</span></div>
+<p class="question-text">Sobre o aconselhamento cristão, marque todas as alternativas corretas:</p>
+<div class="options">
+<label class="option" data-value="a"><input name="q8" style="display:none" type="checkbox" value="a"/><span class="option-marker">A</span><span>É aplicação prática e intencional do Evangelho na vida de pessoas em crises, dores ou dilemas.</span></label>
+<label class="option" data-value="b"><input name="q8" style="display:none" type="checkbox" value="b"/><span class="option-marker">B</span><span>Deve ser fundamentado na verdade das Escrituras e conduzido em amor.</span></label>
+<label class="option" data-value="c"><input name="q8" style="display:none" type="checkbox" value="c"/><span class="option-marker">C</span><span>Busca santificação, restauração e maturidade em Cristo.</span></label>
+<label class="option" data-value="d"><input name="q8" style="display:none" type="checkbox" value="d"/><span class="option-marker">D</span><span>Dispensa dependência do Espírito Santo quando há técnica suficiente.</span></label>
+</div>
+<button class="verify-btn">Verificar resposta</button><div class="feedback"></div>
+</article>
+<article class="question-card" data-correct="c" data-explanation="A Palavra é diagnóstico e agente de transformação. Ela discerne pensamentos e intenções do coração e substitui mentiras por verdade, evitando tanto legalismo quanto relativismo." data-type="single">
+<div class="question-meta"><span class="question-num">Questão 9</span><span class="question-badge">Uma resposta correta</span></div>
+<p class="question-text">No aconselhamento cristão, a suficiência da Palavra significa que a Bíblia:</p>
+<div class="options">
+<label class="option" data-value="a"><input name="q9" style="display:none" type="radio" value="a"/><span class="option-marker">A</span><span>Serve apenas como frase de encerramento da conversa.</span></label>
+<label class="option" data-value="b"><input name="q9" style="display:none" type="radio" value="b"/><span class="option-marker">B</span><span>Deve ser usada para impor regras externas sem tratar o coração.</span></label>
+<label class="option" data-value="c"><input name="q9" style="display:none" type="radio" value="c"/><span class="option-marker">C</span><span>É autoridade final, diagnóstico do coração e agente de transformação.</span></label>
+<label class="option" data-value="d"><input name="q9" style="display:none" type="radio" value="d"/><span class="option-marker">D</span><span>É útil apenas para questões espirituais simples, mas não para maturidade.</span></label>
+</div>
+<button class="verify-btn">Verificar resposta</button><div class="feedback"></div>
+</article>
+<article class="question-card" data-correct="b" data-explanation="A alternativa incorreta é a B. O conselheiro não deve atacar a pessoa. O alinhamento correto é líder e aconselhado diante do problema, à luz da Palavra, com graça e verdade." data-type="incorrect">
+<div class="question-meta"><span class="question-num">Questão 10</span><span class="question-badge wrong">Marque a incorreta</span></div>
+<p class="question-text">Sobre a construção de confiança no aconselhamento, marque a alternativa incorreta:</p>
+<div class="options">
+<label class="option" data-value="a"><input name="q10" style="display:none" type="radio" value="a"/><span class="option-marker">A</span><span>O aconselhamento precisa criar um ambiente de acolhimento e escuta.</span></label>
+<label class="option" data-value="b"><input name="q10" style="display:none" type="radio" value="b"/><span class="option-marker">B</span><span>O líder deve atacar diretamente a pessoa para quebrar sua resistência.</span></label>
+<label class="option" data-value="c"><input name="q10" style="display:none" type="radio" value="c"/><span class="option-marker">C</span><span>O alinhamento correto é líder e aconselhado olhando juntos para o problema.</span></label>
+<label class="option" data-value="d"><input name="q10" style="display:none" type="radio" value="d"/><span class="option-marker">D</span><span>Empatia e ausência de pressa ajudam a consolidar confiança.</span></label>
+</div>
+<button class="verify-btn">Verificar resposta</button><div class="feedback"></div>
+</article>
+<article class="question-card" data-correct="a,c,d" data-explanation="As emoções revelam o coração. O alvo bíblico não é fingir que não sentimos, mas educar as afeições pela Palavra, ordenando nossos amores segundo Deus e tratando medo, ira, ansiedade e tristeza à luz da cruz." data-type="multi">
+<div class="question-meta"><span class="question-num">Questão 11</span><span class="question-badge multi">Marque todas as corretas</span></div>
+<p class="question-text">Sobre emoções e aconselhamento cristão, marque todas as alternativas corretas:</p>
+<div class="options">
+<label class="option" data-value="a"><input name="q11" style="display:none" type="checkbox" value="a"/><span class="option-marker">A</span><span>Emoções podem funcionar como janelas diagnósticas do coração.</span></label>
+<label class="option" data-value="b"><input name="q11" style="display:none" type="checkbox" value="b"/><span class="option-marker">B</span><span>O objetivo é reprimir toda emoção negativa sem discernimento.</span></label>
+<label class="option" data-value="c"><input name="q11" style="display:none" type="checkbox" value="c"/><span class="option-marker">C</span><span>Amores desordenados acontecem quando coisas legítimas ocupam lugares errados.</span></label>
+<label class="option" data-value="d"><input name="q11" style="display:none" type="checkbox" value="d"/><span class="option-marker">D</span><span>A Palavra educa as afeições para alegrar-se e entristecer-se segundo Deus.</span></label>
+</div>
+<button class="verify-btn">Verificar resposta</button><div class="feedback"></div>
+</article>
+<article class="question-card" data-correct="d" data-explanation="A maturidade do líder aparece quando ele guarda o coração, reconhece limites e não toma para si o peso que pertence ao Espírito Santo. Encaminhar casos complexos também pode ser sinal de humildade e zelo." data-type="single">
+<div class="question-meta"><span class="question-num">Questão 12</span><span class="question-badge">Uma resposta correta</span></div>
+<p class="question-text">Qual postura expressa maturidade bíblica no líder que aconselha?</p>
+<div class="options">
+<label class="option" data-value="a"><input name="q12" style="display:none" type="radio" value="a"/><span class="option-marker">A</span><span>Assumir sozinho a responsabilidade de transformar a vida do aconselhado.</span></label>
+<label class="option" data-value="b"><input name="q12" style="display:none" type="radio" value="b"/><span class="option-marker">B</span><span>Ignorar limites pessoais para provar espiritualidade.</span></label>
+<label class="option" data-value="c"><input name="q12" style="display:none" type="radio" value="c"/><span class="option-marker">C</span><span>Quebrar sigilo sempre que achar conveniente.</span></label>
+<label class="option" data-value="d"><input name="q12" style="display:none" type="radio" value="d"/><span class="option-marker">D</span><span>Guardar o próprio coração, depender do Espírito e reconhecer quando precisa encaminhar ou pedir ajuda.</span></label>
+</div>
+<button class="verify-btn">Verificar resposta</button><div class="feedback"></div>
+</article>
+</section>
+</main>
+<script id="audit-js">(function(){const EXERCICIO="Voz — Semana 3",APP_URL="https://script.google.com/macros/s/AKfycbwYahR6Kd00Sc4dsaoMYSiapUbaXW9z-s2UFcwbYBh_WT_DtBpHyKTY0O02qOlXF9aq/exec",$=(s,r=document)=>r.querySelector(s),$$=(s,r=document)=>Array.from(r.querySelectorAll(s)),norm=a=>a.map(String).map(x=>x.trim()).filter(Boolean).sort().join(',');function cards(){return $$('.question-card,.q-card')}function opts(c){return $$('.makarios-option,.option,.opt',c)}function val(o){return o.dataset.value||o.dataset.val||(o.querySelector('input')&&o.querySelector('input').value)||''}function corrects(c){return(c.dataset.correct||c.getAttribute('data-answer')||'').split(',').map(x=>x.trim()).filter(Boolean)}function selected(c){return opts(c).filter(o=>o.classList.contains('selected')).map(val).filter(Boolean)}function isMulti(c){return c.dataset.type==='multi'||corrects(c).length>1||!!c.querySelector('input[type="checkbox"]')}function isIncorrect(c){const q=(($('.question-text,.q-text',c)||{}).textContent||'').toLowerCase();return c.dataset.type==='incorrect'||q.includes('incorreta')||q.includes('incorreto')||q.includes('errada')||q.includes('errado')||q.includes('não corresponde')}function scoreMsg(p){if(p>=90)return'Excelente. Você demonstrou domínio e discernimento. Que esse conhecimento se transforme em maturidade, serviço fiel e influência segundo o Reino.';if(p>=70)return'Muito bom. Há fundamento sendo formado. Revise os pontos que errou e siga crescendo com constância, porque formação espiritual é caminho, não apenas resultado.';if(p>=50)return'Você está em processo. Volte às questões, revise o conteúdo e permita que a Palavra aprofunde sua formação como discípulo.';return'Este resultado é um ponto de partida, não um rótulo. O discípulo cresce quando recebe correção com humildade e transforma aprendizado em obediência.'}function ensureFeedback(c){let fb=$('.feedback,.makarios-feedback',c);if(!fb){fb=document.createElement('div');fb.className='makarios-feedback';c.appendChild(fb)}return fb}function ensureScore(){let a=$('#makarios-score-card');if(a)return a;a=document.createElement('section');a.id='makarios-score-card';a.className='makarios-score-card';const m=$('main')||$('.main')||$('.container')||$('.wrap')||document.body;m.appendChild(a);return a}function ensureSubmit(){if($('#makarios-submit-area'))return;const a=document.createElement('section');a.id='makarios-submit-area';a.className='makarios-submit-area';a.innerHTML='<label for="makarios-nome">Nome completo</label><input id="makarios-nome" type="text" placeholder="Digite seu nome completo"><button id="makarios-submit-btn" type="button">Enviar resultado</button><div id="makarios-submit-status" class="makarios-submit-status">Resultado enviado para a planilha.</div>';const m=$('main')||$('.main')||$('.container')||$('.wrap')||document.body;m.appendChild(a)}function updateProgress(){const cs=cards(),a=cs.filter(c=>c.dataset.answered==='true').length,p=cs.length?Math.round(a/cs.length*100):0;$$('.progress-bar-fill,.progress-fill,#progressBar,.progress-bar').forEach(b=>{b.style.width=p+'%'});const ct=$('.progress-count');if(ct)ct.textContent=a+'/'+cs.length}function updateScore(){const cs=cards(),a=cs.filter(c=>c.dataset.answered==='true').length,h=cs.filter(c=>c.dataset.ok==='true').length,t=cs.length,p=t?Math.round(h/t*100):0,area=ensureScore();area.innerHTML=`<h3>${a<t?'Resultado parcial':'Resultado final'}</h3><div class="makarios-score-number">${h}/${t} · ${p}%</div><p class="makarios-score-message">${a<t?'Verifique todas as questões para fechar sua nota antes do envio.':scoreMsg(p)}</p>`;updateProgress();window.MAKARIOS_SCORE={hits:h,total:t,pct:p,complete:a===t};return window.MAKARIOS_SCORE}function defExp(c){const l=corrects(c).map(x=>x.toUpperCase()).join(', ');if(isIncorrect(c))return`A alternativa incorreta é ${l}. Ela é a opção que contradiz o ensino bíblico ou o sentido correto do conteúdo.`;if(isMulti(c))return`As alternativas corretas são ${l}. Nesta questão, era necessário marcar todas as afirmações verdadeiras.`;return`A alternativa correta é ${l}.`}function selectOption(c,o){if(o.classList.contains('locked'))return;const inp=o.querySelector('input');if(isMulti(c)){o.classList.toggle('selected');if(inp)inp.checked=o.classList.contains('selected')}else{opts(c).forEach(x=>{x.classList.remove('selected');const xi=x.querySelector('input');if(xi)xi.checked=false});o.classList.add('selected');if(inp)inp.checked=true}}function verify(c){const s=selected(c);if(!s.length){alert('Marque uma alternativa antes de verificar.');return}const cor=corrects(c),ok=norm(s)===norm(cor);opts(c).forEach(o=>{const v=val(o),inp=o.querySelector('input');o.classList.add('locked');o.classList.remove('correct-answer','wrong-answer','correct','wrong');if(cor.includes(v))o.classList.add('correct-answer','correct');if(s.includes(v)&&!cor.includes(v))o.classList.add('wrong-answer','wrong');if(inp)inp.disabled=true});c.classList.add('answered');c.dataset.answered='true';c.dataset.ok=ok?'true':'false';const fb=ensureFeedback(c),mode=isIncorrect(c)?'Nesta pergunta, a alternativa destacada em verde é a INCORRETA que deveria ser marcada.':isMulti(c)?'Nesta pergunta, era necessário marcar TODAS as alternativas corretas.':'Nesta pergunta, havia UMA resposta correta.';fb.innerHTML=`<strong>${ok?'Resposta correta.':'Resposta revisada.'}</strong><br>${mode}<br>${c.dataset.explanation||defExp(c)}`;fb.classList.add('show');fb.style.display='block';updateScore()}function submit(){const s=updateScore();if(!s.complete){alert('Verifique todas as respostas antes de enviar o resultado.');return}const i=$('#makarios-nome'),nome=i?i.value.trim():'';if(!nome){alert('Informe seu nome completo antes de enviar.');return}const params=new URLSearchParams({exercicio:EXERCICIO,nome,pontuacao:String(s.hits),nota:`${s.hits}/${s.total}`,data:new Date().toLocaleString('pt-BR')});let iframe=document.querySelector('iframe[name="makarios_submit_frame"]');if(!iframe){iframe=document.createElement('iframe');iframe.name='makarios_submit_frame';iframe.style.display='none';document.body.appendChild(iframe)}const form=document.createElement('form');form.method='GET';form.action=APP_URL;form.target='makarios_submit_frame';form.style.display='none';for(const[k,v]of params.entries()){const inp=document.createElement('input');inp.name=k;inp.value=v;form.appendChild(inp)}document.body.appendChild(form);form.submit();setTimeout(()=>form.remove(),1000);const st=$('#makarios-submit-status');if(st){st.textContent='Resultado enviado para a planilha.';st.classList.add('show');st.style.display='block'}alert('Resultado enviado com sucesso.')}function init(){cards().forEach((c,ci)=>{if(!c.dataset.correct&&c.dataset.answer)c.dataset.correct=c.dataset.answer;const b=$('.question-badge,.q-badge,.q-tipo',c);if(b){if(isIncorrect(c)){b.textContent='MARQUE A INCORRETA';b.classList.add('wrong')}else if(isMulti(c)){b.textContent='MARQUE TODAS AS CORRETAS';b.classList.add('multi')}else b.textContent='UMA RESPOSTA CORRETA'}opts(c).forEach((o,oi)=>{o.classList.add('makarios-option');o.style.pointerEvents='auto';if(!o.dataset.value&&!o.dataset.val)o.dataset.value=String.fromCharCode(97+oi);let inp=o.querySelector('input');if(!inp){inp=document.createElement('input');inp.type=isMulti(c)?'checkbox':'radio';inp.name='q'+(ci+1);inp.value=val(o);inp.style.display='none';o.insertBefore(inp,o.firstChild)}else{inp.type=isMulti(c)?'checkbox':'radio';inp.name='q'+(ci+1);inp.value=val(o)}o.addEventListener('click',function(e){e.preventDefault();e.stopPropagation();selectOption(c,o)},true)});let btn=$('.makarios-verify-btn,.verify-btn,.btn-check',c);if(!btn){btn=document.createElement('button');btn.type='button';btn.className='verify-btn';btn.textContent='Verificar resposta';c.appendChild(btn)}btn.type='button';btn.textContent=btn.textContent.trim()||'Verificar resposta';btn.addEventListener('click',function(e){e.preventDefault();e.stopPropagation();verify(c)},true)});ensureScore();ensureSubmit();const sb=$('#makarios-submit-btn');if(sb){sb.type='button';sb.addEventListener('click',function(e){e.preventDefault();e.stopPropagation();submit()},true)}updateScore()}if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init()})();</script></body>
+</html>

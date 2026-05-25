@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Exercícios de Fixação — Caminho Semana 1 | Escola Makários</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,700;0,800;1,700;1,800&amp;family=Barlow:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #ffffff;
+    --surface: #FFFFFF;
+    --surface2: #E8E2D8;
+    --text: #1A2B3C;
+    --text2: #5A6A7A;
+    --text3: #9AAABB;
+    --accent: #2E7FBF;
+    --accent-light: #E3F4FC;
+    --accent-mid: #4DB3E0;
+    --accent-dark: #126A95;
+    --danger: #C0392B;
+    --danger-light: #FDECEA;
+    --border: rgba(26,143,196,0.12);
+    --border-strong: rgba(26,143,196,0.25);
+    --radius: 16px;
+    --radius-sm: 10px;
+  }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Barlow', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; line-height: 1.6; }
+  .header { background: var(--accent); color: #FFFFFF; padding: 2.5rem 1.5rem 2.5rem; text-align: center; position: relative; overflow: hidden; }
+  .header::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 80% -10%, rgba(255,255,255,0.12) 0%, transparent 55%), radial-gradient(ellipse at 10% 110%, rgba(0,0,0,0.08) 0%, transparent 50%); pointer-events: none; }
+  .header-logo { font-family: 'Barlow', sans-serif; font-size: clamp(2rem, 6vw, 3rem); font-weight: 700; letter-spacing: -0.01em; color: white; margin-bottom: 4px; line-height: 1; }
+  .header-logo span { opacity: 0.6; }
+  .header-subtitle { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 1.25rem; font-weight: 600; }
+  .header h1 { font-family: 'Barlow', sans-serif; font-size: clamp(1rem, 3vw, 1.3rem); font-weight: 600; line-height: 1.3; margin-bottom: 10px; color: rgba(255,255,255,0.9); }
+  .header-desc { font-size: 13.5px; color: rgba(255,255,255,0.65); max-width: 460px; margin: 0 auto; line-height: 1.75; font-style: italic; }
+  .progress-wrap { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0.75rem 1.5rem; display: flex; align-items: center; gap: 12px; position: sticky; top: 0; z-index: 10; }
+  .progress-label { font-size: 11px; color: var(--text3); white-space: nowrap; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; }
+  .progress-bar-track { flex: 1; height: 5px; background: var(--surface2); border-radius: 99px; overflow: hidden; }
+  .progress-bar-fill { height: 100%; background: var(--accent); border-radius: 99px; width: 0%; transition: width 0.5s cubic-bezier(0.4,0,0.2,1); }
+  .progress-count { font-size: 12px; color: var(--accent); white-space: nowrap; font-weight: 700; }
+  .main { max-width: 680px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
+  .question-card { background: var(--surface); border: 1.5px solid var(--border); border-radius: var(--radius); padding: 1.75rem; margin-bottom: 1.25rem; transition: border-color 0.2s; }
+  .question-card.answered { border-color: var(--border-strong); }
+  .question-meta { display: flex; align-items: center; gap: 8px; margin-bottom: 14px; }
+  .question-num { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); font-weight: 700; }
+  .question-badge { font-size: 10px; padding: 3px 10px; border-radius: 99px; background: var(--accent-light); color: var(--accent); border: 1px solid rgba(26,143,196,0.2); font-weight: 700; letter-spacing: 0.04em; }
+  .question-text { font-family: 'Barlow', sans-serif; font-size: 1.05rem; line-height: 1.65; color: var(--text); margin-bottom: 1.25rem; font-weight: 600; }
+  .hint { font-size: 12px; color: var(--text3); margin-bottom: 12px; font-style: italic; }
+  .options { display: flex; flex-direction: column; gap: 8px; }
+  .option { display: flex; align-items: flex-start; gap: 12px; padding: 12px 14px; border: 1.5px solid var(--border); border-radius: var(--radius-sm); cursor: pointer; transition: all 0.15s ease; position: relative; user-select: none; }
+  .option:hover:not(.locked) { background: var(--accent-light); border-color: var(--accent-mid); }
+  .option input { display: none; }
+  .option-dot { width: 18px; height: 18px; border-radius: 50%; border: 1.5px solid var(--border-strong); flex-shrink: 0; margin-top: 2px; display: flex; align-items: center; justify-content: center; transition: all 0.15s; }
+  .option-check { width: 18px; height: 18px; border-radius: 5px; border: 1.5px solid var(--border-strong); flex-shrink: 0; margin-top: 2px; display: flex; align-items: center; justify-content: center; transition: all 0.15s; }
+  .option-text { font-size: 14px; line-height: 1.55; color: var(--text); }
+  .option.selected { background: var(--accent-light); border-color: var(--accent); }
+  .option.selected .option-dot, .option.selected .option-check { background: var(--accent); border-color: var(--accent); }
+  .option.selected .option-dot::after { content: ''; width: 6px; height: 6px; background: white; border-radius: 50%; }
+  .option.selected .option-check::after { content: '✓'; font-size: 11px; color: white; font-weight: 700; }
+  .option.correct-answer { background: var(--accent-light); border-color: var(--accent); }
+  .option.correct-answer .option-dot, .option.correct-answer .option-check { background: var(--accent); border-color: var(--accent); }
+  .option.correct-answer .option-dot::after { content: ''; width: 6px; height: 6px; background: white; border-radius: 50%; }
+  .option.correct-answer .option-check::after { content: '✓'; font-size: 11px; color: white; font-weight: 700; }
+  .option.correct-answer .option-text { color: var(--accent-dark); font-weight: 600; }
+  .option.wrong-answer { background: var(--danger-light); border-color: rgba(192,57,43,0.3); }
+  .option.wrong-answer .option-dot, .option.wrong-answer .option-check { background: var(--danger); border-color: var(--danger); }
+  .option.wrong-answer .option-dot::after { content: '✕'; font-size: 12px; color: white; line-height: 1; }
+  .option.wrong-answer .option-check::after { content: '✕'; font-size: 12px; color: white; line-height: 1; }
+  .option.wrong-answer .option-text { color: #7B241C; }
+  .option.locked { cursor: default; }
+  .feedback { margin-top: 14px; padding: 14px 16px; border-radius: var(--radius-sm); font-size: 13.5px; line-height: 1.65; display: none; animation: fadeSlide 0.3s ease; }
+  .feedback.correct { background: var(--accent-light); border: 1.5px solid rgba(26,143,196,0.3); color: var(--accent-dark); }
+  .feedback.wrong { background: var(--danger-light); border: 1.5px solid rgba(192,57,43,0.2); color: #7B241C; }
+  .feedback-icon { font-weight: 700; margin-right: 4px; }
+  @keyframes fadeSlide { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: translateY(0); } }
+  .verify-btn { margin-top: 16px; padding: 10px 24px; background: var(--accent); color: #FFFFFF; border: none; border-radius: var(--radius-sm); font-family: 'Barlow', sans-serif; font-size: 13px; font-weight: 700; cursor: pointer; transition: all 0.15s; letter-spacing: 0.02em; }
+  .verify-btn:hover { background: var(--accent-dark); transform: translateY(-1px); }
+  .verify-btn:active { transform: translateY(0); }
+  .verify-btn:disabled { opacity: 0.35; cursor: default; transform: none; }
+  .registro-card { background: var(--surface); border: 1.5px solid var(--border); border-radius: var(--radius); padding: 1.75rem; margin-bottom: 1.25rem; display: none; animation: fadeSlide 0.4s ease; }
+  .registro-card h3 { font-family: 'Barlow', sans-serif; font-size: 1.1rem; font-weight: 700; margin-bottom: 6px; color: var(--text); }
+  .registro-card p { font-size: 13px; color: var(--text2); margin-bottom: 20px; line-height: 1.65; }
+  .field-group { margin-bottom: 14px; }
+  .field-label { font-size: 11px; font-weight: 700; color: var(--text2); margin-bottom: 6px; display: block; letter-spacing: 0.08em; text-transform: uppercase; }
+  .field-input { width: 100%; padding: 11px 14px; border: 1.5px solid var(--border); border-radius: var(--radius-sm); font-family: 'Barlow', sans-serif; font-size: 14px; color: var(--text); background: var(--bg); outline: none; transition: border-color 0.15s; }
+  .field-input:focus { border-color: var(--accent); }
+  .submit-all-btn { display: block; width: 100%; padding: 14px; background: var(--accent); color: white; border: none; border-radius: var(--radius-sm); font-family: 'Barlow', sans-serif; font-size: 15px; font-weight: 700; cursor: pointer; transition: all 0.15s; margin-top: 8px; letter-spacing: 0.02em; }
+  .submit-all-btn:hover { background: var(--accent-dark); }
+  .submit-all-btn:disabled { opacity: 0.5; cursor: default; }
+  .field-error { font-size: 12px; color: var(--danger); margin-top: 4px; display: none; }
+  .score-screen { display: none; background: var(--surface); border: 1.5px solid var(--border); border-radius: var(--radius); padding: 2.5rem 2rem; text-align: center; margin-top: 1.25rem; animation: fadeSlide 0.4s ease; }
+  .score-circle { width: 110px; height: 110px; border-radius: 50%; background: var(--accent); display: flex; flex-direction: column; align-items: center; justify-content: center; margin: 0 auto 1.5rem; }
+  .score-circle .score-big { font-family: 'Barlow', sans-serif; font-size: 2.2rem; font-weight: 700; color: white; line-height: 1; }
+  .score-circle .score-total { font-size: 12px; color: rgba(255,255,255,0.75); font-weight: 600; }
+  .score-title { font-family: 'Barlow', sans-serif; font-size: 1.4rem; font-weight: 700; margin-bottom: 8px; color: var(--text); }
+  .score-sub { font-size: 14px; color: var(--text2); max-width: 360px; margin: 0 auto 1.5rem; line-height: 1.65; }
+  .score-sending { font-size: 13px; color: var(--text3); margin-top: 12px; }
+  .retry-btn { padding: 10px 24px; background: transparent; border: 1.5px solid var(--border-strong); border-radius: var(--radius-sm); font-family: 'Barlow', sans-serif; font-size: 13px; font-weight: 700; cursor: pointer; color: var(--accent); transition: all 0.15s; }
+  .retry-btn:hover { background: var(--accent-light); }
+  .footer { text-align: center; padding: 2rem 1rem; font-size: 12px; color: var(--text3); border-top: 1px solid var(--border); font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; }
+  .header-logo-wrap { display: flex; justify-content: center; margin-bottom: 12px; }
+  .header-logo-img { height: 90px; width: auto; }
+  .back-bar { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0.6rem 1.5rem; }
+  .back-link { font-family: 'Barlow', sans-serif; font-size: 12px; font-weight: 700; color: var(--accent); text-decoration: none; letter-spacing: 0.02em; }
+  .back-link:hover { color: var(--accent-dark); }
+  @media (max-width: 480px) { .question-card, .registro-card { padding: 1.25rem; } .header { padding: 2rem 1rem 1.75rem; } .header-logo-img { height: 70px; } }
+</style>
+<style>
+  .makarios-verify-btn.visible,
+  .verify-btn.visible,
+  .btn-check.visible,
+  .check-btn.visible { display: inline-flex !important; }
+  .makarios-result-panel {
+    max-width: 680px;
+    margin: 32px auto 60px;
+    padding: 24px;
+    border: 1.5px solid rgba(46,127,191,.25);
+    border-radius: 16px;
+    background: #ffffff;
+    box-shadow: 0 8px 28px rgba(26,43,60,.08);
+    font-family: 'Barlow', sans-serif;
+  }
+  .makarios-result-panel[hidden] { display: none !important; }
+  .makarios-result-panel h2 { font-size: 1.3rem; margin-bottom: 8px; color: #1A2B3C; }
+  .makarios-result-score { font-weight: 800; color: #2E7FBF; margin-bottom: 14px; }
+  .makarios-result-panel label { display:block; font-size: 13px; font-weight: 700; color:#5A6A7A; margin: 14px 0 6px; }
+  .makarios-result-panel input {
+    width: 100%; padding: 12px 14px; border-radius: 10px; border: 1.5px solid rgba(46,127,191,.25);
+    font-family: 'Barlow', sans-serif; font-size: 15px;
+  }
+  .makarios-submit-btn {
+    margin-top: 14px; padding: 12px 18px; border: none; border-radius: 10px; background: #2E7FBF; color: white;
+    font-weight: 800; font-family: 'Barlow', sans-serif; cursor: pointer;
+  }
+  .makarios-submit-status { display:none; margin-top:10px; font-size: 13px; color:#2a7a4b; font-weight:700; }
+  .makarios-submit-status.show { display:block; }
+</style>
+<style id="audit-css">.option.selected,.makarios-option.selected,.opt.selected{background:#E8F2FB!important;border-color:#2E7FBF!important}.option.correct-answer,.makarios-option.correct-answer,.opt.correct-answer,.option.correct,.makarios-option.correct,.opt.correct{background:#eaf5ee!important;border-color:#2a7a4b!important;color:#1f5b38!important}.option.wrong-answer,.makarios-option.wrong-answer,.opt.wrong-answer,.option.wrong,.makarios-option.wrong,.opt.wrong{background:#faeaea!important;border-color:#a8282a!important;color:#7B241C!important}.option.locked,.makarios-option.locked,.opt.locked{cursor:default!important}.question-badge,.q-badge,.q-tipo{font-weight:800!important;letter-spacing:.06em!important;text-transform:uppercase!important}.question-badge.multi,.q-badge.multi{background:#e8f0fb!important;color:#2563a8!important}.question-badge.wrong,.q-badge.wrong{background:#f3edfb!important;color:#6d28a8!important}.feedback,.makarios-feedback{font-size:13.5px!important;line-height:1.65!important;margin-top:14px!important;padding:14px 16px!important;border-radius:12px!important;border:1.5px solid rgba(46,127,191,.22)!important;background:#f7fbff!important;color:#1a2b3c!important}.feedback.show,.makarios-feedback.show{display:block!important}.makarios-score-card{max-width:760px;margin:28px auto 18px;padding:22px;border:1.5px solid rgba(46,127,191,.22);border-radius:16px;background:linear-gradient(180deg,#fff,#f7fbff);text-align:left;font-family:'Barlow',sans-serif}.makarios-score-card h3{font-size:1.15rem;margin-bottom:8px;color:#1a2b3c}.makarios-score-number{font-size:2rem;font-weight:800;color:#2E7FBF;margin:6px 0}.makarios-score-message{font-size:14px;line-height:1.7;color:#4a5568}.makarios-submit-area{max-width:760px;margin:18px auto 40px;padding:22px;border:1.5px solid #D1DCE8;border-radius:16px;background:#fff;font-family:'Barlow',sans-serif}.makarios-submit-area label{font-weight:800;font-size:13px;display:block;margin-bottom:8px}.makarios-submit-area input{width:100%;padding:12px 14px;border:1.5px solid #D1DCE8;border-radius:10px;font-family:'Barlow',sans-serif;font-size:15px;margin-bottom:12px}.makarios-submit-area button{border:0;border-radius:10px;background:#2E7FBF;color:#fff;font-weight:800;padding:12px 20px;cursor:pointer;font-family:'Barlow',sans-serif}.makarios-submit-status{display:none;margin-top:12px;color:#2a7a4b;font-weight:700}.makarios-submit-status.show{display:block}.makarios-logo-official,.header-logo-wrap img,.header-logo img,.nav-logo img,nav img.logo,.logo-main{object-fit:contain!important;background:transparent!important;box-shadow:none!important}.header-logo-wrap img,.header-logo img,.logo-main{height:110px!important;max-width:min(760px,94vw)!important;width:auto!important;padding:0!important;border-radius:0!important}nav .makarios-logo-official,.nav-logo img,nav img.logo{height:54px!important;width:auto!important;padding:0!important;border-radius:0!important}</style></head>
+<body>
+<header class="header">
+<div class="header-logo-wrap"><img alt="makarios" class="header-logo-img" src="logo-makarios-oficial-azul.png"/></div>
+<p class="header-subtitle">Igreja Emaús · Goiânia</p>
+<h1>Exercícios de Fixação — Semana 1</h1>
+<p class="header-desc">Caráter de Cristo · Santidade · Discipulado</p>
+</header>
+<div class="back-bar">
+<a class="back-link" href="caminho.html">← Voltar para Caminho</a>
+</div>
+<div class="progress-wrap">
+<span class="progress-label">Progresso</span>
+<div class="progress-bar-track"><div class="progress-bar-fill" id="progress-fill"></div></div>
+<span class="progress-count" id="progress-count">0 / 10</span>
+</div>
+<main class="main">
+<p style="font-size:13px;color:var(--text3);margin-bottom:1.5rem;font-style:italic;">Este exercício cobre as apostilas do Volume 2 — Caminho: Caráter de Cristo · Santidade · Discipulado. Medite em cada questão antes de responder.</p>
+<!-- Q1 única -->
+<div class="question-card" data-correct="b" data-explanation="A alternativa correta é B. Jesus ensina que o Reino transforma primeiro quem somos diante de Deus; caráter cristão não é aparência, mas conformação à vida de Cristo. Resposta: B) Marca gravada, impressão, cunho — originalmente a marca deixada por um cinzel em metal ou cera." data-qid="q1" data-type="single" id="card-1">
+<div class="question-meta"><span class="question-num">Questão 1</span><span class="single question-badge">UMA RESPOSTA CORRETA</span></div>
+<p class="question-text">A palavra grega "charaktḗr" (origem de "caráter") significa originalmente:</p>
+<div class="options" id="opts-1">
+<label class="option makarios-option" data-val="a" data-value="a"><input name="q1" style="display:none" type="radio" value="a"/><span class="option-dot"></span><span class="option-text">Virtude moral adquirida por esforço pessoal.</span></label>
+<label class="option makarios-option" data-val="b" data-value="b"><input name="q1" style="display:none" type="radio" value="b"/><span class="option-dot"></span><span class="option-text">Marca gravada, impressão, cunho — originalmente a marca deixada por um cinzel em metal ou cera.</span></label>
+<label class="option makarios-option" data-val="c" data-value="c"><input name="q1" style="display:none" type="radio" value="c"/><span class="option-dot"></span><span class="option-text">A aparência externa de uma pessoa diante dos outros.</span></label>
+<label class="option makarios-option" data-val="d" data-value="d"><input name="q1" style="display:none" type="radio" value="d"/><span class="option-dot"></span><span class="option-text">O conjunto de dons espirituais recebidos no novo nascimento.</span></label>
+<label class="option makarios-option" data-val="e" data-value="e"><input name="q1" style="display:none" type="radio" value="e"/><span class="option-dot"></span><span class="option-text">A reputação que uma pessoa constrói ao longo da vida.</span></label>
+</div>
+<div class="feedback" id="fb-1"></div>
+<button class="verify-btn makarios-verify-btn" data-qid="q1" type="button">Verificar resposta</button>
+</div>
+<!-- Q2 múltiplas corretas -->
+<div class="question-card" data-correct="a,c,d,e" data-explanation="As alternativas corretas são A, C, D, E. Jesus ensina que o Reino transforma primeiro quem somos diante de Deus; caráter cristão não é aparência, mas conformação à vida de Cristo. Nesta questão, era necessário marcar todas as afirmações que concordam com o ensino bíblico apresentado. Respostas parciais não completam o raciocínio." data-qid="q2" data-type="multi" id="card-2">
+<div class="question-meta"><span class="question-num">Questão 2</span><span class="multi question-badge">MARQUE TODAS AS CORRETAS</span></div>
+<p class="question-text">Sobre as oito qualidades do caráter de um discípulo (Bem-aventuranças, Mt 5:3-12), marque todas as afirmações corretas.</p>
+<p class="hint">Marque todas as alternativas corretas.</p>
+<div class="options" id="opts-2">
+<label class="option makarios-option" data-val="a" data-value="a"><input name="q2" style="display:none" type="checkbox" value="a"/><span class="option-check"></span><span class="option-text">A humildade é a primeira qualidade e seu oposto é o orgulho, a soberba e a autossuficiência.</span></label>
+<label class="option makarios-option" data-val="b" data-value="b"><input name="q2" style="display:none" type="checkbox" value="b"/><span class="option-check"></span><span class="option-text">A contrição (os que choram) é motivada por autopiedade e tristeza emocional pelos problemas da vida.</span></label>
+<label class="option makarios-option" data-val="c" data-value="c"><input name="q2" style="display:none" type="checkbox" value="c"/><span class="option-check"></span><span class="option-text">A pureza de coração significa sinceridade, transparência, boa consciência e motivações santas — sem engano nem hipocrisia.</span></label>
+<label class="option makarios-option" data-val="d" data-value="d"><input name="q2" style="display:none" type="checkbox" value="d"/><span class="option-check"></span><span class="option-text">Os pacificadores perdoam, renunciam direitos, cedem e são instrumentos de reconciliação.</span></label>
+<label class="option makarios-option" data-val="e" data-value="e"><input name="q2" style="display:none" type="checkbox" value="e"/><span class="option-check"></span><span class="option-text">A alegria no sofrimento injusto significa que o discípulo não se deprime diante da perseguição e calúnia, mas se alegra e se regozija.</span></label>
+</div>
+<div class="feedback" id="fb-2"></div>
+<button class="verify-btn makarios-verify-btn" data-qid="q2" type="button">Verificar resposta</button>
+</div>
+<!-- Q3 marque a incorreta -->
+<div class="question-card" data-correct="c" data-explanation="A alternativa que deve ser marcada como incorreta é C. Ela contradiz o ensino bíblico ou o sentido correto do tema. Jesus ensina que o Reino transforma primeiro quem somos diante de Deus; caráter cristão não é aparência, mas conformação à vida de Cristo. As demais alternativas preservam melhor o conjunto do ensino das Escrituras." data-qid="q3" data-type="incorrect" id="card-3">
+<div class="question-meta"><span class="question-num">Questão 3</span><span class="wrong question-badge">MARQUE A INCORRETA</span></div>
+<p class="question-text">Sobre como o caráter de uma pessoa é revelado, marque a afirmação INCORRETA segundo a apostila.</p>
+<div class="options" id="opts-3">
+<label class="option makarios-option" data-val="a" data-value="a"><input name="q3" style="display:none" type="radio" value="a"/><span class="option-dot"></span><span class="option-text">O verdadeiro caráter é revelado no secreto, quando ninguém está olhando — integridade é fazer o certo sem plateia.</span></label>
+<label class="option makarios-option" data-val="b" data-value="b"><input name="q3" style="display:none" type="radio" value="b"/><span class="option-dot"></span><span class="option-text">Romanos 5:3-4 ensina que a tribulação produz perseverança, e a perseverança, caráter aprovado.</span></label>
+<label class="option makarios-option" data-val="c" data-value="c"><input name="q3" style="display:none" type="radio" value="c"/><span class="option-dot"></span><span class="option-text">O caráter de uma pessoa é determinado principalmente pela sua aparência e pela impressão que causa nos outros.</span></label>
+<label class="option makarios-option" data-val="d" data-value="d"><input name="q3" style="display:none" type="radio" value="d"/><span class="option-dot"></span><span class="option-text">Como a pessoa lida com dinheiro, poder e elogios expõe sua integridade e intenções.</span></label>
+<label class="option makarios-option" data-val="e" data-value="e"><input name="q3" style="display:none" type="radio" value="e"/><span class="option-dot"></span><span class="option-text">Pessoas maduras aceitam correção com humildade; quem resiste à repreensão revela orgulho (Pv 12:1).</span></label>
+</div>
+<div class="feedback" id="fb-3"></div>
+<button class="verify-btn makarios-verify-btn" data-qid="q3" type="button">Verificar resposta</button>
+</div>
+<!-- Q4 única -->
+<div class="question-card" data-correct="c" data-explanation="A alternativa correta é C. O ponto de partida para a transformação do caráter é o novo nascimento em Cristo; sem Cristo no coração, qualquer mudança será apenas externa ou temporária." data-qid="q4" data-type="single" id="card-4">
+<div class="question-meta"><span class="question-num">Questão 4</span><span class="single question-badge">UMA RESPOSTA CORRETA</span></div>
+<p class="question-text">Qual é o ponto de partida para a transformação do caráter, segundo a apostila de Caráter de Cristo?</p>
+<div class="options" id="opts-4">
+<label class="option makarios-option" data-val="a" data-value="a"><input name="q4" style="display:none" type="radio" value="a"/><span class="option-dot"></span><span class="option-text">Frequentar uma escola bíblica e acumular conhecimento teológico.</span></label>
+<label class="option makarios-option" data-val="b" data-value="b"><input name="q4" style="display:none" type="radio" value="b"/><span class="option-dot"></span><span class="option-text">Desenvolver disciplinas espirituais como jejum e oração constante.</span></label>
+<label class="option makarios-option" data-val="c" data-value="c"><input name="q4" style="display:none" type="radio" value="c"/><span class="option-dot"></span><span class="option-text">O novo nascimento em Cristo — sem Cristo no coração, qualquer mudança será apenas externa ou temporária (2Co 5:17).</span></label>
+<label class="option makarios-option" data-val="d" data-value="d"><input name="q4" style="display:none" type="radio" value="d"/><span class="option-dot"></span><span class="option-text">A imitação de modelos cristãos exemplares na comunidade.</span></label>
+<label class="option makarios-option" data-val="e" data-value="e"><input name="q4" style="display:none" type="radio" value="e"/><span class="option-dot"></span><span class="option-text">A participação regular em cultos e atividades da igreja local.</span></label>
+</div>
+<div class="feedback" id="fb-4"></div>
+<button class="verify-btn makarios-verify-btn" data-qid="q4" type="button">Verificar resposta</button>
+</div>
+<!-- Q5 única -->
+<div class="question-card" data-correct="b" data-explanation="A alternativa correta é B. A resposta foi revisada à luz do ensino bíblico geral: Cristo, a Palavra e a obra do Espírito são o critério para avaliar a alternativa correta. Resposta: B) Separar, consagrar para uso sagrado — ser distinto, diferente do comum ou profano." data-qid="q5" data-type="single" id="card-5">
+<div class="question-meta"><span class="question-num">Questão 5</span><span class="single question-badge">UMA RESPOSTA CORRETA</span></div>
+<p class="question-text">A palavra hebraica "qādôsh" (santo) significa fundamentalmente:</p>
+<div class="options" id="opts-5">
+<label class="option makarios-option" data-val="a" data-value="a"><input name="q5" style="display:none" type="radio" value="a"/><span class="option-dot"></span><span class="option-text">Perfeito em todas as virtudes morais.</span></label>
+<label class="option makarios-option" data-val="b" data-value="b"><input name="q5" style="display:none" type="radio" value="b"/><span class="option-dot"></span><span class="option-text">Separar, consagrar para uso sagrado — ser distinto, diferente do comum ou profano.</span></label>
+<label class="option makarios-option" data-val="c" data-value="c"><input name="q5" style="display:none" type="radio" value="c"/><span class="option-dot"></span><span class="option-text">Livre de pecado por esforço e dedicação pessoal.</span></label>
+<label class="option makarios-option" data-val="d" data-value="d"><input name="q5" style="display:none" type="radio" value="d"/><span class="option-dot"></span><span class="option-text">Elevado a uma posição de liderança espiritual na comunidade.</span></label>
+<label class="option makarios-option" data-val="e" data-value="e"><input name="q5" style="display:none" type="radio" value="e"/><span class="option-dot"></span><span class="option-text">Aprovado por Deus após uma vida de obediência perfeita.</span></label>
+</div>
+<div class="feedback" id="fb-5"></div>
+<button class="verify-btn makarios-verify-btn" data-qid="q5" type="button">Verificar resposta</button>
+</div>
+<!-- Q6 múltiplas corretas -->
+<div class="question-card" data-correct="a,b,d,e" data-explanation="As alternativas corretas são A, B, D, E. A santidade nas Escrituras envolve separação para Deus e transformação progressiva pelo Espírito, vivendo na prática aquilo que já recebemos em Cristo. Nesta questão, era necessário marcar todas as afirmações que concordam com o ensino bíblico apresentado. Respostas parciais não completam o raciocínio." data-qid="q6" data-type="multi" id="card-6">
+<div class="question-meta"><span class="question-num">Questão 6</span><span class="multi question-badge">MARQUE TODAS AS CORRETAS</span></div>
+<p class="question-text">Sobre santidade posicional e progressiva, marque todas as afirmações corretas.</p>
+<p class="hint">Marque todas as alternativas corretas.</p>
+<div class="options" id="opts-6">
+<label class="option makarios-option" data-val="a" data-value="a"><input name="q6" style="display:none" type="checkbox" value="a"/><span class="option-check"></span><span class="option-text">A santidade posicional é declarada por Deus no momento da conversão — somos santos por estarmos em Cristo, não por méritos nossos (1Co 1:2).</span></label>
+<label class="option makarios-option" data-val="b" data-value="b"><input name="q6" style="display:none" type="checkbox" value="b"/><span class="option-check"></span><span class="option-text">A santidade progressiva é o processo diário de se tornar, na prática, aquilo que Deus já declarou que somos.</span></label>
+<label class="option makarios-option" data-val="c" data-value="c"><input name="q6" style="display:none" type="checkbox" value="c"/><span class="option-check"></span><span class="option-text">A santidade progressiva não depende de nossa cooperação — Deus a realiza completamente sem nossa participação.</span></label>
+<label class="option makarios-option" data-val="d" data-value="d"><input name="q6" style="display:none" type="checkbox" value="d"/><span class="option-check"></span><span class="option-text">Santidade e caráter andam juntos: o Espirito Santo forma os dois ao mesmo tempo no crente (2Co 3:18; Gl 4:19).</span></label>
+<label class="option makarios-option" data-val="e" data-value="e"><input name="q6" style="display:none" type="checkbox" value="e"/><span class="option-check"></span><span class="option-text">O caráter é a raiz que sustenta a fé no secreto; a santidade é o fruto visível que glorifica a Deus.</span></label>
+</div>
+<div class="feedback" id="fb-6"></div>
+<button class="verify-btn makarios-verify-btn" data-qid="q6" type="button">Verificar resposta</button>
+</div>
+<!-- Q7 única -->
+<div class="question-card" data-correct="b" data-explanation="A alternativa correta é B. Mathētēs, no contexto do Novo Testamento, indica alguém que segue um mestre para aprender dele e ser formado à sua semelhança; o discípulo não é apenas membro de uma comunidade religiosa." data-qid="q7" data-type="single" id="card-7">
+<div class="question-meta"><span class="question-num">Questão 7</span><span class="single question-badge">UMA RESPOSTA CORRETA</span></div>
+<p class="question-text">O que significa a palavra "discípulo" no grego do Novo Testamento (mathētēs)?</p>
+<div class="options" id="opts-7">
+<label class="option makarios-option" data-val="a" data-value="a"><input name="q7" style="display:none" type="radio" value="a"/><span class="option-dot"></span><span class="option-text">Servo obediente que executa ordens sem questionar.</span></label>
+<label class="option makarios-option" data-val="b" data-value="b"><input name="q7" style="display:none" type="radio" value="b"/><span class="option-dot"></span><span class="option-text">Alguém que segue um mestre com o objetivo de aprender e se tornar como ele (Lc 6:40).</span></label>
+<label class="option makarios-option" data-val="c" data-value="c"><input name="q7" style="display:none" type="radio" value="c"/><span class="option-dot"></span><span class="option-text">Membro fiel de uma comunidade religiosa organizada.</span></label>
+<label class="option makarios-option" data-val="d" data-value="d"><input name="q7" style="display:none" type="radio" value="d"/><span class="option-dot"></span><span class="option-text">Pessoa que memorizou os ensinamentos das Escrituras.</span></label>
+<label class="option makarios-option" data-val="e" data-value="e"><input name="q7" style="display:none" type="radio" value="e"/><span class="option-dot"></span><span class="option-text">Lider espiritual escolhido pela comunidade para ensinar.</span></label>
+</div>
+<div class="feedback" id="fb-7"></div>
+<button class="verify-btn makarios-verify-btn" data-qid="q7" type="button">Verificar resposta</button>
+</div>
+<!-- Q8 marque a incorreta -->
+<div class="question-card" data-correct="d" data-explanation="A alternativa que deve ser marcada como incorreta é D. Ela contradiz o ensino bíblico ou o sentido correto do tema. O discipulado bíblico envolve seguir Cristo, ser formado em comunidade e multiplicar em outros aquilo que recebemos do Senhor. As demais alternativas preservam melhor o conjunto do ensino das Escrituras." data-qid="q8" data-type="incorrect" id="card-8">
+<div class="question-meta"><span class="question-num">Questão 8</span><span class="wrong question-badge">MARQUE A INCORRETA</span></div>
+<p class="question-text">Sobre os três relacionamentos fundamentais do discipulado (Paulo, Barnabé e Timóteo), marque a afirmação INCORRETA.</p>
+<div class="options" id="opts-8">
+<label class="option makarios-option" data-val="a" data-value="a"><input name="q8" style="display:none" type="radio" value="a"/><span class="option-dot"></span><span class="option-text">Paulo representa a figura da autoridade espiritual que nos corrige, encoraja e aponta para o propósito de Deus.</span></label>
+<label class="option makarios-option" data-val="b" data-value="b"><input name="q8" style="display:none" type="radio" value="b"/><span class="option-dot"></span><span class="option-text">Barnabé representa o companheiro de caminhada — amizade saudável que cria vulnerabilidade, encorajamento e confronto em amor.</span></label>
+<label class="option makarios-option" data-val="c" data-value="c"><input name="q8" style="display:none" type="radio" value="c"/><span class="option-dot"></span><span class="option-text">Timóteo representa quem discipulamos — assumir o compromisso da Grande Comissão multiplicando em outros o que recebemos de Cristo.</span></label>
+<label class="option makarios-option" data-val="d" data-value="d"><input name="q8" style="display:none" type="radio" value="d"/><span class="option-dot"></span><span class="option-text">Um discipulado completo é aquele que olha apenas para cima (Paulo), pois receber instrução de um líder experiente é suficiente para crescer espiritualmente.</span></label>
+<label class="option makarios-option" data-val="e" data-value="e"><input name="q8" style="display:none" type="radio" value="e"/><span class="option-dot"></span><span class="option-text">Sem Paulo não temos direção; sem Barnabé não temos encorajamento; sem Timóteo não temos continuidade.</span></label>
+</div>
+<div class="feedback" id="fb-8"></div>
+<button class="verify-btn makarios-verify-btn" data-qid="q8" type="button">Verificar resposta</button>
+</div>
+<!-- Q9 múltiplas corretas -->
+<div class="question-card" data-correct="a,c,d,e" data-explanation="As alternativas corretas são A, C, D, E. O discipulado bíblico envolve seguir Cristo, ser formado em comunidade e multiplicar em outros aquilo que recebemos do Senhor. Nesta questão, era necessário marcar todas as afirmações que concordam com o ensino bíblico apresentado. Respostas parciais não completam o raciocínio." data-qid="q9" data-type="multi" id="card-9">
+<div class="question-meta"><span class="question-num">Questão 9</span><span class="multi question-badge">MARQUE TODAS AS CORRETAS</span></div>
+<p class="question-text">Sobre os pilares de um discipulado saudável, marque todas as afirmações corretas segundo a apostila.</p>
+<p class="hint">Marque todas as alternativas corretas.</p>
+<div class="options" id="opts-9">
+<label class="option makarios-option" data-val="a" data-value="a"><input name="q9" style="display:none" type="checkbox" value="a"/><span class="option-check"></span><span class="option-text">Discipulamos para a transformação do outro, não por conveniência ou para suprir necessidades próprias ou ministeriais.</span></label>
+<label class="option makarios-option" data-val="b" data-value="b"><input name="q9" style="display:none" type="checkbox" value="b"/><span class="option-check"></span><span class="option-text">A servitude é virtude opcional no discipulado — o lider experiente pode dispensar servir porque já cumpriu essa etapa.</span></label>
+<label class="option makarios-option" data-val="c" data-value="c"><input name="q9" style="display:none" type="checkbox" value="c"/><span class="option-check"></span><span class="option-text">O discipulado genuíno nos confronta com verdades que não gostaríamos de ouvir — exige maturidade para ouvir o que precisamos, não apenas o que queremos.</span></label>
+<label class="option makarios-option" data-val="d" data-value="d"><input name="q9" style="display:none" type="checkbox" value="d"/><span class="option-check"></span><span class="option-text">A gratidão pelo lugar onde Deus nos colocou é essencial — não é a grandeza da mesa que determina a transformação, mas a gratidão do coração.</span></label>
+<label class="option makarios-option" data-val="e" data-value="e"><input name="q9" style="display:none" type="checkbox" value="e"/><span class="option-check"></span><span class="option-text">Celebrar o que o outro carrega é sinal de maturidade — o Reino não é competição, mas cooperação.</span></label>
+</div>
+<div class="feedback" id="fb-9"></div>
+<button class="verify-btn makarios-verify-btn" data-qid="q9" type="button">Verificar resposta</button>
+</div>
+<!-- Q10 única -->
+<div class="question-card" data-correct="b" data-explanation="A alternativa correta é B. O discipulado bíblico envolve seguir Cristo, ser formado em comunidade e multiplicar em outros aquilo que recebemos do Senhor. Resposta: B) Lideres são chamados a servir e pastorear; discípulos são chamados a seguir e obedecer — juntos revelam o propósito final de que Cristo seja formado e glorificado em nós." data-qid="q10" data-type="single" id="card-10">
+<div class="question-meta"><span class="question-num">Questão 10</span><span class="single question-badge">UMA RESPOSTA CORRETA</span></div>
+<p class="question-text">Qual é a síntese do discipulado apresentada na conclusão da apostila?</p>
+<div class="options" id="opts-10">
+<label class="option makarios-option" data-val="a" data-value="a"><input name="q10" style="display:none" type="radio" value="a"/><span class="option-dot"></span><span class="option-text">Lideres ensinam doutrina e discípulos a memorizam para transmitir às próximas gerações.</span></label>
+<label class="option makarios-option" data-val="b" data-value="b"><input name="q10" style="display:none" type="radio" value="b"/><span class="option-dot"></span><span class="option-text">Lideres são chamados a servir e pastorear; discípulos são chamados a seguir e obedecer — juntos revelam o propósito final de que Cristo seja formado e glorificado em nós.</span></label>
+<label class="option makarios-option" data-val="c" data-value="c"><input name="q10" style="display:none" type="radio" value="c"/><span class="option-dot"></span><span class="option-text">O discipulado é um programa de crescimento pessoal que termina quando o discípulo se torna lider.</span></label>
+<label class="option makarios-option" data-val="d" data-value="d"><input name="q10" style="display:none" type="radio" value="d"/><span class="option-dot"></span><span class="option-text">Lideres controlam o crescimento dos discípulos para que ninguém supere a autoridade do mestre.</span></label>
+<label class="option makarios-option" data-val="e" data-value="e"><input name="q10" style="display:none" type="radio" value="e"/><span class="option-dot"></span><span class="option-text">O discipulado termina quando o discípulo domina os ensinamentos bíblicos e pode ensinar outros sozinho.</span></label>
+</div>
+<div class="feedback" id="fb-10"></div>
+<button class="verify-btn makarios-verify-btn" data-qid="q10" type="button">Verificar resposta</button>
+</div>
+<!-- REGISTRO -->
+<div class="registro-card" id="registro-card">
+<h3>Registrar participação</h3>
+<p>Informe seu nome para registrar sua pontuação. Seus dados serão enviados com segurança para a equipe da Escola Makários.</p>
+<div class="field-group">
+<label class="field-label" for="nome-input">Nome completo</label>
+<input autocomplete="name" class="field-input" id="nome-input" placeholder="Digite seu nome completo" type="text"/>
+<span class="field-error" id="nome-error">Por favor, informe seu nome completo.</span>
+</div>
+<button class="submit-all-btn" id="submit-btn">Enviar participação</button>
+</div>
+<div class="score-screen" id="score-screen">
+<div class="score-circle">
+<span class="score-big" id="score-num">0</span>
+<span class="score-total">/ 10</span>
+</div>
+<h2 class="score-title" id="score-title">Bom trabalho!</h2>
+<p class="score-sub" id="score-sub"></p>
+<p class="score-sending" id="score-sending"></p>
+<button class="retry-btn" style="margin-top:1rem">Tentar novamente</button>
+</div>
+</main>
+<footer class="footer">Escola Makários · Igreja Emaús, Goiânia</footer>
+<script id="audit-js">(function(){const EXERCICIO="Caminho — Semana 1",APP_URL="https://script.google.com/macros/s/AKfycbwYahR6Kd00Sc4dsaoMYSiapUbaXW9z-s2UFcwbYBh_WT_DtBpHyKTY0O02qOlXF9aq/exec",$=(s,r=document)=>r.querySelector(s),$$=(s,r=document)=>Array.from(r.querySelectorAll(s)),norm=a=>a.map(String).map(x=>x.trim()).filter(Boolean).sort().join(',');function cards(){return $$('.question-card,.q-card')}function opts(c){return $$('.makarios-option,.option,.opt',c)}function val(o){return o.dataset.value||o.dataset.val||(o.querySelector('input')&&o.querySelector('input').value)||''}function corrects(c){return(c.dataset.correct||c.getAttribute('data-answer')||'').split(',').map(x=>x.trim()).filter(Boolean)}function selected(c){return opts(c).filter(o=>o.classList.contains('selected')).map(val).filter(Boolean)}function isMulti(c){return c.dataset.type==='multi'||corrects(c).length>1||!!c.querySelector('input[type="checkbox"]')}function isIncorrect(c){const q=(($('.question-text,.q-text',c)||{}).textContent||'').toLowerCase();return c.dataset.type==='incorrect'||q.includes('incorreta')||q.includes('incorreto')||q.includes('errada')||q.includes('errado')||q.includes('não corresponde')}function scoreMsg(p){if(p>=90)return'Excelente. Você demonstrou domínio e discernimento. Que esse conhecimento se transforme em maturidade, serviço fiel e influência segundo o Reino.';if(p>=70)return'Muito bom. Há fundamento sendo formado. Revise os pontos que errou e siga crescendo com constância, porque formação espiritual é caminho, não apenas resultado.';if(p>=50)return'Você está em processo. Volte às questões, revise o conteúdo e permita que a Palavra aprofunde sua formação como discípulo.';return'Este resultado é um ponto de partida, não um rótulo. O discípulo cresce quando recebe correção com humildade e transforma aprendizado em obediência.'}function ensureFeedback(c){let fb=$('.feedback,.makarios-feedback',c);if(!fb){fb=document.createElement('div');fb.className='makarios-feedback';c.appendChild(fb)}return fb}function ensureScore(){let a=$('#makarios-score-card');if(a)return a;a=document.createElement('section');a.id='makarios-score-card';a.className='makarios-score-card';const m=$('main')||$('.main')||$('.container')||$('.wrap')||document.body;m.appendChild(a);return a}function ensureSubmit(){if($('#makarios-submit-area'))return;const a=document.createElement('section');a.id='makarios-submit-area';a.className='makarios-submit-area';a.innerHTML='<label for="makarios-nome">Nome completo</label><input id="makarios-nome" type="text" placeholder="Digite seu nome completo"><button id="makarios-submit-btn" type="button">Enviar resultado</button><div id="makarios-submit-status" class="makarios-submit-status">Resultado enviado para a planilha.</div>';const m=$('main')||$('.main')||$('.container')||$('.wrap')||document.body;m.appendChild(a)}function updateProgress(){const cs=cards(),a=cs.filter(c=>c.dataset.answered==='true').length,p=cs.length?Math.round(a/cs.length*100):0;$$('.progress-bar-fill,.progress-fill,#progressBar,.progress-bar').forEach(b=>{b.style.width=p+'%'});const ct=$('.progress-count');if(ct)ct.textContent=a+'/'+cs.length}function updateScore(){const cs=cards(),a=cs.filter(c=>c.dataset.answered==='true').length,h=cs.filter(c=>c.dataset.ok==='true').length,t=cs.length,p=t?Math.round(h/t*100):0,area=ensureScore();area.innerHTML=`<h3>${a<t?'Resultado parcial':'Resultado final'}</h3><div class="makarios-score-number">${h}/${t} · ${p}%</div><p class="makarios-score-message">${a<t?'Verifique todas as questões para fechar sua nota antes do envio.':scoreMsg(p)}</p>`;updateProgress();window.MAKARIOS_SCORE={hits:h,total:t,pct:p,complete:a===t};return window.MAKARIOS_SCORE}function defExp(c){const l=corrects(c).map(x=>x.toUpperCase()).join(', ');if(isIncorrect(c))return`A alternativa incorreta é ${l}. Ela é a opção que contradiz o ensino bíblico ou o sentido correto do conteúdo.`;if(isMulti(c))return`As alternativas corretas são ${l}. Nesta questão, era necessário marcar todas as afirmações verdadeiras.`;return`A alternativa correta é ${l}.`}function selectOption(c,o){if(o.classList.contains('locked'))return;const inp=o.querySelector('input');if(isMulti(c)){o.classList.toggle('selected');if(inp)inp.checked=o.classList.contains('selected')}else{opts(c).forEach(x=>{x.classList.remove('selected');const xi=x.querySelector('input');if(xi)xi.checked=false});o.classList.add('selected');if(inp)inp.checked=true}}function verify(c){const s=selected(c);if(!s.length){alert('Marque uma alternativa antes de verificar.');return}const cor=corrects(c),ok=norm(s)===norm(cor);opts(c).forEach(o=>{const v=val(o),inp=o.querySelector('input');o.classList.add('locked');o.classList.remove('correct-answer','wrong-answer','correct','wrong');if(cor.includes(v))o.classList.add('correct-answer','correct');if(s.includes(v)&&!cor.includes(v))o.classList.add('wrong-answer','wrong');if(inp)inp.disabled=true});c.classList.add('answered');c.dataset.answered='true';c.dataset.ok=ok?'true':'false';const fb=ensureFeedback(c),mode=isIncorrect(c)?'Nesta pergunta, a alternativa destacada em verde é a INCORRETA que deveria ser marcada.':isMulti(c)?'Nesta pergunta, era necessário marcar TODAS as alternativas corretas.':'Nesta pergunta, havia UMA resposta correta.';fb.innerHTML=`<strong>${ok?'Resposta correta.':'Resposta revisada.'}</strong><br>${mode}<br>${c.dataset.explanation||defExp(c)}`;fb.classList.add('show');fb.style.display='block';updateScore()}function submit(){const s=updateScore();if(!s.complete){alert('Verifique todas as respostas antes de enviar o resultado.');return}const i=$('#makarios-nome'),nome=i?i.value.trim():'';if(!nome){alert('Informe seu nome completo antes de enviar.');return}const params=new URLSearchParams({exercicio:EXERCICIO,nome,pontuacao:String(s.hits),nota:`${s.hits}/${s.total}`,data:new Date().toLocaleString('pt-BR')});let iframe=document.querySelector('iframe[name="makarios_submit_frame"]');if(!iframe){iframe=document.createElement('iframe');iframe.name='makarios_submit_frame';iframe.style.display='none';document.body.appendChild(iframe)}const form=document.createElement('form');form.method='GET';form.action=APP_URL;form.target='makarios_submit_frame';form.style.display='none';for(const[k,v]of params.entries()){const inp=document.createElement('input');inp.name=k;inp.value=v;form.appendChild(inp)}document.body.appendChild(form);form.submit();setTimeout(()=>form.remove(),1000);const st=$('#makarios-submit-status');if(st){st.textContent='Resultado enviado para a planilha.';st.classList.add('show');st.style.display='block'}alert('Resultado enviado com sucesso.')}function init(){cards().forEach((c,ci)=>{if(!c.dataset.correct&&c.dataset.answer)c.dataset.correct=c.dataset.answer;const b=$('.question-badge,.q-badge,.q-tipo',c);if(b){if(isIncorrect(c)){b.textContent='MARQUE A INCORRETA';b.classList.add('wrong')}else if(isMulti(c)){b.textContent='MARQUE TODAS AS CORRETAS';b.classList.add('multi')}else b.textContent='UMA RESPOSTA CORRETA'}opts(c).forEach((o,oi)=>{o.classList.add('makarios-option');o.style.pointerEvents='auto';if(!o.dataset.value&&!o.dataset.val)o.dataset.value=String.fromCharCode(97+oi);let inp=o.querySelector('input');if(!inp){inp=document.createElement('input');inp.type=isMulti(c)?'checkbox':'radio';inp.name='q'+(ci+1);inp.value=val(o);inp.style.display='none';o.insertBefore(inp,o.firstChild)}else{inp.type=isMulti(c)?'checkbox':'radio';inp.name='q'+(ci+1);inp.value=val(o)}o.addEventListener('click',function(e){e.preventDefault();e.stopPropagation();selectOption(c,o)},true)});let btn=$('.makarios-verify-btn,.verify-btn,.btn-check',c);if(!btn){btn=document.createElement('button');btn.type='button';btn.className='verify-btn';btn.textContent='Verificar resposta';c.appendChild(btn)}btn.type='button';btn.textContent=btn.textContent.trim()||'Verificar resposta';btn.addEventListener('click',function(e){e.preventDefault();e.stopPropagation();verify(c)},true)});ensureScore();ensureSubmit();const sb=$('#makarios-submit-btn');if(sb){sb.type='button';sb.addEventListener('click',function(e){e.preventDefault();e.stopPropagation();submit()},true)}updateScore()}if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init()})();</script></body>
+</html>

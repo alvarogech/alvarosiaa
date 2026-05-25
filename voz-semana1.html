@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>VOZ — Semana 1 · Escola Makários</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,700;0,800;1,700;1,800&amp;family=Barlow:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --bg: #ffffff;
+    --surface: #ffffff;
+    --accent: #2E7FBF;
+    --accent-light: #e8f2fb;
+    --accent-dark: #1a5a8c;
+    --text: #1a1a2e;
+    --muted: #4a5568;
+    --border: #d1dce8;
+    --correct: #2a7a4b;
+    --correct-bg: #eaf5ee;
+    --wrong: #a8282a;
+    --wrong-bg: #faeaea;
+    --radius: 14px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Barlow', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+  /* NAV */
+  nav { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 1.5rem; display: flex; align-items: center; justify-content: space-between; height: 56px; }
+  .nav-logo { font-family: 'Barlow Condensed', sans-serif; font-size: 18px; font-weight: 700; color: var(--text); text-decoration: none; }
+  .back-link { font-size: 12px; font-weight: 700; color: var(--accent); text-decoration: none; letter-spacing: 0.02em; padding: 0.4rem 0.75rem; border-radius: 20px; background: var(--accent-light); transition: all 0.2s; }
+  .back-link:hover { background: #ecd9cd; }
+
+  /* PROGRESS */
+  .progress-wrap { padding: 1rem 1.5rem 0; max-width: 680px; margin: 0 auto; }
+  .progress-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; }
+  .progress-label { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); }
+  .progress-count { font-size: 13px; font-weight: 700; color: var(--accent); }
+  .progress-bar { height: 5px; background: var(--border); border-radius: 10px; overflow: hidden; }
+  .progress-fill { height: 100%; background: var(--accent); border-radius: 10px; transition: width 0.4s ease; width: 0%; }
+
+  /* MAIN */
+  main { max-width: 680px; margin: 0 auto; padding: 1.5rem 1.5rem 4rem; }
+
+  /* HEADER */
+  .quiz-header { text-align: center; margin-bottom: 2rem; }
+  .volume-tag { display: inline-block; font-size: 11px; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); background: var(--accent-light); border-radius: 20px; padding: 0.35rem 1rem; margin-bottom: 0.75rem; }
+  .quiz-header h1 { font-family: 'Barlow Condensed', sans-serif; font-size: 1.8rem; font-weight: 700; line-height: 1.2; margin-bottom: 0.5rem; }
+  .quiz-header p { font-size: 14px; color: var(--muted); }
+
+  /* LEGEND */
+  .legend { display: flex; gap: 1.25rem; justify-content: center; flex-wrap: wrap; margin-bottom: 1.75rem; }
+  .legend-item { display: flex; align-items: center; gap: 0.4rem; font-size: 12px; color: var(--muted); font-weight: 600; }
+  .legend-dot { width: 10px; height: 10px; border-radius: 50%; }
+  .legend-dot.unica { background: var(--accent); }
+  .legend-dot.multipla { background: #4a7fc1; }
+  .legend-dot.incorreta { background: #7a4ab8; }
+
+  /* QUESTION CARD */
+  .question-card { background: var(--surface); border: 1.5px solid var(--border); border-radius: var(--radius); padding: 1.5rem; margin-bottom: 1.25rem; transition: border-color 0.2s; }
+  .question-card.answered-correct { border-color: var(--correct); }
+  .question-card.answered-wrong { border-color: var(--wrong); }
+
+  .q-header { display: flex; align-items: flex-start; gap: 0.75rem; margin-bottom: 1.1rem; }
+  .q-num { width: 30px; height: 30px; border-radius: 50%; font-size: 13px; font-weight: 900; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #fff; }
+  .q-num.tipo-unica    { background: var(--accent); }
+  .q-num.tipo-multipla { background: #4a7fc1; }
+  .q-num.tipo-incorreta{ background: #7a4ab8; }
+
+  .q-meta { flex: 1; }
+  .q-tipo { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.3rem; }
+  .tipo-unica    .q-tipo { color: var(--accent); }
+  .tipo-multipla .q-tipo { color: #4a7fc1; }
+  .tipo-incorreta .q-tipo { color: #7a4ab8; }
+  .q-text { font-size: 15px; font-weight: 700; line-height: 1.45; color: var(--text); }
+
+  /* OPTIONS */
+  .options { display: flex; flex-direction: column; gap: 0.5rem; }
+  .option { display: flex; align-items: flex-start; gap: 0.75rem; padding: 0.75rem 1rem; border: 1.5px solid var(--border); border-radius: 10px; cursor: pointer; transition: all 0.15s; background: var(--bg); user-select: none; }
+  .option:hover:not(.disabled) { border-color: var(--accent); background: var(--accent-light); }
+  .option.selected { border-color: var(--accent); background: var(--accent-light); }
+  .option.correct  { border-color: var(--correct); background: var(--correct-bg); }
+  .option.wrong    { border-color: var(--wrong);   background: var(--wrong-bg); }
+  .option.reveal   { border-color: var(--correct); background: var(--correct-bg); opacity: 0.75; }
+  .option.disabled { cursor: default; }
+
+  .opt-marker { width: 22px; height: 22px; border-radius: 50%; border: 2px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 800; flex-shrink: 0; margin-top: 1px; transition: all 0.15s; color: var(--muted); }
+  .option.selected .opt-marker { border-color: var(--accent); color: var(--accent); }
+  .option.correct  .opt-marker { border-color: var(--correct); background: var(--correct); color: #fff; }
+  .option.wrong    .opt-marker { border-color: var(--wrong);   background: var(--wrong);   color: #fff; }
+  .option.reveal   .opt-marker { border-color: var(--correct); background: var(--correct); color: #fff; }
+  .opt-text { font-size: 14px; line-height: 1.4; color: var(--text); font-weight: 600; }
+
+  /* FEEDBACK */
+  .feedback { margin-top: 1rem; padding: 0.85rem 1rem; border-radius: 10px; font-size: 13px; line-height: 1.5; font-weight: 600; display: none; }
+  .feedback.show { display: block; }
+  .feedback.correct { background: var(--correct-bg); color: var(--correct); border: 1px solid #b8dfc7; }
+  .feedback.wrong   { background: var(--wrong-bg);   color: var(--wrong);   border: 1px solid #f0b8b8; }
+
+  /* CHECK BUTTON */
+  .check-btn { margin-top: 1rem; width: 100%; padding: 0.7rem; border: none; border-radius: 10px; font-family: 'Barlow', sans-serif; font-size: 13px; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase; cursor: pointer; background: var(--accent); color: #fff; transition: all 0.2s; display: none; }
+  .check-btn:hover { background: var(--accent-dark); }
+  .check-btn.show { display: block; }
+
+  /* SCORE PANEL */
+  .score-panel { display: none; background: var(--surface); border: 2px solid var(--accent); border-radius: var(--radius); padding: 2rem; text-align: center; margin-bottom: 1.5rem; }
+  .score-panel.show { display: block; }
+  .score-panel h2 { font-family: 'Barlow Condensed', sans-serif; font-size: 1.6rem; margin-bottom: 0.5rem; }
+  .score-big { font-size: 3rem; font-weight: 900; color: var(--accent); margin: 0.5rem 0; }
+  .score-sub { font-size: 14px; color: var(--muted); margin-bottom: 1.5rem; }
+
+  /* SUBMIT FORM */
+  .submit-area { background: var(--surface); border: 1.5px solid var(--border); border-radius: var(--radius); padding: 1.5rem; display: none; }
+  .submit-area.show { display: block; }
+  .submit-area h3 { font-size: 15px; font-weight: 800; margin-bottom: 1rem; }
+  .input-wrap { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+  .input-wrap input { flex: 1; min-width: 200px; padding: 0.75rem 1rem; border: 1.5px solid var(--border); border-radius: 10px; font-family: 'Barlow', sans-serif; font-size: 14px; font-weight: 600; color: var(--text); background: var(--bg); outline: none; transition: border-color 0.2s; }
+  .input-wrap input:focus { border-color: var(--accent); }
+  .submit-btn { padding: 0.75rem 1.5rem; background: var(--accent); color: #fff; border: none; border-radius: 10px; font-family: 'Barlow', sans-serif; font-size: 14px; font-weight: 800; cursor: pointer; transition: background 0.2s; white-space: nowrap; }
+  .submit-btn:hover { background: var(--accent-dark); }
+  .submit-msg { font-size: 13px; color: var(--correct); font-weight: 700; margin-top: 0.75rem; display: none; }
+  .submit-msg.show { display: block; }
+  .error-msg { font-size: 13px; color: var(--wrong); font-weight: 700; margin-top: 0.5rem; display: none; }
+  .error-msg.show { display: block; }
+
+  @media (max-width: 480px) {
+    .quiz-header h1 { font-size: 1.5rem; }
+    .question-card { padding: 1.1rem; }
+  }
+</style>
+<style>
+  .makarios-verify-btn.visible,
+  .verify-btn.visible,
+  .btn-check.visible,
+  .check-btn.visible { display: inline-flex !important; }
+  .makarios-result-panel {
+    max-width: 680px;
+    margin: 32px auto 60px;
+    padding: 24px;
+    border: 1.5px solid rgba(46,127,191,.25);
+    border-radius: 16px;
+    background: #ffffff;
+    box-shadow: 0 8px 28px rgba(26,43,60,.08);
+    font-family: 'Barlow', sans-serif;
+  }
+  .makarios-result-panel[hidden] { display: none !important; }
+  .makarios-result-panel h2 { font-size: 1.3rem; margin-bottom: 8px; color: #1A2B3C; }
+  .makarios-result-score { font-weight: 800; color: #2E7FBF; margin-bottom: 14px; }
+  .makarios-result-panel label { display:block; font-size: 13px; font-weight: 700; color:#5A6A7A; margin: 14px 0 6px; }
+  .makarios-result-panel input {
+    width: 100%; padding: 12px 14px; border-radius: 10px; border: 1.5px solid rgba(46,127,191,.25);
+    font-family: 'Barlow', sans-serif; font-size: 15px;
+  }
+  .makarios-submit-btn {
+    margin-top: 14px; padding: 12px 18px; border: none; border-radius: 10px; background: #2E7FBF; color: white;
+    font-weight: 800; font-family: 'Barlow', sans-serif; cursor: pointer;
+  }
+  .makarios-submit-status { display:none; margin-top:10px; font-size: 13px; color:#2a7a4b; font-weight:700; }
+  .makarios-submit-status.show { display:block; }
+</style>
+<style id="audit-css">.option.selected,.makarios-option.selected,.opt.selected{background:#E8F2FB!important;border-color:#2E7FBF!important}.option.correct-answer,.makarios-option.correct-answer,.opt.correct-answer,.option.correct,.makarios-option.correct,.opt.correct{background:#eaf5ee!important;border-color:#2a7a4b!important;color:#1f5b38!important}.option.wrong-answer,.makarios-option.wrong-answer,.opt.wrong-answer,.option.wrong,.makarios-option.wrong,.opt.wrong{background:#faeaea!important;border-color:#a8282a!important;color:#7B241C!important}.option.locked,.makarios-option.locked,.opt.locked{cursor:default!important}.question-badge,.q-badge,.q-tipo{font-weight:800!important;letter-spacing:.06em!important;text-transform:uppercase!important}.question-badge.multi,.q-badge.multi{background:#e8f0fb!important;color:#2563a8!important}.question-badge.wrong,.q-badge.wrong{background:#f3edfb!important;color:#6d28a8!important}.feedback,.makarios-feedback{font-size:13.5px!important;line-height:1.65!important;margin-top:14px!important;padding:14px 16px!important;border-radius:12px!important;border:1.5px solid rgba(46,127,191,.22)!important;background:#f7fbff!important;color:#1a2b3c!important}.feedback.show,.makarios-feedback.show{display:block!important}.makarios-score-card{max-width:760px;margin:28px auto 18px;padding:22px;border:1.5px solid rgba(46,127,191,.22);border-radius:16px;background:linear-gradient(180deg,#fff,#f7fbff);text-align:left;font-family:'Barlow',sans-serif}.makarios-score-card h3{font-size:1.15rem;margin-bottom:8px;color:#1a2b3c}.makarios-score-number{font-size:2rem;font-weight:800;color:#2E7FBF;margin:6px 0}.makarios-score-message{font-size:14px;line-height:1.7;color:#4a5568}.makarios-submit-area{max-width:760px;margin:18px auto 40px;padding:22px;border:1.5px solid #D1DCE8;border-radius:16px;background:#fff;font-family:'Barlow',sans-serif}.makarios-submit-area label{font-weight:800;font-size:13px;display:block;margin-bottom:8px}.makarios-submit-area input{width:100%;padding:12px 14px;border:1.5px solid #D1DCE8;border-radius:10px;font-family:'Barlow',sans-serif;font-size:15px;margin-bottom:12px}.makarios-submit-area button{border:0;border-radius:10px;background:#2E7FBF;color:#fff;font-weight:800;padding:12px 20px;cursor:pointer;font-family:'Barlow',sans-serif}.makarios-submit-status{display:none;margin-top:12px;color:#2a7a4b;font-weight:700}.makarios-submit-status.show{display:block}.makarios-logo-official,.header-logo-wrap img,.header-logo img,.nav-logo img,nav img.logo,.logo-main{object-fit:contain!important;background:transparent!important;box-shadow:none!important}.header-logo-wrap img,.header-logo img,.logo-main{height:110px!important;max-width:min(760px,94vw)!important;width:auto!important;padding:0!important;border-radius:0!important}nav .makarios-logo-official,.nav-logo img,nav img.logo{height:54px!important;width:auto!important;padding:0!important;border-radius:0!important}</style></head>
+<body>
+<nav>
+<a class="nav-logo" href="#"><img alt="Makários" class="makarios-logo-official" src="logo-makarios-oficial-azul.png"/></a>
+<a class="back-link" href="voz.html">← Voltar para VOZ</a>
+</nav>
+<div class="progress-wrap">
+<div class="progress-top">
+<span class="progress-label">Progresso</span>
+<span class="progress-count" id="progress-count">0 / 10</span>
+</div>
+<div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+</div>
+<main>
+<div class="quiz-header">
+<div class="volume-tag">VOZ · Semana 1</div>
+<h1>Cultura do Reino e as 7 Esferas</h1>
+<p>10 questões · Responda todas antes de enviar sua participação</p>
+</div>
+<div class="legend">
+<div class="legend-item"><div class="legend-dot unica"></div> Única resposta</div>
+<div class="legend-item"><div class="legend-dot multipla"></div> Múltiplas corretas</div>
+<div class="legend-item"><div class="legend-dot incorreta"></div> Marque a incorreta</div>
+</div>
+<!-- Q1 -->
+<div class="question-card" data-correct="b" data-explanation="A alternativa correta é B. O Sermão do Monte descreve a vida de quem está sob o governo do Rei: uma justiça que nasce no coração e se manifesta no mundo. Resposta: B) A constituição da Cultura do Reino — descrição de quem você se torna quando o Rei governa a sua vida" data-qid="q1" data-type="single" id="q1">
+<div class="q-header">
+<div class="q-num tipo-unica">1</div>
+<div class="q-meta">
+<div class="q-tipo tipo-unica">Única resposta</div>
+<div class="q-text">De acordo com a apostila, qual é a melhor descrição do Sermão do Monte dentro da Cultura do Reino?</div>
+</div>
+</div>
+<div class="options" data-correct="b" data-type="single">
+<div class="option makarios-option" data-val="a" data-value="a"><input name="q1" style="display:none" type="radio" value="a"/><div class="opt-marker">A</div><div class="opt-text">Um conjunto de regras morais que o crente deve se esforçar para cumprir</div></div>
+<div class="option makarios-option" data-val="b" data-value="b"><input name="q1" style="display:none" type="radio" value="b"/><div class="opt-marker">B</div><div class="opt-text">A constituição da Cultura do Reino — descrição de quem você se torna quando o Rei governa a sua vida</div></div>
+<div class="option makarios-option" data-val="c" data-value="c"><input name="q1" style="display:none" type="radio" value="c"/><div class="opt-marker">C</div><div class="opt-text">Um discurso voltado para multidões curiosas, com foco em milagres e curas</div></div>
+<div class="option makarios-option" data-val="d" data-value="d"><input name="q1" style="display:none" type="radio" value="d"/><div class="opt-marker">D</div><div class="opt-text">Um manual de evangelismo para os discípulos levarem às nações</div></div>
+</div>
+<button class="check-btn makarios-verify-btn" data-qid="q1" type="button">Verificar resposta</button>
+<div class="feedback" id="fb-q1"></div>
+</div>
+<!-- Q2 -->
+<div class="question-card" data-correct="c" data-explanation="A alternativa correta é C. A resposta foi revisada à luz do ensino bíblico geral: Cristo, a Palavra e a obra do Espírito são o critério para avaliar a alternativa correta. Resposta: C) Quem não tem absolutamente nada a apresentar, dependendo completamente de outro — o esvaziado de si mesmo diante de Deus" data-qid="q2" data-type="single" id="q2">
+<div class="q-header">
+<div class="q-num tipo-unica">2</div>
+<div class="q-meta">
+<div class="q-tipo tipo-unica">Única resposta</div>
+<div class="q-text">A palavra grega <em>ptochós</em>, usada na bem-aventurança "pobres de espírito", descreve:</div>
+</div>
+</div>
+<div class="options" data-correct="c" data-type="single">
+<div class="option makarios-option" data-val="a" data-value="a"><input name="q2" style="display:none" type="radio" value="a"/><div class="opt-marker">A</div><div class="opt-text">Quem tem poucos recursos financeiros e depende de ajuda social</div></div>
+<div class="option makarios-option" data-val="b" data-value="b"><input name="q2" style="display:none" type="radio" value="b"/><div class="opt-marker">B</div><div class="opt-text">Quem é humilde em suas palavras, mesmo sendo rico em bens materiais</div></div>
+<div class="option makarios-option" data-val="c" data-value="c"><input name="q2" style="display:none" type="radio" value="c"/><div class="opt-marker">C</div><div class="opt-text">Quem não tem absolutamente nada a apresentar, dependendo completamente de outro — o esvaziado de si mesmo diante de Deus</div></div>
+<div class="option makarios-option" data-val="d" data-value="d"><input name="q2" style="display:none" type="radio" value="d"/><div class="opt-marker">D</div><div class="opt-text">Quem escolheu voluntariamente abrir mão de bens materiais como forma de ascetismo espiritual</div></div>
+</div>
+<button class="check-btn makarios-verify-btn" data-qid="q2" type="button">Verificar resposta</button>
+<div class="feedback" id="fb-q2"></div>
+</div>
+<!-- Q3 -->
+<div class="question-card" data-correct="a,b,d" data-explanation="As alternativas corretas são A, B, D. Jesus chama seus discípulos a uma presença visível e fiel: sal que preserva e luz que aponta a glória para o Pai. Nesta questão, era necessário marcar todas as afirmações que concordam com o ensino bíblico apresentado. Respostas parciais não completam o raciocínio." data-qid="q3" data-type="multi" id="q3">
+<div class="q-header">
+<div class="q-num tipo-multipla">3</div>
+<div class="q-meta">
+<div class="q-tipo tipo-multipla">Múltiplas corretas</div>
+<div class="q-text">Segundo a apostila, quais são as três funções do sal mencionadas por Jesus em Mateus 5? <em>(Selecione todas as corretas)</em></div>
+</div>
+</div>
+<div class="options" data-correct="a,b,d" data-type="multi">
+<div class="option makarios-option" data-val="a" data-value="a"><input name="q3" style="display:none" type="checkbox" value="a"/><div class="opt-marker">A</div><div class="opt-text">Dar sabor — revelar e despertar o que já estava latente ao redor</div></div>
+<div class="option makarios-option" data-val="b" data-value="b"><input name="q3" style="display:none" type="checkbox" value="b"/><div class="opt-marker">B</div><div class="opt-text">Conservar — agir como agente que impede a decomposição moral e social</div></div>
+<div class="option makarios-option" data-val="c" data-value="c"><input name="q3" style="display:none" type="checkbox" value="c"/><div class="opt-marker">C</div><div class="opt-text">Iluminar — tornar a presença cristã visível a distância, como uma cidade no monte</div></div>
+<div class="option makarios-option" data-val="d" data-value="d"><input name="q3" style="display:none" type="checkbox" value="d"/><div class="opt-marker">D</div><div class="opt-text">Ser antisséptico — uma presença que, pelo que é, expõe e cura o que está errado</div></div>
+</div>
+<button class="check-btn makarios-verify-btn" data-qid="q3" type="button">Verificar resposta</button>
+<div class="feedback" id="fb-q3"></div>
+</div>
+<!-- Q4 -->
+<div class="question-card" data-correct="b" data-explanation="A alternativa correta é B. Jesus chama seus discípulos a uma presença visível e fiel: sal que preserva e luz que aponta a glória para o Pai. Resposta: B) Que os homens, ao ver as boas obras, glorifiquem ao Pai que está nos céus" data-qid="q4" data-type="single" id="q4">
+<div class="q-header">
+<div class="q-num tipo-unica">4</div>
+<div class="q-meta">
+<div class="q-tipo tipo-unica">Única resposta</div>
+<div class="q-text">Em Mateus 5.16, Jesus revela o propósito final da luz do cristão no mundo. Qual é esse propósito?</div>
+</div>
+</div>
+<div class="options" data-correct="b" data-type="single">
+<div class="option makarios-option" data-val="a" data-value="a"><input name="q4" style="display:none" type="radio" value="a"/><div class="opt-marker">A</div><div class="opt-text">Que o cristão seja admirado e reconhecido por suas boas obras</div></div>
+<div class="option makarios-option" data-val="b" data-value="b"><input name="q4" style="display:none" type="radio" value="b"/><div class="opt-marker">B</div><div class="opt-text">Que os homens, ao ver as boas obras, glorifiquem ao Pai que está nos céus</div></div>
+<div class="option makarios-option" data-val="c" data-value="c"><input name="q4" style="display:none" type="radio" value="c"/><div class="opt-marker">C</div><div class="opt-text">Que a luz sirva como estratégia de evangelismo para converter o maior número de pessoas</div></div>
+<div class="option makarios-option" data-val="d" data-value="d"><input name="q4" style="display:none" type="radio" value="d"/><div class="opt-marker">D</div><div class="opt-text">Que a fé cristã se torne publicamente visível e influente nas esferas políticas</div></div>
+</div>
+<button class="check-btn makarios-verify-btn" data-qid="q4" type="button">Verificar resposta</button>
+<div class="feedback" id="fb-q4"></div>
+</div>
+<!-- Q5 -->
+<div class="question-card" data-correct="c" data-explanation="A alternativa que deve ser marcada como incorreta é C. Ela contradiz o ensino bíblico ou o sentido correto do tema. O Sermão do Monte descreve a vida de quem está sob o governo do Rei: uma justiça que nasce no coração e se manifesta no mundo. As demais alternativas preservam melhor o conjunto do ensino das Escrituras." data-qid="q5" data-type="incorrect" id="q5">
+<div class="q-header">
+<div class="q-num tipo-incorreta">5</div>
+<div class="q-meta">
+<div class="q-tipo tipo-incorreta">Marque a incorreta</div>
+<div class="q-text">Sobre as três práticas de dependência ensinadas por Jesus no capítulo 6 do Sermão do Monte (dar, orar e jejuar), marque a afirmação <strong>INCORRETA</strong>:</div>
+</div>
+</div>
+<div class="options" data-correct="c" data-type="single">
+<div class="option makarios-option" data-val="a" data-value="a"><input name="q5" style="display:none" type="radio" value="a"/><div class="opt-marker">A</div><div class="opt-text">Jesus pressupõe que os discípulos farão essas práticas; o que Ele aborda é o como — o motivo e a postura por trás delas</div></div>
+<div class="option makarios-option" data-val="b" data-value="b"><input name="q5" style="display:none" type="radio" value="b"/><div class="opt-marker">B</div><div class="opt-text">Fazer essas práticas em segredo é um exercício de confiança de que Deus vê, sabe e recompensa — independente da aprovação humana</div></div>
+<div class="option makarios-option" data-val="c" data-value="c"><input name="q5" style="display:none" type="radio" value="c"/><div class="opt-marker">C</div><div class="opt-text">A oração do Pai-Nosso tem como petição central pedir que os planos do cristão deem certo e que a vontade de Deus coincida com os seus desejos</div></div>
+<div class="option makarios-option" data-val="d" data-value="d"><input name="q5" style="display:none" type="radio" value="d"/><div class="opt-marker">D</div><div class="opt-text">A ansiedade, segundo Jesus, é sinal de fidelidade dividida — ainda tentando governar a própria vida enquanto Deus governa</div></div>
+</div>
+<button class="check-btn makarios-verify-btn" data-qid="q5" type="button">Verificar resposta</button>
+<div class="feedback" id="fb-q5"></div>
+</div>
+<!-- Q6 -->
+<div class="question-card" data-correct="d" data-explanation="A alternativa correta é D. Jesus chama seus discípulos a uma presença visível e fiel: sal que preserva e luz que aponta a glória para o Pai. Resposta: D) Como cada crente é enviado por Deus ao mundo — representando o Reino, intercedendo pelo seu entorno e sendo instrumento da graça de Deus" data-qid="q6" data-type="single" id="q6">
+<div class="q-header">
+<div class="q-num tipo-unica">6</div>
+<div class="q-meta">
+<div class="q-tipo tipo-unica">Única resposta</div>
+<div class="q-text">Pedro chama os cristãos de "sacerdócio real" em 1 Pedro 2.9. Segundo a apostila, o sacerdócio universal é uma doutrina sobre:</div>
+</div>
+</div>
+<div class="options" data-correct="d" data-type="single">
+<div class="option makarios-option" data-val="a" data-value="a"><input name="q6" style="display:none" type="radio" value="a"/><div class="opt-marker">A</div><div class="opt-text">Como todo crente pode se aproximar de Deus diretamente, sem mediação de um padre ou pastor</div></div>
+<div class="option makarios-option" data-val="b" data-value="b"><input name="q6" style="display:none" type="radio" value="b"/><div class="opt-marker">B</div><div class="opt-text">O direito de cada crente de ministrar sacramentos e liderar cultos na ausência de um pastor ordenado</div></div>
+<div class="option makarios-option" data-val="c" data-value="c"><input name="q6" style="display:none" type="radio" value="c"/><div class="opt-marker">C</div><div class="opt-text">A igualdade espiritual entre todos os membros da igreja, independentemente de dons ou funções</div></div>
+<div class="option makarios-option" data-val="d" data-value="d"><input name="q6" style="display:none" type="radio" value="d"/><div class="opt-marker">D</div><div class="opt-text">Como cada crente é enviado por Deus ao mundo — representando o Reino, intercedendo pelo seu entorno e sendo instrumento da graça de Deus</div></div>
+</div>
+<button class="check-btn makarios-verify-btn" data-qid="q6" type="button">Verificar resposta</button>
+<div class="feedback" id="fb-q6"></div>
+</div>
+<!-- Q7 -->
+<div class="question-card" data-correct="a" data-explanation='A alternativa correta é A. A fé bíblica alcança toda a vida: trabalho, cultura e vocação devem ser vividos diante de Deus, para sua glória e serviço ao próximo. Resposta: A) O modelo dos "7 montes" carrega uma lógica de conquista e dominação cultural; o conceito de "esferas" chama o cristão a habitar cada área com fidelidade e serviço, não a subjugá-la' data-qid="q7" data-type="single" id="q7">
+<div class="q-header">
+<div class="q-num tipo-unica">7</div>
+<div class="q-meta">
+<div class="q-tipo tipo-unica">Única resposta</div>
+<div class="q-text">Por que a apostila opta pelo termo "esferas" e não "7 montes"? Qual é a diferença central entre os dois conceitos?</div>
+</div>
+</div>
+<div class="options" data-correct="a" data-type="single">
+<div class="option makarios-option" data-val="a" data-value="a"><input name="q7" style="display:none" type="radio" value="a"/><div class="opt-marker">A</div><div class="opt-text">O modelo dos "7 montes" carrega uma lógica de conquista e dominação cultural; o conceito de "esferas" chama o cristão a habitar cada área com fidelidade e serviço, não a subjugá-la</div></div>
+<div class="option makarios-option" data-val="b" data-value="b"><input name="q7" style="display:none" type="radio" value="b"/><div class="opt-marker">B</div><div class="opt-text">O modelo dos "7 montes" é católico; o conceito de "esferas" é reformado e mais alinhado com a teologia protestante</div></div>
+<div class="option makarios-option" data-val="c" data-value="c"><input name="q7" style="display:none" type="radio" value="c"/><div class="opt-marker">C</div><div class="opt-text">Os "7 montes" são apenas 7 áreas; as "esferas" permitem incluir mais campos missionários conforme a cultura muda</div></div>
+<div class="option makarios-option" data-val="d" data-value="d"><input name="q7" style="display:none" type="radio" value="d"/><div class="opt-marker">D</div><div class="opt-text">O termo "montes" tem conotação geográfica; "esferas" é mais preciso para descrever o mundo digital e a globalização</div></div>
+</div>
+<button class="check-btn makarios-verify-btn" data-qid="q7" type="button">Verificar resposta</button>
+<div class="feedback" id="fb-q7"></div>
+</div>
+<!-- Q8 -->
+<div class="question-card" data-correct="a,b,c,d" data-explanation="As alternativas corretas são A, B, C, D. A fé bíblica alcança toda a vida: trabalho, cultura e vocação devem ser vividos diante de Deus, para sua glória e serviço ao próximo. Nesta questão, era necessário marcar todas as afirmações que concordam com o ensino bíblico apresentado. Respostas parciais não completam o raciocínio." data-qid="q8" data-type="multi" id="q8">
+<div class="q-header">
+<div class="q-num tipo-multipla">8</div>
+<div class="q-meta">
+<div class="q-tipo tipo-multipla">Múltiplas corretas</div>
+<div class="q-text">Quais dos personagens bíblicos abaixo são citados na apostila como modelos de presença cristã nas esferas da sociedade? <em>(Selecione todos os corretos)</em></div>
+</div>
+</div>
+<div class="options" data-correct="a,b,c,d" data-type="multi">
+<div class="option makarios-option" data-val="a" data-value="a"><input name="q8" style="display:none" type="checkbox" value="a"/><div class="opt-marker">A</div><div class="opt-text">José — que chegou a segundo no comando do Egito sem abandonar a integridade</div></div>
+<div class="option makarios-option" data-val="b" data-value="b"><input name="q8" style="display:none" type="checkbox" value="b"/><div class="opt-marker">B</div><div class="opt-text">Daniel — que serviu como conselheiro real sob três impérios diferentes</div></div>
+<div class="option makarios-option" data-val="c" data-value="c"><input name="q8" style="display:none" type="checkbox" value="c"/><div class="opt-marker">C</div><div class="opt-text">Bezalel — artesão descrito como o primeiro ser humano cheio do Espírito Santo</div></div>
+<div class="option makarios-option" data-val="d" data-value="d"><input name="q8" style="display:none" type="checkbox" value="d"/><div class="opt-marker">D</div><div class="opt-text">Neemias — copeiro do rei que usou sua posição para reconstruir os muros de Jerusalém</div></div>
+</div>
+<button class="check-btn makarios-verify-btn" data-qid="q8" type="button">Verificar resposta</button>
+<div class="feedback" id="fb-q8"></div>
+</div>
+<!-- Q9 -->
+<div class="question-card" data-correct="b" data-explanation="A alternativa correta é B. A fé bíblica alcança toda a vida: trabalho, cultura e vocação devem ser vividos diante de Deus, para sua glória e serviço ao próximo. Resposta: B) Viver toda a vida — no trabalho, no descanso, nas decisões — consciente de estar sempre diante da presença, sob a autoridade e para a glória de Deus" data-qid="q9" data-type="single" id="q9">
+<div class="q-header">
+<div class="q-num tipo-unica">9</div>
+<div class="q-meta">
+<div class="q-tipo tipo-unica">Única resposta</div>
+<div class="q-text">O conceito latino <em>Coram Deo</em>, como apresentado na apostila, significa:</div>
+</div>
+</div>
+<div class="options" data-correct="b" data-type="single">
+<div class="option makarios-option" data-val="a" data-value="a"><input name="q9" style="display:none" type="radio" value="a"/><div class="opt-marker">A</div><div class="opt-text">Que o cristão deve buscar cargos de liderança em todas as esferas para expandir o Reino de Deus</div></div>
+<div class="option makarios-option" data-val="b" data-value="b"><input name="q9" style="display:none" type="radio" value="b"/><div class="opt-marker">B</div><div class="opt-text">Viver toda a vida — no trabalho, no descanso, nas decisões — consciente de estar sempre diante da presença, sob a autoridade e para a glória de Deus</div></div>
+<div class="option makarios-option" data-val="c" data-value="c"><input name="q9" style="display:none" type="radio" value="c"/><div class="opt-marker">C</div><div class="opt-text">Que a oração deve ser o primeiro ato do dia antes de qualquer atividade secular ou profissional</div></div>
+<div class="option makarios-option" data-val="d" data-value="d"><input name="q9" style="display:none" type="radio" value="d"/><div class="opt-marker">D</div><div class="opt-text">A separação entre o espaço sagrado do culto e o espaço secular do trabalho e da política</div></div>
+</div>
+<button class="check-btn makarios-verify-btn" data-qid="q9" type="button">Verificar resposta</button>
+<div class="feedback" id="fb-q9"></div>
+</div>
+<!-- Q10 -->
+<div class="question-card" data-correct="d" data-explanation="A alternativa que deve ser marcada como incorreta é D. Ela contradiz o ensino bíblico ou o sentido correto do tema. A fé bíblica alcança toda a vida: trabalho, cultura e vocação devem ser vividos diante de Deus, para sua glória e serviço ao próximo. As demais alternativas preservam melhor o conjunto do ensino das Escrituras." data-qid="q10" data-type="incorrect" id="q10">
+<div class="q-header">
+<div class="q-num tipo-incorreta">10</div>
+<div class="q-meta">
+<div class="q-tipo tipo-incorreta">Marque a incorreta</div>
+<div class="q-text">Sobre o Mandato Cultural (Gênesis 1.28 e 2.15), marque a afirmação <strong>INCORRETA</strong>:</div>
+</div>
+</div>
+<div class="options" data-correct="d" data-type="single">
+<div class="option makarios-option" data-val="a" data-value="a"><input name="q10" style="display:none" type="radio" value="a"/><div class="opt-marker">A</div><div class="opt-text">O mandato cultural não foi cancelado pela queda — foi complicado pela presença do pecado, mas continua vigente</div></div>
+<div class="option makarios-option" data-val="b" data-value="b"><input name="q10" style="display:none" type="radio" value="b"/><div class="opt-marker">B</div><div class="opt-text">O trabalho é anterior à queda — o castigo foi a dificuldade do trabalho, não o trabalho em si</div></div>
+<div class="option makarios-option" data-val="c" data-value="c"><input name="q10" style="display:none" type="radio" value="c"/><div class="opt-marker">C</div><div class="opt-text">Toda área da cultura — música, ciência, política, arte — é uma forma de "abrir" o que Deus já colocou no mundo</div></div>
+<div class="option makarios-option" data-val="d" data-value="d"><input name="q10" style="display:none" type="radio" value="d"/><div class="opt-marker">D</div><div class="opt-text">O mandato de domínio em Gênesis 1.28 foi dado exclusivamente aos líderes espirituais de Israel, e apenas se aplica ao povo de Deus após a redenção em Cristo</div></div>
+</div>
+<button class="check-btn makarios-verify-btn" data-qid="q10" type="button">Verificar resposta</button>
+<div class="feedback" id="fb-q10"></div>
+</div>
+<!-- SCORE -->
+<div class="score-panel" id="score-panel">
+<h2>Exercício concluído!</h2>
+<div class="score-big" id="score-display">0/10</div>
+<div class="score-sub" id="score-msg"></div>
+</div>
+<!-- SUBMIT -->
+<div class="submit-area" id="submit-area">
+<h3>Registrar participação</h3>
+<div class="input-wrap">
+<input autocomplete="off" id="nome-input" placeholder="Seu nome completo" type="text"/>
+<button class="submit-btn">Enviar participação</button>
+</div>
+<div class="submit-msg" id="submit-msg">✓ Participação registrada com sucesso!</div>
+<div class="error-msg" id="error-msg">Preencha seu nome antes de enviar.</div>
+</div>
+<!-- hidden iframe for form submit -->
+<iframe name="hidden-frame" style="display:none"></iframe>
+</main>
+<script id="audit-js">(function(){const EXERCICIO="Voz — Semana 1",APP_URL="https://script.google.com/macros/s/AKfycbwYahR6Kd00Sc4dsaoMYSiapUbaXW9z-s2UFcwbYBh_WT_DtBpHyKTY0O02qOlXF9aq/exec",$=(s,r=document)=>r.querySelector(s),$$=(s,r=document)=>Array.from(r.querySelectorAll(s)),norm=a=>a.map(String).map(x=>x.trim()).filter(Boolean).sort().join(',');function cards(){return $$('.question-card,.q-card')}function opts(c){return $$('.makarios-option,.option,.opt',c)}function val(o){return o.dataset.value||o.dataset.val||(o.querySelector('input')&&o.querySelector('input').value)||''}function corrects(c){return(c.dataset.correct||c.getAttribute('data-answer')||'').split(',').map(x=>x.trim()).filter(Boolean)}function selected(c){return opts(c).filter(o=>o.classList.contains('selected')).map(val).filter(Boolean)}function isMulti(c){return c.dataset.type==='multi'||corrects(c).length>1||!!c.querySelector('input[type="checkbox"]')}function isIncorrect(c){const q=(($('.question-text,.q-text',c)||{}).textContent||'').toLowerCase();return c.dataset.type==='incorrect'||q.includes('incorreta')||q.includes('incorreto')||q.includes('errada')||q.includes('errado')||q.includes('não corresponde')}function scoreMsg(p){if(p>=90)return'Excelente. Você demonstrou domínio e discernimento. Que esse conhecimento se transforme em maturidade, serviço fiel e influência segundo o Reino.';if(p>=70)return'Muito bom. Há fundamento sendo formado. Revise os pontos que errou e siga crescendo com constância, porque formação espiritual é caminho, não apenas resultado.';if(p>=50)return'Você está em processo. Volte às questões, revise o conteúdo e permita que a Palavra aprofunde sua formação como discípulo.';return'Este resultado é um ponto de partida, não um rótulo. O discípulo cresce quando recebe correção com humildade e transforma aprendizado em obediência.'}function ensureFeedback(c){let fb=$('.feedback,.makarios-feedback',c);if(!fb){fb=document.createElement('div');fb.className='makarios-feedback';c.appendChild(fb)}return fb}function ensureScore(){let a=$('#makarios-score-card');if(a)return a;a=document.createElement('section');a.id='makarios-score-card';a.className='makarios-score-card';const m=$('main')||$('.main')||$('.container')||$('.wrap')||document.body;m.appendChild(a);return a}function ensureSubmit(){if($('#makarios-submit-area'))return;const a=document.createElement('section');a.id='makarios-submit-area';a.className='makarios-submit-area';a.innerHTML='<label for="makarios-nome">Nome completo</label><input id="makarios-nome" type="text" placeholder="Digite seu nome completo"><button id="makarios-submit-btn" type="button">Enviar resultado</button><div id="makarios-submit-status" class="makarios-submit-status">Resultado enviado para a planilha.</div>';const m=$('main')||$('.main')||$('.container')||$('.wrap')||document.body;m.appendChild(a)}function updateProgress(){const cs=cards(),a=cs.filter(c=>c.dataset.answered==='true').length,p=cs.length?Math.round(a/cs.length*100):0;$$('.progress-bar-fill,.progress-fill,#progressBar,.progress-bar').forEach(b=>{b.style.width=p+'%'});const ct=$('.progress-count');if(ct)ct.textContent=a+'/'+cs.length}function updateScore(){const cs=cards(),a=cs.filter(c=>c.dataset.answered==='true').length,h=cs.filter(c=>c.dataset.ok==='true').length,t=cs.length,p=t?Math.round(h/t*100):0,area=ensureScore();area.innerHTML=`<h3>${a<t?'Resultado parcial':'Resultado final'}</h3><div class="makarios-score-number">${h}/${t} · ${p}%</div><p class="makarios-score-message">${a<t?'Verifique todas as questões para fechar sua nota antes do envio.':scoreMsg(p)}</p>`;updateProgress();window.MAKARIOS_SCORE={hits:h,total:t,pct:p,complete:a===t};return window.MAKARIOS_SCORE}function defExp(c){const l=corrects(c).map(x=>x.toUpperCase()).join(', ');if(isIncorrect(c))return`A alternativa incorreta é ${l}. Ela é a opção que contradiz o ensino bíblico ou o sentido correto do conteúdo.`;if(isMulti(c))return`As alternativas corretas são ${l}. Nesta questão, era necessário marcar todas as afirmações verdadeiras.`;return`A alternativa correta é ${l}.`}function selectOption(c,o){if(o.classList.contains('locked'))return;const inp=o.querySelector('input');if(isMulti(c)){o.classList.toggle('selected');if(inp)inp.checked=o.classList.contains('selected')}else{opts(c).forEach(x=>{x.classList.remove('selected');const xi=x.querySelector('input');if(xi)xi.checked=false});o.classList.add('selected');if(inp)inp.checked=true}}function verify(c){const s=selected(c);if(!s.length){alert('Marque uma alternativa antes de verificar.');return}const cor=corrects(c),ok=norm(s)===norm(cor);opts(c).forEach(o=>{const v=val(o),inp=o.querySelector('input');o.classList.add('locked');o.classList.remove('correct-answer','wrong-answer','correct','wrong');if(cor.includes(v))o.classList.add('correct-answer','correct');if(s.includes(v)&&!cor.includes(v))o.classList.add('wrong-answer','wrong');if(inp)inp.disabled=true});c.classList.add('answered');c.dataset.answered='true';c.dataset.ok=ok?'true':'false';const fb=ensureFeedback(c),mode=isIncorrect(c)?'Nesta pergunta, a alternativa destacada em verde é a INCORRETA que deveria ser marcada.':isMulti(c)?'Nesta pergunta, era necessário marcar TODAS as alternativas corretas.':'Nesta pergunta, havia UMA resposta correta.';fb.innerHTML=`<strong>${ok?'Resposta correta.':'Resposta revisada.'}</strong><br>${mode}<br>${c.dataset.explanation||defExp(c)}`;fb.classList.add('show');fb.style.display='block';updateScore()}function submit(){const s=updateScore();if(!s.complete){alert('Verifique todas as respostas antes de enviar o resultado.');return}const i=$('#makarios-nome'),nome=i?i.value.trim():'';if(!nome){alert('Informe seu nome completo antes de enviar.');return}const params=new URLSearchParams({exercicio:EXERCICIO,nome,pontuacao:String(s.hits),nota:`${s.hits}/${s.total}`,data:new Date().toLocaleString('pt-BR')});let iframe=document.querySelector('iframe[name="makarios_submit_frame"]');if(!iframe){iframe=document.createElement('iframe');iframe.name='makarios_submit_frame';iframe.style.display='none';document.body.appendChild(iframe)}const form=document.createElement('form');form.method='GET';form.action=APP_URL;form.target='makarios_submit_frame';form.style.display='none';for(const[k,v]of params.entries()){const inp=document.createElement('input');inp.name=k;inp.value=v;form.appendChild(inp)}document.body.appendChild(form);form.submit();setTimeout(()=>form.remove(),1000);const st=$('#makarios-submit-status');if(st){st.textContent='Resultado enviado para a planilha.';st.classList.add('show');st.style.display='block'}alert('Resultado enviado com sucesso.')}function init(){cards().forEach((c,ci)=>{if(!c.dataset.correct&&c.dataset.answer)c.dataset.correct=c.dataset.answer;const b=$('.question-badge,.q-badge,.q-tipo',c);if(b){if(isIncorrect(c)){b.textContent='MARQUE A INCORRETA';b.classList.add('wrong')}else if(isMulti(c)){b.textContent='MARQUE TODAS AS CORRETAS';b.classList.add('multi')}else b.textContent='UMA RESPOSTA CORRETA'}opts(c).forEach((o,oi)=>{o.classList.add('makarios-option');o.style.pointerEvents='auto';if(!o.dataset.value&&!o.dataset.val)o.dataset.value=String.fromCharCode(97+oi);let inp=o.querySelector('input');if(!inp){inp=document.createElement('input');inp.type=isMulti(c)?'checkbox':'radio';inp.name='q'+(ci+1);inp.value=val(o);inp.style.display='none';o.insertBefore(inp,o.firstChild)}else{inp.type=isMulti(c)?'checkbox':'radio';inp.name='q'+(ci+1);inp.value=val(o)}o.addEventListener('click',function(e){e.preventDefault();e.stopPropagation();selectOption(c,o)},true)});let btn=$('.makarios-verify-btn,.verify-btn,.btn-check',c);if(!btn){btn=document.createElement('button');btn.type='button';btn.className='verify-btn';btn.textContent='Verificar resposta';c.appendChild(btn)}btn.type='button';btn.textContent=btn.textContent.trim()||'Verificar resposta';btn.addEventListener('click',function(e){e.preventDefault();e.stopPropagation();verify(c)},true)});ensureScore();ensureSubmit();const sb=$('#makarios-submit-btn');if(sb){sb.type='button';sb.addEventListener('click',function(e){e.preventDefault();e.stopPropagation();submit()},true)}updateScore()}if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init()})();</script></body>
+</html>

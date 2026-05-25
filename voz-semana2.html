@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>VOZ — Semana 2 | Escola Makários</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,700;0,800;1,700;1,800&amp;family=Barlow:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --bg: #ffffff;
+    --surface: #FFFFFF;
+    --surface2: #f5ede6;
+    --text: #1a1a2e;
+    --text2: #6b5c50;
+    --accent: #2E7FBF;
+    --accent-light: #e8f2fb;
+    --accent-mid: #d4784a;
+    --accent-dark: #1a5a8c;
+    --correct: #2a7a4b;
+    --correct-bg: #eaf5ee;
+    --wrong: #a8282a;
+    --wrong-bg: #faeaea;
+    --border: #d1dce8;
+    --radius: 14px;
+
+    --type-single: #2E7FBF;
+    --type-single-bg: #f5ede6;
+    --type-multi: #2563a8;
+    --type-multi-bg: #e8f0fb;
+    --type-wrong: #6d3bbf;
+    --type-wrong-bg: #f0ebfb;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Barlow', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  /* NAV */
+  nav {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 60px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .nav-logo {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--accent);
+    text-decoration: none;
+    letter-spacing: -0.01em;
+  }
+  .nav-links {
+    display: flex;
+    gap: 6px;
+    list-style: none;
+  }
+  .nav-links a {
+    text-decoration: none;
+    font-size: 0.8rem;
+    font-weight: 700;
+    padding: 5px 12px;
+    border-radius: 20px;
+    color: var(--text2);
+    transition: all 0.2s;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .nav-links a:hover { background: var(--surface2); color: var(--accent); }
+  .nav-links a.active { background: var(--accent); color: #fff; }
+
+  /* PROGRESS BAR */
+  .progress-wrap {
+    background: var(--border);
+    height: 5px;
+    width: 100%;
+  }
+  .progress-bar {
+    height: 5px;
+    background: linear-gradient(90deg, var(--accent-mid), var(--accent-dark));
+    width: 0%;
+    transition: width 0.5s cubic-bezier(.4,0,.2,1);
+  }
+  .progress-label {
+    text-align: center;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--text2);
+    padding: 8px 0 4px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  /* LAYOUT */
+  .container {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 0 20px 80px;
+  }
+
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--accent);
+    font-size: 0.82rem;
+    font-weight: 700;
+    text-decoration: none;
+    padding: 18px 0 0;
+    letter-spacing: 0.03em;
+    transition: gap 0.2s;
+  }
+  .back-link:hover { gap: 10px; }
+
+  /* HEADER */
+  .page-header {
+    padding: 24px 0 32px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 32px;
+  }
+  .volume-tag {
+    display: inline-block;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: var(--accent-light);
+    padding: 4px 12px;
+    border-radius: 20px;
+    margin-bottom: 14px;
+  }
+  .page-header h1 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: clamp(1.6rem, 4vw, 2.2rem);
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1.2;
+    margin-bottom: 10px;
+  }
+  .page-header p {
+    font-size: 0.95rem;
+    color: var(--text2);
+    line-height: 1.6;
+    max-width: 560px;
+  }
+
+  /* LEGEND */
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 30px;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--text2);
+  }
+  .legend-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+  }
+
+  /* QUESTION CARDS */
+  .question-card {
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px 26px;
+    margin-bottom: 18px;
+    transition: box-shadow 0.2s;
+  }
+  .question-card:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.06); }
+  .question-card.answered { pointer-events: none; }
+
+  .q-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    margin-bottom: 16px;
+  }
+  .q-number {
+    font-size: 1.6rem;
+    font-weight: 900;
+    line-height: 1;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .q-meta { flex: 1; }
+  .q-badge {
+    display: inline-block;
+    font-size: 0.68rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 3px 9px;
+    border-radius: 20px;
+    margin-bottom: 7px;
+  }
+  .badge-single { background: var(--type-single-bg); color: var(--type-single); }
+  .badge-multi  { background: var(--type-multi-bg);  color: var(--type-multi);  }
+  .badge-wrong  { background: var(--type-wrong-bg);  color: var(--type-wrong);  }
+
+  .num-single { color: var(--type-single); }
+  .num-multi  { color: var(--type-multi);  }
+  .num-wrong  { color: var(--type-wrong);  }
+
+  .q-text {
+    font-size: 0.97rem;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1.5;
+  }
+
+  /* OPTIONS */
+  .options { display: flex; flex-direction: column; gap: 9px; }
+  .option-label {
+    display: flex;
+    align-items: flex-start;
+    gap: 11px;
+    padding: 11px 15px;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.45;
+    transition: all 0.15s;
+    user-select: none;
+    background: var(--bg);
+  }
+  .option-label:hover { border-color: var(--accent-mid); background: var(--accent-light); }
+  .option-label input { display: none; }
+  .option-check {
+    width: 18px; height: 18px;
+    border: 2px solid var(--border);
+    border-radius: 50%;
+    flex-shrink: 0;
+    margin-top: 1px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s;
+    background: var(--surface);
+  }
+  .option-label.selected .option-check {
+    border-color: var(--accent);
+    background: var(--accent);
+  }
+  .option-label.selected .option-check::after {
+    content: '';
+    width: 6px; height: 6px;
+    background: white;
+    border-radius: 50%;
+  }
+  /* Multi checkbox style */
+  .option-label.multi-opt .option-check { border-radius: 4px; }
+  .option-label.multi-opt.selected .option-check::after {
+    content: '✓';
+    font-size: 11px;
+    font-weight: 900;
+    color: white;
+    border-radius: 0;
+    background: none;
+    width: auto; height: auto;
+  }
+  .option-label.selected { border-color: var(--accent); background: var(--accent-light); }
+
+  /* After verification */
+  .option-label.correct-ans  { border-color: var(--correct) !important; background: var(--correct-bg) !important; color: var(--correct) !important; }
+  .option-label.wrong-ans    { border-color: var(--wrong)   !important; background: var(--wrong-bg)   !important; color: var(--wrong)   !important; }
+  .option-label.missed-ans   { border-color: var(--correct) !important; background: var(--correct-bg) !important; color: var(--correct) !important; }
+
+  /* VERIFY BUTTON */
+  .verify-btn {
+    display: none;
+    margin-top: 14px;
+    padding: 10px 22px;
+    background: var(--accent);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-family: 'Barlow', sans-serif;
+    font-size: 0.88rem;
+    font-weight: 800;
+    cursor: pointer;
+    letter-spacing: 0.04em;
+    transition: background 0.15s, transform 0.1s;
+  }
+  .verify-btn:hover { background: var(--accent-dark); transform: translateY(-1px); }
+  .verify-btn:active { transform: translateY(0); }
+  .verify-btn.visible { display: inline-block; }
+
+  /* FEEDBACK */
+  .feedback {
+    display: none;
+    margin-top: 14px;
+    padding: 12px 16px;
+    border-radius: 10px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    line-height: 1.55;
+  }
+  .feedback.show { display: block; }
+  .feedback.correct { background: var(--correct-bg); color: var(--correct); border: 1px solid #b2dfc4; }
+  .feedback.wrong   { background: var(--wrong-bg);   color: var(--wrong);   border: 1px solid #f0bcbc; }
+  .feedback-icon { font-size: 1.1em; margin-right: 5px; }
+
+  /* SCORE PANEL */
+  .score-panel {
+    display: none;
+    background: var(--surface);
+    border: 2px solid var(--accent);
+    border-radius: var(--radius);
+    padding: 36px 30px;
+    text-align: center;
+    margin-bottom: 24px;
+    animation: fadeUp 0.4s ease;
+  }
+  .score-panel.show { display: block; }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .score-big {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 4rem;
+    font-weight: 700;
+    color: var(--accent);
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+  .score-denom { font-size: 1.8rem; color: var(--text2); }
+  .score-msg {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 6px;
+    margin-top: 10px;
+  }
+  .score-sub {
+    font-size: 0.88rem;
+    color: var(--text2);
+  }
+
+  /* SUBMIT AREA */
+  .submit-area {
+    display: none;
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+    padding: 28px 26px;
+    margin-bottom: 24px;
+    animation: fadeUp 0.4s ease 0.1s both;
+  }
+  .submit-area.show { display: block; }
+  .submit-area h3 {
+    font-size: 1rem;
+    font-weight: 800;
+    color: var(--text);
+    margin-bottom: 6px;
+  }
+  .submit-area p {
+    font-size: 0.85rem;
+    color: var(--text2);
+    margin-bottom: 16px;
+  }
+  .name-input {
+    width: 100%;
+    padding: 11px 14px;
+    border: 1.5px solid var(--border);
+    border-radius: 9px;
+    font-family: 'Barlow', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text);
+    background: var(--bg);
+    margin-bottom: 12px;
+    transition: border-color 0.2s;
+    outline: none;
+  }
+  .name-input:focus { border-color: var(--accent); }
+  .submit-btn {
+    padding: 11px 28px;
+    background: var(--accent);
+    color: white;
+    border: none;
+    border-radius: 9px;
+    font-family: 'Barlow', sans-serif;
+    font-size: 0.92rem;
+    font-weight: 800;
+    cursor: pointer;
+    letter-spacing: 0.04em;
+    transition: background 0.15s;
+  }
+  .submit-btn:hover { background: var(--accent-dark); }
+  .submit-success {
+    display: none;
+    color: var(--correct);
+    font-weight: 700;
+    font-size: 0.92rem;
+    margin-top: 10px;
+  }
+  .submit-success.show { display: block; }
+
+  iframe#submit_frame { display: none; }
+
+  /* RESPONSIVE */
+  @media (max-width: 480px) {
+    nav { padding: 0 14px; }
+    .nav-links a { padding: 4px 8px; font-size: 0.72rem; }
+    .container { padding: 0 14px 60px; }
+    .question-card { padding: 18px 16px; }
+    .q-number { font-size: 1.3rem; }
+  }
+</style>
+<style>
+  .makarios-verify-btn.visible,
+  .verify-btn.visible,
+  .btn-check.visible,
+  .check-btn.visible { display: inline-flex !important; }
+  .makarios-result-panel {
+    max-width: 680px;
+    margin: 32px auto 60px;
+    padding: 24px;
+    border: 1.5px solid rgba(46,127,191,.25);
+    border-radius: 16px;
+    background: #ffffff;
+    box-shadow: 0 8px 28px rgba(26,43,60,.08);
+    font-family: 'Barlow', sans-serif;
+  }
+  .makarios-result-panel[hidden] { display: none !important; }
+  .makarios-result-panel h2 { font-size: 1.3rem; margin-bottom: 8px; color: #1A2B3C; }
+  .makarios-result-score { font-weight: 800; color: #2E7FBF; margin-bottom: 14px; }
+  .makarios-result-panel label { display:block; font-size: 13px; font-weight: 700; color:#5A6A7A; margin: 14px 0 6px; }
+  .makarios-result-panel input {
+    width: 100%; padding: 12px 14px; border-radius: 10px; border: 1.5px solid rgba(46,127,191,.25);
+    font-family: 'Barlow', sans-serif; font-size: 15px;
+  }
+  .makarios-submit-btn {
+    margin-top: 14px; padding: 12px 18px; border: none; border-radius: 10px; background: #2E7FBF; color: white;
+    font-weight: 800; font-family: 'Barlow', sans-serif; cursor: pointer;
+  }
+  .makarios-submit-status { display:none; margin-top:10px; font-size: 13px; color:#2a7a4b; font-weight:700; }
+  .makarios-submit-status.show { display:block; }
+</style>
+<style id="audit-css">.option.selected,.makarios-option.selected,.opt.selected{background:#E8F2FB!important;border-color:#2E7FBF!important}.option.correct-answer,.makarios-option.correct-answer,.opt.correct-answer,.option.correct,.makarios-option.correct,.opt.correct{background:#eaf5ee!important;border-color:#2a7a4b!important;color:#1f5b38!important}.option.wrong-answer,.makarios-option.wrong-answer,.opt.wrong-answer,.option.wrong,.makarios-option.wrong,.opt.wrong{background:#faeaea!important;border-color:#a8282a!important;color:#7B241C!important}.option.locked,.makarios-option.locked,.opt.locked{cursor:default!important}.question-badge,.q-badge,.q-tipo{font-weight:800!important;letter-spacing:.06em!important;text-transform:uppercase!important}.question-badge.multi,.q-badge.multi{background:#e8f0fb!important;color:#2563a8!important}.question-badge.wrong,.q-badge.wrong{background:#f3edfb!important;color:#6d28a8!important}.feedback,.makarios-feedback{font-size:13.5px!important;line-height:1.65!important;margin-top:14px!important;padding:14px 16px!important;border-radius:12px!important;border:1.5px solid rgba(46,127,191,.22)!important;background:#f7fbff!important;color:#1a2b3c!important}.feedback.show,.makarios-feedback.show{display:block!important}.makarios-score-card{max-width:760px;margin:28px auto 18px;padding:22px;border:1.5px solid rgba(46,127,191,.22);border-radius:16px;background:linear-gradient(180deg,#fff,#f7fbff);text-align:left;font-family:'Barlow',sans-serif}.makarios-score-card h3{font-size:1.15rem;margin-bottom:8px;color:#1a2b3c}.makarios-score-number{font-size:2rem;font-weight:800;color:#2E7FBF;margin:6px 0}.makarios-score-message{font-size:14px;line-height:1.7;color:#4a5568}.makarios-submit-area{max-width:760px;margin:18px auto 40px;padding:22px;border:1.5px solid #D1DCE8;border-radius:16px;background:#fff;font-family:'Barlow',sans-serif}.makarios-submit-area label{font-weight:800;font-size:13px;display:block;margin-bottom:8px}.makarios-submit-area input{width:100%;padding:12px 14px;border:1.5px solid #D1DCE8;border-radius:10px;font-family:'Barlow',sans-serif;font-size:15px;margin-bottom:12px}.makarios-submit-area button{border:0;border-radius:10px;background:#2E7FBF;color:#fff;font-weight:800;padding:12px 20px;cursor:pointer;font-family:'Barlow',sans-serif}.makarios-submit-status{display:none;margin-top:12px;color:#2a7a4b;font-weight:700}.makarios-submit-status.show{display:block}.makarios-logo-official,.header-logo-wrap img,.header-logo img,.nav-logo img,nav img.logo,.logo-main{object-fit:contain!important;background:transparent!important;box-shadow:none!important}.header-logo-wrap img,.header-logo img,.logo-main{height:110px!important;max-width:min(760px,94vw)!important;width:auto!important;padding:0!important;border-radius:0!important}nav .makarios-logo-official,.nav-logo img,nav img.logo{height:54px!important;width:auto!important;padding:0!important;border-radius:0!important}</style></head>
+<body>
+<nav>
+<a class="nav-logo" href="#"><img alt="Makários" class="makarios-logo-official" src="logo-makarios-oficial-azul.png"/></a>
+<ul class="nav-links">
+<li><a href="essencia.html">Essência</a></li>
+<li><a href="caminho.html">Caminho</a></li>
+<li><a class="active" href="voz.html">Voz</a></li>
+</ul>
+</nav>
+<div class="progress-wrap">
+<div class="progress-bar" id="progressBar"></div>
+</div>
+<div class="progress-label" id="progressLabel">0 de 10 questões respondidas</div>
+<div class="container">
+<a class="back-link" href="voz.html">← Voltar para VOZ</a>
+<div class="page-header">
+<span class="volume-tag">Volume 3 · VOZ</span>
+<h1>Semana 2 — Cultura da Honra &amp; Fundamentos da Liderança</h1>
+<p>Questões de fixação baseadas nas aulas 3 e 4. Responda cada questão e receba feedback imediato antes de avançar.</p>
+</div>
+<div class="legend">
+<div class="legend-item">
+<div class="legend-dot" style="background:var(--type-single)"></div>
+      Única resposta correta
+    </div>
+<div class="legend-item">
+<div class="legend-dot" style="background:var(--type-multi)"></div>
+      Múltiplas corretas
+    </div>
+<div class="legend-item">
+<div class="legend-dot" style="background:var(--type-wrong)"></div>
+      Marque a incorreta
+    </div>
+</div>
+<!-- Q1 - single -->
+<div class="question-card" data-correct="b" data-explanation="A alternativa correta é B. A honra bíblica reconhece o valor dado por Deus às pessoas e às autoridades, sem transformar honra em bajulação, medo ou conivência com o pecado. Resposta: B) Valor, preço e estima — uma dívida devida, não um favor concedido" data-qid="q1" data-type="single" id="q1">
+<div class="q-header">
+<div class="q-number num-single">01</div>
+<div class="q-meta">
+<span class="q-badge badge-single single">UMA RESPOSTA CORRETA</span>
+<div class="q-text">Segundo a apostila, o termo grego <em>timé</em> (τιμή), usado por Paulo em Romanos 13:7 para falar de honra, significa fundamentalmente:</div>
+</div>
+</div>
+<div class="options" id="opts1">
+<label class="option-label makarios-option" data-value="a"><input name="q1" style="display:none" type="radio" value="a"/><span class="option-check"></span>Elogio público e reconhecimento visível</label>
+<label class="option-label makarios-option" data-value="b"><input name="q1" style="display:none" type="radio" value="b"/><span class="option-check"></span>Valor, preço e estima — uma dívida devida, não um favor concedido</label>
+<label class="option-label makarios-option" data-value="c"><input name="q1" style="display:none" type="radio" value="c"/><span class="option-check"></span>Obediência irrestrita a qualquer autoridade</label>
+<label class="option-label makarios-option" data-value="d"><input name="q1" style="display:none" type="radio" value="d"/><span class="option-check"></span>Cordialidade social e boas maneiras</label>
+</div>
+<button class="verify-btn makarios-verify-btn" data-qid="q1" type="button">Verificar resposta</button>
+<div class="feedback" id="fb1"></div>
+</div>
+<!-- Q2 - single -->
+<div class="question-card" data-correct="b" data-explanation="A alternativa correta é B. A honra bíblica reconhece o valor dado por Deus às pessoas e às autoridades, sem transformar honra em bajulação, medo ou conivência com o pecado. Resposta: B) Da experiência de honrar a Deus primeiro" data-qid="q2" data-type="single" id="q2">
+<div class="q-header">
+<div class="q-number num-single">02</div>
+<div class="q-meta">
+<span class="q-badge badge-single single">UMA RESPOSTA CORRETA</span>
+<div class="q-text">A apostila afirma que "polidez é uma habilidade social; honra é uma orientação espiritual." Isso explica por que alguém pode ser gentil com todos e, ao mesmo tempo, ser incapaz de honrar genuinamente líderes e autoridades. De onde nasce a capacidade real de honrar pessoas?</div>
+</div>
+</div>
+<div class="options" id="opts2">
+<label class="option-label makarios-option" data-value="a"><input name="q2" style="display:none" type="radio" value="a"/><span class="option-check"></span>De treinamento emocional e inteligência relacional</label>
+<label class="option-label makarios-option" data-value="b"><input name="q2" style="display:none" type="radio" value="b"/><span class="option-check"></span>Da experiência de honrar a Deus primeiro</label>
+<label class="option-label makarios-option" data-value="c"><input name="q2" style="display:none" type="radio" value="c"/><span class="option-check"></span>Do respeito natural que toda pessoa desenvolve com a maturidade</label>
+<label class="option-label makarios-option" data-value="d"><input name="q2" style="display:none" type="radio" value="d"/><span class="option-check"></span>Da leitura de bons livros sobre liderança e etiqueta</label>
+</div>
+<button class="verify-btn makarios-verify-btn" data-qid="q2" type="button">Verificar resposta</button>
+<div class="feedback" id="fb2"></div>
+</div>
+<!-- Q3 - multi -->
+<div class="question-card" data-correct="a,b,d,e" data-explanation="As alternativas corretas são A, B, D, E. A honra bíblica reconhece o valor dado por Deus às pessoas e às autoridades, sem transformar honra em bajulação, medo ou conivência com o pecado. Nesta questão, era necessário marcar todas as afirmações que concordam com o ensino bíblico apresentado. Respostas parciais não completam o raciocínio." data-qid="q3" data-type="multi" id="q3">
+<div class="q-header">
+<div class="q-number num-multi">03</div>
+<div class="q-meta">
+<span class="q-badge badge-multi multi">MARQUE TODAS AS CORRETAS</span>
+<div class="q-text">A apostila lista o que honra <strong>não é</strong>. Marque todas as alternativas que correspondem corretamente a essa lista:</div>
+</div>
+</div>
+<div class="options" id="opts3">
+<label class="option-label multi-opt makarios-option" data-value="a"><input name="q3" style="display:none" type="checkbox" value="a"/><span class="option-check"></span>Bajulação — motivada pelo interesse próprio, não pelo valor do outro</label>
+<label class="option-label multi-opt makarios-option" data-value="b"><input name="q3" style="display:none" type="checkbox" value="b"/><span class="option-check"></span>Idolatria — atribuir ao ser humano o lugar que pertence a Deus</label>
+<label class="option-label multi-opt makarios-option" data-value="c"><input name="q3" style="display:none" type="checkbox" value="c"/><span class="option-check"></span>Submissão total, incluindo obedecer a ordens contrárias à Bíblia</label>
+<label class="option-label multi-opt makarios-option" data-value="d"><input name="q3" style="display:none" type="checkbox" value="d"/><span class="option-check"></span>Fingimento — expressão externa sem correspondência interior</label>
+<label class="option-label multi-opt makarios-option" data-value="e"><input name="q3" style="display:none" type="checkbox" value="e"/><span class="option-check"></span>Concordância cega — confundir submissão com ausência de discernimento</label>
+</div>
+<button class="verify-btn makarios-verify-btn" data-qid="q3" type="button">Verificar resposta</button>
+<div class="feedback" id="fb3"></div>
+</div>
+<!-- Q4 - single incorreta -->
+<div class="question-card" data-correct="c" data-explanation="A alternativa que deve ser marcada como incorreta é C. Ela contradiz o ensino bíblico ou o sentido correto do tema. A honra bíblica reconhece o valor dado por Deus às pessoas e às autoridades, sem transformar honra em bajulação, medo ou conivência com o pecado. As demais alternativas preservam melhor o conjunto do ensino das Escrituras." data-qid="q4" data-type="incorrect" id="q4">
+<div class="q-header">
+<div class="q-number num-wrong">04</div>
+<div class="q-meta">
+<span class="q-badge badge-wrong wrong">MARQUE A INCORRETA</span>
+<div class="q-text">Pedro escreve em 1 Pedro 2:17: "Honrai a todos." A apostila desenvolve o conceito de Honra 360°. Marque a afirmação que <strong>NÃO</strong> corresponde ao ensinamento da apostila sobre essa honra abrangente:</div>
+</div>
+</div>
+<div class="options" id="opts4">
+<label class="option-label makarios-option" data-value="a"><input name="q4" style="display:none" type="radio" value="a"/><span class="option-check"></span>Todo ser humano carrega a imago Dei e, por isso, merece ser honrado independentemente do que pode oferecer</label>
+<label class="option-label makarios-option" data-value="b"><input name="q4" style="display:none" type="radio" value="b"/><span class="option-check"></span>A honra deve fluir para cima (líderes), para os lados (pares), para baixo (liderados) e também para quem discorda</label>
+<label class="option-label makarios-option" data-value="c"><input name="q4" style="display:none" type="radio" value="c"/><span class="option-check"></span>É aceitável ser mais cauteloso ao honrar quem discorda de você, reservando a honra plena para os aliados</label>
+<label class="option-label makarios-option" data-value="d"><input name="q4" style="display:none" type="radio" value="d"/><span class="option-check"></span>Quem diz amar a Deus mas não honra o irmão que vê é, segundo João, mentiroso</label>
+</div>
+<button class="verify-btn makarios-verify-btn" data-qid="q4" type="button">Verificar resposta</button>
+<div class="feedback" id="fb4"></div>
+</div>
+<!-- Q5 - single -->
+<div class="question-card" data-correct="c" data-explanation="A alternativa correta é C. A resposta foi revisada à luz do ensino bíblico geral: Cristo, a Palavra e a obra do Espírito são o critério para avaliar a alternativa correta. Resposta: C) postura interior de reconhecer e se posicionar corretamente debaixo de autoridade estabelecida por Deus — uma atitude do coração" data-qid="q5" data-type="single" id="q5">
+<div class="q-header">
+<div class="q-number num-single">05</div>
+<div class="q-meta">
+<span class="q-badge badge-single single">UMA RESPOSTA CORRETA</span>
+<div class="q-text">A apostila distingue três conceitos que frequentemente são confundidos. Qual definição corresponde corretamente ao que o texto chama de <em>submissão</em>?</div>
+</div>
+</div>
+<div class="options" id="opts5">
+<label class="option-label makarios-option" data-value="a"><input name="q5" style="display:none" type="radio" value="a"/><span class="option-check"></span>A resposta prática a uma instrução recebida — exterior e situacional</label>
+<label class="option-label makarios-option" data-value="b"><input name="q5" style="display:none" type="radio" value="b"/><span class="option-check"></span>O direito delegado por Deus para governar e liderar dentro de um propósito</label>
+<label class="option-label makarios-option" data-value="c"><input name="q5" style="display:none" type="radio" value="c"/><span class="option-check"></span>A postura interior de reconhecer e se posicionar corretamente debaixo de autoridade estabelecida por Deus — uma atitude do coração</label>
+<label class="option-label makarios-option" data-value="d"><input name="q5" style="display:none" type="radio" value="d"/><span class="option-check"></span>A concordância com toda decisão tomada por líderes espirituais legítimos</label>
+</div>
+<button class="verify-btn makarios-verify-btn" data-qid="q5" type="button">Verificar resposta</button>
+<div class="feedback" id="fb5"></div>
+</div>
+<!-- Q6 - single incorreta -->
+<div class="question-card" data-correct="c" data-explanation="A alternativa que deve ser marcada como incorreta é C. Ela contradiz o ensino bíblico ou o sentido correto do tema. A resposta foi revisada à luz do ensino bíblico geral: Cristo, a Palavra e a obra do Espírito são o critério para avaliar a alternativa correta. As demais alternativas preservam melhor o conjunto do ensino das Escrituras." data-qid="q6" data-type="incorrect" id="q6">
+<div class="q-header">
+<div class="q-number num-wrong">06</div>
+<div class="q-meta">
+<span class="q-badge badge-wrong wrong">MARQUE A INCORRETA</span>
+<div class="q-text">A apostila usa Davi e Saul (1 Samuel 24) e os apóstolos em Atos 5 para ilustrar a distinção entre submissão e obediência. Marque a afirmação que <strong>NÃO</strong> corresponde à lição extraída desses exemplos:</div>
+</div>
+</div>
+<div class="options" id="opts6">
+<label class="option-label makarios-option" data-value="a"><input name="q6" style="display:none" type="radio" value="a"/><span class="option-check"></span>Davi não concordava com Saul, mas manteve um coração submisso e honrou a autoridade ungida</label>
+<label class="option-label makarios-option" data-value="b"><input name="q6" style="display:none" type="radio" value="b"/><span class="option-check"></span>Os apóstolos desobedeceram ao Sinédrio, mas não resistiram à prisão nem desonraram os membros do conselho</label>
+<label class="option-label makarios-option" data-value="c"><input name="q6" style="display:none" type="radio" value="c"/><span class="option-check"></span>Quando uma autoridade está errada, o crente deve resistir ativamente e expor publicamente o erro para que a comunidade saiba</label>
+<label class="option-label makarios-option" data-value="d"><input name="q6" style="display:none" type="radio" value="d"/><span class="option-check"></span>É possível desobedecer a uma instrução errada mantendo, ao mesmo tempo, um coração que honra — sem espírito de revolta</label>
+</div>
+<button class="verify-btn makarios-verify-btn" data-qid="q6" type="button">Verificar resposta</button>
+<div class="feedback" id="fb6"></div>
+</div>
+<!-- Q7 - multi -->
+<div class="question-card" data-correct="a,b,d,e" data-explanation="As alternativas corretas são A, B, D, E. A liderança cristã é serviço, mordomia e influência segundo o padrão de Cristo, que forma pessoas e conduz para a maturidade. Nesta questão, era necessário marcar todas as afirmações que concordam com o ensino bíblico apresentado. Respostas parciais não completam o raciocínio." data-qid="q7" data-type="multi" id="q7">
+<div class="q-header">
+<div class="q-number num-multi">07</div>
+<div class="q-meta">
+<span class="q-badge badge-multi multi">MARQUE TODAS AS CORRETAS</span>
+<div class="q-text">A apostila "Fundamentos da Liderança" apresenta cinco princípios bíblicos de liderança. Marque todos os que estão corretamente identificados:</div>
+</div>
+</div>
+<div class="options" id="opts7">
+<label class="option-label multi-opt makarios-option" data-value="a"><input name="q7" style="display:none" type="checkbox" value="a"/><span class="option-check"></span>Liderança pelo exemplo — a verdadeira influência nasce da vida, não da imposição</label>
+<label class="option-label multi-opt makarios-option" data-value="b"><input name="q7" style="display:none" type="checkbox" value="b"/><span class="option-check"></span>Liderança fiel aos princípios — fundamentada na Palavra, não em tendências do momento</label>
+<label class="option-label multi-opt makarios-option" data-value="c"><input name="q7" style="display:none" type="checkbox" value="c"/><span class="option-check"></span>Liderança carismática — baseada na força da personalidade e no apelo emocional</label>
+<label class="option-label multi-opt makarios-option" data-value="d"><input name="q7" style="display:none" type="checkbox" value="d"/><span class="option-check"></span>Liderança íntegra — o caráter sustenta a longo prazo; sem ele, a liderança não se sustenta</label>
+<label class="option-label multi-opt makarios-option" data-value="e"><input name="q7" style="display:none" type="checkbox" value="e"/><span class="option-check"></span>Liderança servidora — quem quiser ser grande deverá ser servo (Mt 20:26)</label>
+</div>
+<button class="verify-btn makarios-verify-btn" data-qid="q7" type="button">Verificar resposta</button>
+<div class="feedback" id="fb7"></div>
+</div>
+<!-- Q8 - single incorreta -->
+<div class="question-card" data-correct="c" data-explanation="A alternativa que deve ser marcada como incorreta é C. Ela contradiz o ensino bíblico ou o sentido correto do tema. A liderança cristã é serviço, mordomia e influência segundo o padrão de Cristo, que forma pessoas e conduz para a maturidade. As demais alternativas preservam melhor o conjunto do ensino das Escrituras." data-qid="q8" data-type="incorrect" id="q8">
+<div class="q-header">
+<div class="q-number num-wrong">08</div>
+<div class="q-meta">
+<span class="q-badge badge-wrong wrong">MARQUE A INCORRETA</span>
+<div class="q-text">A apostila apresenta os Cinco Níveis de Liderança. Marque a descrição que <strong>NÃO</strong> corresponde corretamente a nenhum dos níveis descritos:</div>
+</div>
+</div>
+<div class="options" id="opts8">
+<label class="option-label makarios-option" data-value="a"><input name="q8" style="display:none" type="radio" value="a"/><span class="option-check"></span>Nível 1 — Posição: as pessoas seguem porque precisam; a influência está limitada ao cargo</label>
+<label class="option-label makarios-option" data-value="b"><input name="q8" style="display:none" type="radio" value="b"/><span class="option-check"></span>Nível 3 — Produção: a liderança se fortalece por resultados; a equipe confia na direção porque vê evidências práticas</label>
+<label class="option-label makarios-option" data-value="c"><input name="q8" style="display:none" type="radio" value="c"/><span class="option-check"></span>Nível 4 — Multiplicação: o líder cresce numericamente sua equipe por meio de campanhas de recrutamento intensivo</label>
+<label class="option-label makarios-option" data-value="d"><input name="q8" style="display:none" type="radio" value="d"/><span class="option-check"></span>Nível 5 — Personalidade: as pessoas seguem o líder por quem ele é; a influência é profunda e duradoura</label>
+</div>
+<button class="verify-btn makarios-verify-btn" data-qid="q8" type="button">Verificar resposta</button>
+<div class="feedback" id="fb8"></div>
+</div>
+<!-- Q9 - single -->
+<div class="question-card" data-correct="c" data-explanation="A alternativa correta é C. A honra bíblica reconhece o valor dado por Deus às pessoas e às autoridades, sem transformar honra em bajulação, medo ou conivência com o pecado. Resposta: C) desonra e incredulidade dos habitantes criou um ambiente onde Jesus não fez muitas obras poderosas" data-qid="q9" data-type="single" id="q9">
+<div class="q-header">
+<div class="q-number num-single">09</div>
+<div class="q-meta">
+<span class="q-badge badge-single single">UMA RESPOSTA CORRETA</span>
+<div class="q-text">A apostila "Cultura da Honra" cita um episódio em Mateus 13 para mostrar as consequências práticas da desonra. O que aconteceu quando Jesus voltou à sua cidade natal?</div>
+</div>
+</div>
+<div class="options" id="opts9">
+<label class="option-label makarios-option" data-value="a"><input name="q9" style="display:none" type="radio" value="a"/><span class="option-check"></span>Jesus foi recebido com celebração, mas optou por não fazer milagres para não gerar dependência</label>
+<label class="option-label makarios-option" data-value="b"><input name="q9" style="display:none" type="radio" value="b"/><span class="option-check"></span>As pessoas O rejeitaram por ciúme e Jesus Os amaldiçoou como julgamento</label>
+<label class="option-label makarios-option" data-value="c"><input name="q9" style="display:none" type="radio" value="c"/><span class="option-check"></span>A desonra e incredulidade dos habitantes criou um ambiente onde Jesus não fez muitas obras poderosas</label>
+<label class="option-label makarios-option" data-value="d"><input name="q9" style="display:none" type="radio" value="d"/><span class="option-check"></span>Jesus fez milagres mesmo assim, para provar Sua identidade a quem duvidava</label>
+</div>
+<button class="verify-btn makarios-verify-btn" data-qid="q9" type="button">Verificar resposta</button>
+<div class="feedback" id="fb9"></div>
+</div>
+<!-- Q10 - single incorreta -->
+<div class="question-card" data-correct="c" data-explanation="A alternativa que deve ser marcada como incorreta é C. Ela contradiz o ensino bíblico ou o sentido correto do tema. A liderança cristã é serviço, mordomia e influência segundo o padrão de Cristo, que forma pessoas e conduz para a maturidade. As demais alternativas preservam melhor o conjunto do ensino das Escrituras." data-qid="q10" data-type="incorrect" id="q10">
+<div class="q-header">
+<div class="q-number num-wrong">10</div>
+<div class="q-meta">
+<span class="q-badge badge-wrong wrong">MARQUE A INCORRETA</span>
+<div class="q-text">A apostila "Fundamentos da Liderança" trata da Liderança Multidirecional — a habilidade de gerar impacto em diferentes níveis ao mesmo tempo. Marque a afirmação que <strong>NÃO</strong> corresponde ao que o texto ensina:</div>
+</div>
+</div>
+<div class="options" id="opts10">
+<label class="option-label makarios-option" data-value="a"><input name="q10" style="display:none" type="radio" value="a"/><span class="option-check"></span>Influenciar líderes superiores exige agregar valor a eles, apoiar e servir — não disputar espaço ou autoridade</label>
+<label class="option-label makarios-option" data-value="b"><input name="q10" style="display:none" type="radio" value="b"/><span class="option-check"></span>A influência entre pares não é imposta, mas conquistada por atitudes que promovem unidade e cooperação</label>
+<label class="option-label makarios-option" data-value="c"><input name="q10" style="display:none" type="radio" value="c"/><span class="option-check"></span>O diferencial do líder multidirecional está em liderar com força os de baixo, e adotar postura de espera passiva diante dos superiores</label>
+<label class="option-label makarios-option" data-value="d"><input name="q10" style="display:none" type="radio" value="d"/><span class="option-check"></span>Liderar os discípulos envolve acompanhar de perto o crescimento, oferecer feedback e criar oportunidades para que avancem</label>
+</div>
+<button class="verify-btn makarios-verify-btn" data-qid="q10" type="button">Verificar resposta</button>
+<div class="feedback" id="fb10"></div>
+</div>
+<!-- SCORE PANEL -->
+<div class="score-panel" id="scorePanel">
+<div class="score-big" id="scoreNum">0<span class="score-denom">/10</span></div>
+<div class="score-msg" id="scoreMsg"></div>
+<div class="score-sub" id="scoreSub"></div>
+</div>
+<!-- SUBMIT AREA -->
+<div class="submit-area" id="submitArea">
+<h3>Registrar participação</h3>
+<p>Digite seu nome para registrar sua nota na planilha da turma.</p>
+<input autocomplete="name" class="name-input" id="nomeAluno" placeholder="Seu nome completo" type="text"/>
+<br/>
+<button class="submit-btn">Enviar participação</button>
+<div class="submit-success" id="submitSuccess">✅ Participação registrada com sucesso!</div>
+</div>
+</div><!-- /container -->
+<iframe id="submit_frame" name="submit_frame"></iframe>
+<footer style="text-align:center;padding:24px 0;font-size:0.78rem;color:var(--text2);border-top:1px solid var(--border);margin-top:20px;font-weight:600;letter-spacing:0.04em;">
+  Escola Makários · Igreja Emaús, Goiânia
+</footer>
+<script id="audit-js">(function(){const EXERCICIO="Voz — Semana 2",APP_URL="https://script.google.com/macros/s/AKfycbwYahR6Kd00Sc4dsaoMYSiapUbaXW9z-s2UFcwbYBh_WT_DtBpHyKTY0O02qOlXF9aq/exec",$=(s,r=document)=>r.querySelector(s),$$=(s,r=document)=>Array.from(r.querySelectorAll(s)),norm=a=>a.map(String).map(x=>x.trim()).filter(Boolean).sort().join(',');function cards(){return $$('.question-card,.q-card')}function opts(c){return $$('.makarios-option,.option,.opt',c)}function val(o){return o.dataset.value||o.dataset.val||(o.querySelector('input')&&o.querySelector('input').value)||''}function corrects(c){return(c.dataset.correct||c.getAttribute('data-answer')||'').split(',').map(x=>x.trim()).filter(Boolean)}function selected(c){return opts(c).filter(o=>o.classList.contains('selected')).map(val).filter(Boolean)}function isMulti(c){return c.dataset.type==='multi'||corrects(c).length>1||!!c.querySelector('input[type="checkbox"]')}function isIncorrect(c){const q=(($('.question-text,.q-text',c)||{}).textContent||'').toLowerCase();return c.dataset.type==='incorrect'||q.includes('incorreta')||q.includes('incorreto')||q.includes('errada')||q.includes('errado')||q.includes('não corresponde')}function scoreMsg(p){if(p>=90)return'Excelente. Você demonstrou domínio e discernimento. Que esse conhecimento se transforme em maturidade, serviço fiel e influência segundo o Reino.';if(p>=70)return'Muito bom. Há fundamento sendo formado. Revise os pontos que errou e siga crescendo com constância, porque formação espiritual é caminho, não apenas resultado.';if(p>=50)return'Você está em processo. Volte às questões, revise o conteúdo e permita que a Palavra aprofunde sua formação como discípulo.';return'Este resultado é um ponto de partida, não um rótulo. O discípulo cresce quando recebe correção com humildade e transforma aprendizado em obediência.'}function ensureFeedback(c){let fb=$('.feedback,.makarios-feedback',c);if(!fb){fb=document.createElement('div');fb.className='makarios-feedback';c.appendChild(fb)}return fb}function ensureScore(){let a=$('#makarios-score-card');if(a)return a;a=document.createElement('section');a.id='makarios-score-card';a.className='makarios-score-card';const m=$('main')||$('.main')||$('.container')||$('.wrap')||document.body;m.appendChild(a);return a}function ensureSubmit(){if($('#makarios-submit-area'))return;const a=document.createElement('section');a.id='makarios-submit-area';a.className='makarios-submit-area';a.innerHTML='<label for="makarios-nome">Nome completo</label><input id="makarios-nome" type="text" placeholder="Digite seu nome completo"><button id="makarios-submit-btn" type="button">Enviar resultado</button><div id="makarios-submit-status" class="makarios-submit-status">Resultado enviado para a planilha.</div>';const m=$('main')||$('.main')||$('.container')||$('.wrap')||document.body;m.appendChild(a)}function updateProgress(){const cs=cards(),a=cs.filter(c=>c.dataset.answered==='true').length,p=cs.length?Math.round(a/cs.length*100):0;$$('.progress-bar-fill,.progress-fill,#progressBar,.progress-bar').forEach(b=>{b.style.width=p+'%'});const ct=$('.progress-count');if(ct)ct.textContent=a+'/'+cs.length}function updateScore(){const cs=cards(),a=cs.filter(c=>c.dataset.answered==='true').length,h=cs.filter(c=>c.dataset.ok==='true').length,t=cs.length,p=t?Math.round(h/t*100):0,area=ensureScore();area.innerHTML=`<h3>${a<t?'Resultado parcial':'Resultado final'}</h3><div class="makarios-score-number">${h}/${t} · ${p}%</div><p class="makarios-score-message">${a<t?'Verifique todas as questões para fechar sua nota antes do envio.':scoreMsg(p)}</p>`;updateProgress();window.MAKARIOS_SCORE={hits:h,total:t,pct:p,complete:a===t};return window.MAKARIOS_SCORE}function defExp(c){const l=corrects(c).map(x=>x.toUpperCase()).join(', ');if(isIncorrect(c))return`A alternativa incorreta é ${l}. Ela é a opção que contradiz o ensino bíblico ou o sentido correto do conteúdo.`;if(isMulti(c))return`As alternativas corretas são ${l}. Nesta questão, era necessário marcar todas as afirmações verdadeiras.`;return`A alternativa correta é ${l}.`}function selectOption(c,o){if(o.classList.contains('locked'))return;const inp=o.querySelector('input');if(isMulti(c)){o.classList.toggle('selected');if(inp)inp.checked=o.classList.contains('selected')}else{opts(c).forEach(x=>{x.classList.remove('selected');const xi=x.querySelector('input');if(xi)xi.checked=false});o.classList.add('selected');if(inp)inp.checked=true}}function verify(c){const s=selected(c);if(!s.length){alert('Marque uma alternativa antes de verificar.');return}const cor=corrects(c),ok=norm(s)===norm(cor);opts(c).forEach(o=>{const v=val(o),inp=o.querySelector('input');o.classList.add('locked');o.classList.remove('correct-answer','wrong-answer','correct','wrong');if(cor.includes(v))o.classList.add('correct-answer','correct');if(s.includes(v)&&!cor.includes(v))o.classList.add('wrong-answer','wrong');if(inp)inp.disabled=true});c.classList.add('answered');c.dataset.answered='true';c.dataset.ok=ok?'true':'false';const fb=ensureFeedback(c),mode=isIncorrect(c)?'Nesta pergunta, a alternativa destacada em verde é a INCORRETA que deveria ser marcada.':isMulti(c)?'Nesta pergunta, era necessário marcar TODAS as alternativas corretas.':'Nesta pergunta, havia UMA resposta correta.';fb.innerHTML=`<strong>${ok?'Resposta correta.':'Resposta revisada.'}</strong><br>${mode}<br>${c.dataset.explanation||defExp(c)}`;fb.classList.add('show');fb.style.display='block';updateScore()}function submit(){const s=updateScore();if(!s.complete){alert('Verifique todas as respostas antes de enviar o resultado.');return}const i=$('#makarios-nome'),nome=i?i.value.trim():'';if(!nome){alert('Informe seu nome completo antes de enviar.');return}const params=new URLSearchParams({exercicio:EXERCICIO,nome,pontuacao:String(s.hits),nota:`${s.hits}/${s.total}`,data:new Date().toLocaleString('pt-BR')});let iframe=document.querySelector('iframe[name="makarios_submit_frame"]');if(!iframe){iframe=document.createElement('iframe');iframe.name='makarios_submit_frame';iframe.style.display='none';document.body.appendChild(iframe)}const form=document.createElement('form');form.method='GET';form.action=APP_URL;form.target='makarios_submit_frame';form.style.display='none';for(const[k,v]of params.entries()){const inp=document.createElement('input');inp.name=k;inp.value=v;form.appendChild(inp)}document.body.appendChild(form);form.submit();setTimeout(()=>form.remove(),1000);const st=$('#makarios-submit-status');if(st){st.textContent='Resultado enviado para a planilha.';st.classList.add('show');st.style.display='block'}alert('Resultado enviado com sucesso.')}function init(){cards().forEach((c,ci)=>{if(!c.dataset.correct&&c.dataset.answer)c.dataset.correct=c.dataset.answer;const b=$('.question-badge,.q-badge,.q-tipo',c);if(b){if(isIncorrect(c)){b.textContent='MARQUE A INCORRETA';b.classList.add('wrong')}else if(isMulti(c)){b.textContent='MARQUE TODAS AS CORRETAS';b.classList.add('multi')}else b.textContent='UMA RESPOSTA CORRETA'}opts(c).forEach((o,oi)=>{o.classList.add('makarios-option');o.style.pointerEvents='auto';if(!o.dataset.value&&!o.dataset.val)o.dataset.value=String.fromCharCode(97+oi);let inp=o.querySelector('input');if(!inp){inp=document.createElement('input');inp.type=isMulti(c)?'checkbox':'radio';inp.name='q'+(ci+1);inp.value=val(o);inp.style.display='none';o.insertBefore(inp,o.firstChild)}else{inp.type=isMulti(c)?'checkbox':'radio';inp.name='q'+(ci+1);inp.value=val(o)}o.addEventListener('click',function(e){e.preventDefault();e.stopPropagation();selectOption(c,o)},true)});let btn=$('.makarios-verify-btn,.verify-btn,.btn-check',c);if(!btn){btn=document.createElement('button');btn.type='button';btn.className='verify-btn';btn.textContent='Verificar resposta';c.appendChild(btn)}btn.type='button';btn.textContent=btn.textContent.trim()||'Verificar resposta';btn.addEventListener('click',function(e){e.preventDefault();e.stopPropagation();verify(c)},true)});ensureScore();ensureSubmit();const sb=$('#makarios-submit-btn');if(sb){sb.type='button';sb.addEventListener('click',function(e){e.preventDefault();e.stopPropagation();submit()},true)}updateScore()}if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init()})();</script></body>
+</html>
