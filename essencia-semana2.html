@@ -7,7 +7,7 @@
 <title>Essência – Semana 2 | Escola Makários</title>
 <link href="https://fonts.googleapis.com" rel="preconnect"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,700;0,800;1,700;1,800&amp;family=Barlow:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,700;0,800;1,700;1,800&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet"/>
 <style>
   :root {
     --bg: #ffffff;
@@ -43,7 +43,6 @@
     min-height: 100vh;
   }
 
-  /* NAV */
   nav {
     background: var(--surface);
     border-bottom: 1px solid var(--border);
@@ -80,7 +79,6 @@
   .nav-links a:hover { background: var(--surface2); color: var(--accent); }
   .nav-links a.active { background: var(--accent); color: #fff; }
 
-  /* PROGRESS BAR */
   .progress-wrap {
     background: var(--border);
     height: 4px;
@@ -93,14 +91,12 @@
     transition: width 0.5s cubic-bezier(.4,0,.2,1);
   }
 
-  /* CONTAINER */
   .container {
     max-width: 760px;
     margin: 0 auto;
     padding: 40px 20px 80px;
   }
 
-  /* BACK LINK */
   .back-link {
     display: inline-flex;
     align-items: center;
@@ -116,7 +112,6 @@
   .back-link:hover { color: var(--accent); }
   .back-link svg { width: 14px; height: 14px; }
 
-  /* HEADER */
   .exercise-header { margin-bottom: 36px; }
   .volume-tag {
     display: inline-block;
@@ -144,7 +139,6 @@
     font-weight: 600;
   }
 
-  /* PROGRESS TEXT */
   .progress-text {
     display: flex;
     align-items: center;
@@ -165,7 +159,6 @@
     border-radius: 20px;
   }
 
-  /* LEGEND */
   .legend {
     display: flex;
     flex-wrap: wrap;
@@ -193,7 +186,6 @@
   .legend-dot.multi  { background: var(--multi-color); }
   .legend-dot.wrong  { background: var(--incorrect-color); }
 
-  /* QUESTION CARD */
   .question-card {
     background: var(--surface);
     border: 1px solid var(--border);
@@ -245,7 +237,6 @@
     line-height: 1.5;
   }
 
-  /* OPTIONS */
   .options { display: flex; flex-direction: column; gap: 10px; margin-bottom: 18px; }
 
   .option {
@@ -319,7 +310,6 @@
   .option.correct-reveal .option-text { color: var(--correct); font-weight: 700; }
   .option.wrong-reveal   .option-text { color: var(--wrong);   font-weight: 700; }
 
-  /* CHECK BUTTON */
   .btn-check {
     width: 100%;
     padding: 12px 20px;
@@ -337,7 +327,6 @@
   .btn-check:hover { background: var(--accent-dark); }
   .btn-check:active { transform: scale(0.98); }
 
-  /* FEEDBACK */
   .feedback {
     margin-top: 14px;
     padding: 14px 16px;
@@ -358,8 +347,8 @@
   }
   .feedback-icon { font-size: 1.1rem; margin-right: 4px; }
 
-  /* SCORE PANEL */
   .score-panel {
+    display: none;
     background: var(--surface);
     border: 2px solid var(--accent);
     border-radius: var(--radius);
@@ -394,8 +383,8 @@
     margin-top: 12px;
   }
 
-  /* SUBMIT AREA */
   .submit-area {
+    display: none;
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: var(--radius);
@@ -453,6 +442,7 @@
     opacity: 0.7;
   }
   .submit-ok {
+    display: none;
     margin-top: 14px;
     padding: 12px 16px;
     background: var(--correct-bg);
@@ -463,7 +453,6 @@
     color: var(--correct);
   }
 
-  /* FOOTER */
   footer {
     text-align: center;
     padding: 32px 20px;
@@ -480,39 +469,8 @@
     .submit-row { flex-direction: column; }
   }
 </style>
-<style>
-  .makarios-verify-btn.visible,
-  .verify-btn.visible,
-  .btn-check.visible,
-  .check-btn.visible { display: inline-flex !important; }
-  .makarios-result-panel {
-    max-width: 680px;
-    margin: 32px auto 60px;
-    padding: 24px;
-    border: 1.5px solid rgba(46,127,191,.25);
-    border-radius: 16px;
-    background: #ffffff;
-    box-shadow: 0 8px 28px rgba(26,43,60,.08);
-    font-family: 'Barlow', sans-serif;
-  }
-  .makarios-result-panel[hidden] { display: none !important; }
-  .makarios-result-panel h2 { font-size: 1.3rem; margin-bottom: 8px; color: #1A2B3C; }
-  .makarios-result-score { font-weight: 800; color: #2E7FBF; margin-bottom: 14px; }
-  .makarios-result-panel label { display:block; font-size: 13px; font-weight: 700; color:#5A6A7A; margin: 14px 0 6px; }
-  .makarios-result-panel input {
-    width: 100%; padding: 12px 14px; border-radius: 10px; border: 1.5px solid rgba(46,127,191,.25);
-    font-family: 'Barlow', sans-serif; font-size: 15px;
-  }
-  .makarios-submit-btn {
-    margin-top: 14px; padding: 12px 18px; border: none; border-radius: 10px; background: #2E7FBF; color: white;
-    font-weight: 800; font-family: 'Barlow', sans-serif; cursor: pointer;
-  }
-  .makarios-submit-status { margin-top:10px; font-size: 13px; color:#2a7a4b; font-weight:700; }
-  .makarios-submit-status.show { display:block; }
-</style>
-<style id="audit-css">.option.selected,.makarios-option.selected,.opt.selected{background:#E8F2FB!important;border-color:#2E7FBF!important}.option.correct-answer,.makarios-option.correct-answer,.opt.correct-answer,.option.correct,.makarios-option.correct,.opt.correct{background:#eaf5ee!important;border-color:#2a7a4b!important;color:#1f5b38!important}.option.wrong-answer,.makarios-option.wrong-answer,.opt.wrong-answer,.option.wrong,.makarios-option.wrong,.opt.wrong{background:#faeaea!important;border-color:#a8282a!important;color:#7B241C!important}.option.locked,.makarios-option.locked,.opt.locked{cursor:default!important}.question-badge,.q-badge,.q-tipo{font-weight:800!important;letter-spacing:.06em!important;text-transform:uppercase!important}.question-badge.multi,.q-badge.multi{background:#e8f0fb!important;color:#2563a8!important}.question-badge.wrong,.q-badge.wrong{background:#f3edfb!important;color:#6d28a8!important}.feedback,.makarios-feedback{font-size:13.5px!important;line-height:1.65!important;margin-top:14px!important;padding:14px 16px!important;border-radius:12px!important;border:1.5px solid rgba(46,127,191,.22)!important;background:#f7fbff!important;color:#1a2b3c!important}.feedback.show,.makarios-feedback.show{display:block!important}.makarios-score-card{max-width:760px;margin:28px auto 18px;padding:22px;border:1.5px solid rgba(46,127,191,.22);border-radius:16px;background:linear-gradient(180deg,#fff,#f7fbff);text-align:left;font-family:'Barlow',sans-serif}.makarios-score-card h3{font-size:1.15rem;margin-bottom:8px;color:#1a2b3c}.makarios-score-number{font-size:2rem;font-weight:800;color:#2E7FBF;margin:6px 0}.makarios-score-message{font-size:14px;line-height:1.7;color:#4a5568}.makarios-submit-area{max-width:760px;margin:18px auto 40px;padding:22px;border:1.5px solid #D1DCE8;border-radius:16px;background:#fff;font-family:'Barlow',sans-serif}.makarios-submit-area label{font-weight:800;font-size:13px;display:block;margin-bottom:8px}.makarios-submit-area input{width:100%;padding:12px 14px;border:1.5px solid #D1DCE8;border-radius:10px;font-family:'Barlow',sans-serif;font-size:15px;margin-bottom:12px}.makarios-submit-area button{border:0;border-radius:10px;background:#2E7FBF;color:#fff;font-weight:800;padding:12px 20px;cursor:pointer;font-family:'Barlow',sans-serif}.makarios-submit-status{margin-top:12px;color:#2a7a4b;font-weight:700}.makarios-submit-status.show{display:block}.makarios-logo-official,.header-logo-wrap img,.header-logo img,.nav-logo img,nav img.logo,.logo-main{object-fit:contain!important;background:transparent!important;box-shadow:none!important}.header-logo-wrap img,.header-logo img,.logo-main{height:110px!important;max-width:min(760px,94vw)!important;width:auto!important;padding:0!important;border-radius:0!important}nav .makarios-logo-official,.nav-logo img,nav img.logo{height:54px!important;width:auto!important;padding:0!important;border-radius:0!important}</style></head>
+</head>
 <body>
-<!-- NAV -->
 <nav>
 <a class="nav-logo" href="#"><img alt="Makários" class="makarios-logo-official" src="logo-makarios-oficial-azul.png"/></a>
 <div class="nav-links">
@@ -521,30 +479,25 @@
 <a href="voz.html">Voz</a>
 </div>
 </nav>
-<!-- PROGRESS BAR -->
 <div class="progress-wrap">
 <div class="progress-bar" id="progressBar"></div>
 </div>
 <div class="container">
-<!-- BACK -->
 <a class="back-link" href="essencia.html">
 <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" viewbox="0 0 16 16">
 <path d="M10 3L5 8l5 5"></path>
 </svg>
     Voltar para Essência
   </a>
-<!-- HEADER -->
 <div class="exercise-header">
 <div class="volume-tag">Volume 1 · ESSÊNCIA</div>
 <h1>Exercício de Fixação<br/>Semana 2</h1>
 <p>Caráter de Cristo, Santidade e Cura Interior</p>
 </div>
-<!-- PROGRESS TEXT -->
 <div class="progress-text">
 <span>Responda todas as questões para registrar sua participação</span>
 <span class="progress-count" id="progressCount">0 / 10</span>
 </div>
-<!-- LEGEND -->
 <div class="legend">
 <div class="legend-item">
 <div class="legend-dot single"></div>
@@ -559,8 +512,6 @@
 <span>Marque a incorreta</span>
 </div>
 </div>
-<!-- ═══════════════════════════════ QUESTÕES ═══════════════════════════════ -->
-<!-- Q1 — single -->
 <div class="question-card" data-correct="b" data-explanation="A alternativa correta é B. Jesus ensina que o Reino transforma primeiro quem somos diante de Deus; caráter cristão não é aparência, mas conformação à vida de Cristo. Resposta: B) Marca gravada, impressão, cunho" data-qid="q1" data-type="single" id="q1">
 <div class="q-header">
 <div class="q-number single">01</div>
@@ -590,7 +541,6 @@
 <button class="btn-check makarios-verify-btn" data-qid="q1" type="button">Verificar resposta</button>
 <div class="feedback" id="fb1"></div>
 </div>
-<!-- Q2 — single -->
 <div class="question-card" data-correct="b" data-explanation="A alternativa correta é B. Gênesis apresenta o ser humano criado à imagem de Deus, com dignidade, vocação e dependência do Criador. Resposta: B) Que Jesus tem o caráter idêntico do Pai" data-qid="q2" data-type="single" id="q2">
 <div class="q-header">
 <div class="q-number single">02</div>
@@ -620,7 +570,6 @@
 <button class="btn-check makarios-verify-btn" data-qid="q2" type="button">Verificar resposta</button>
 <div class="feedback" id="fb2"></div>
 </div>
-<!-- Q3 — multi -->
 <div class="question-card" data-correct="a,c,d,e" data-explanation="As alternativas corretas são A, C, D, E. Jesus ensina que o Reino transforma primeiro quem somos diante de Deus; caráter cristão não é aparência, mas conformação à vida de Cristo. Nesta questão, era necessário marcar todas as afirmações que concordam com o ensino bíblico apresentado. Respostas parciais não completam o raciocínio." data-qid="q3" data-type="multi" id="q3">
 <div class="q-header">
 <div class="q-number multi">03</div>
@@ -654,7 +603,6 @@
 <button class="btn-check makarios-verify-btn" data-qid="q3" type="button">Verificar resposta</button>
 <div class="feedback" id="fb3"></div>
 </div>
-<!-- Q4 — incorrect -->
 <div class="question-card" data-correct="c" data-explanation="A alternativa que deve ser marcada como incorreta é C. Ela contradiz o ensino bíblico ou o sentido correto do tema. Jesus ensina que o Reino transforma primeiro quem somos diante de Deus; caráter cristão não é aparência, mas conformação à vida de Cristo. As demais alternativas preservam melhor o conjunto do ensino das Escrituras." data-qid="q4" data-type="incorrect" id="q4">
 <div class="q-header">
 <div class="q-number incorrect">04</div>
@@ -684,7 +632,6 @@
 <button class="btn-check makarios-verify-btn" data-qid="q4" type="button">Verificar resposta</button>
 <div class="feedback" id="fb4"></div>
 </div>
-<!-- Q5 — single -->
 <div class="question-card" data-correct="c" data-explanation="A alternativa correta é C. Jesus ensina que o Reino transforma primeiro quem somos diante de Deus; caráter cristão não é aparência, mas conformação à vida de Cristo. Resposta: C) Ser fiel nas pequenas coisas (Lucas 16:10)" data-qid="q5" data-type="single" id="q5">
 <div class="q-header">
 <div class="q-number single">05</div>
@@ -714,7 +661,6 @@
 <button class="btn-check makarios-verify-btn" data-qid="q5" type="button">Verificar resposta</button>
 <div class="feedback" id="fb5"></div>
 </div>
-<!-- Q6 — multi -->
 <div class="question-card" data-correct="a,c,d" data-explanation="As alternativas corretas são A, C, D. A santidade nas Escrituras envolve separação para Deus e transformação progressiva pelo Espírito, vivendo na prática aquilo que já recebemos em Cristo. Nesta questão, era necessário marcar todas as afirmações que concordam com o ensino bíblico apresentado. Respostas parciais não completam o raciocínio." data-qid="q6" data-type="multi" id="q6">
 <div class="q-header">
 <div class="q-number multi">06</div>
@@ -744,7 +690,6 @@
 <button class="btn-check makarios-verify-btn" data-qid="q6" type="button">Verificar resposta</button>
 <div class="feedback" id="fb6"></div>
 </div>
-<!-- Q7 — incorrect -->
 <div class="question-card" data-correct="c" data-explanation="A alternativa que deve ser marcada como incorreta é C. Ela contradiz o ensino bíblico ou o sentido correto do tema. A restauração do interior deve ser vista à luz da cruz, da verdade da Palavra e da ação do Espírito, não como mera técnica humana. As demais alternativas preservam melhor o conjunto do ensino das Escrituras." data-qid="q7" data-type="incorrect" id="q7">
 <div class="q-header">
 <div class="q-number incorrect">07</div>
@@ -774,7 +719,6 @@
 <button class="btn-check makarios-verify-btn" data-qid="q7" type="button">Verificar resposta</button>
 <div class="feedback" id="fb7"></div>
 </div>
-<!-- Q8 — single -->
 <div class="question-card" data-correct="a" data-explanation="A alternativa correta é A. A resposta foi revisada à luz do ensino bíblico geral: Cristo, a Palavra e a obra do Espírito são o critério para avaliar a alternativa correta. Resposta: A) Porque feridas não tratadas moldam nossa identidade, fazendo a ferida falar mais alto do que a Palavra de Deus" data-qid="q8" data-type="single" id="q8">
 <div class="q-header">
 <div class="q-number single">08</div>
@@ -804,7 +748,6 @@
 <button class="btn-check makarios-verify-btn" data-qid="q8" type="button">Verificar resposta</button>
 <div class="feedback" id="fb8"></div>
 </div>
-<!-- Q9 — incorrect -->
 <div class="question-card" data-correct="c" data-explanation="A alternativa que deve ser marcada como incorreta é C. Ela contradiz o ensino bíblico ou o sentido correto do tema. A restauração do interior deve ser vista à luz da cruz, da verdade da Palavra e da ação do Espírito, não como mera técnica humana. As demais alternativas preservam melhor o conjunto do ensino das Escrituras." data-qid="q9" data-type="incorrect" id="q9">
 <div class="q-header">
 <div class="q-number incorrect">09</div>
@@ -834,7 +777,6 @@
 <button class="btn-check makarios-verify-btn" data-qid="q9" type="button">Verificar resposta</button>
 <div class="feedback" id="fb9"></div>
 </div>
-<!-- Q10 — single -->
 <div class="question-card" data-correct="c" data-explanation="A alternativa correta é C. A resposta foi revisada à luz do ensino bíblico geral: Cristo, a Palavra e a obra do Espírito são o critério para avaliar a alternativa correta. Resposta: C) Que a transformação é uma metamorfose completa — de dentro para fora, como a lagarta que se torna borboleta" data-qid="q10" data-type="single" id="q10">
 <div class="q-header">
 <div class="q-number single">10</div>
@@ -864,13 +806,11 @@
 <button class="btn-check makarios-verify-btn" data-qid="q10" type="button">Verificar resposta</button>
 <div class="feedback" id="fb10"></div>
 </div>
-<!-- SCORE PANEL -->
 <div class="score-panel" id="scorePanel">
 <div class="score-label">Sua pontuação</div>
 <div class="score-value" id="scoreValue">0<span class="score-denom">/10</span></div>
 <div class="score-msg" id="scoreMsg"></div>
 </div>
-<!-- SUBMIT AREA -->
 <div class="submit-area" id="submitArea">
 <h3>Registrar participação</h3>
 <p>Insira seu nome para registrar sua nota nesta semana.</p>
@@ -878,9 +818,8 @@
 <input id="nomeInput" maxlength="80" placeholder="Seu nome completo" type="text"/>
 <button class="btn-submit" id="btnSubmit">Enviar</button>
 </div>
-<div class="submit-ok" id="submitOk">✅ Participação registrada com sucesso!</div>
+<div class="submit-ok" id="submitOk">&#x2705; Participação registrada com sucesso!</div>
 </div>
-<!-- HIDDEN FORM -->
 <iframe name="submit_frame" style="display:none"></iframe>
 <form id="submitForm" method="GET" style="display:none" target="submit_frame">
 <input name="exercicio" type="hidden" value="Essência - Semana 2"/>
@@ -889,7 +828,8 @@
 <input id="h_nota" name="nota" type="hidden" value=""/>
 <input id="h_data" name="data" type="hidden" value=""/>
 </form>
-</div><!-- /container -->
+</div>
 <footer>Escola Makários · Igreja Emaús, Goiânia</footer>
-<script id="audit-js">(function(){const EXERCICIO="Essência — Semana 2",APP_URL="https://script.google.com/macros/s/AKfycbwYahR6Kd00Sc4dsaoMYSiapUbaXW9z-s2UFcwbYBh_WT_DtBpHyKTY0O02qOlXF9aq/exec",$=(s,r=document)=>r.querySelector(s),$$=(s,r=document)=>Array.from(r.querySelectorAll(s)),norm=a=>a.map(String).map(x=>x.trim()).filter(Boolean).sort().join(',');function cards(){return $$('.question-card,.q-card')}function opts(c){return $$('.makarios-option,.option,.opt',c)}function val(o){return o.dataset.value||o.dataset.val||(o.querySelector('input')&&o.querySelector('input').value)||''}function corrects(c){return(c.dataset.correct||c.getAttribute('data-answer')||'').split(',').map(x=>x.trim()).filter(Boolean)}function selected(c){return opts(c).filter(o=>o.classList.contains('selected')).map(val).filter(Boolean)}function isMulti(c){return c.dataset.type==='multi'||corrects(c).length>1||!!c.querySelector('input[type="checkbox"]')}function isIncorrect(c){const q=(($('.question-text,.q-text',c)||{}).textContent||'').toLowerCase();return c.dataset.type==='incorrect'||q.includes('incorreta')||q.includes('incorreto')||q.includes('errada')||q.includes('errado')||q.includes('não corresponde')}function scoreMsg(p){if(p>=90)return'Excelente. Você demonstrou domínio e discernimento. Que esse conhecimento se transforme em maturidade, serviço fiel e influência segundo o Reino.';if(p>=70)return'Muito bom. Há fundamento sendo formado. Revise os pontos que errou e siga crescendo com constância, porque formação espiritual é caminho, não apenas resultado.';if(p>=50)return'Você está em processo. Volte às questões, revise o conteúdo e permita que a Palavra aprofunde sua formação como discípulo.';return'Este resultado é um ponto de partida, não um rótulo. O discípulo cresce quando recebe correção com humildade e transforma aprendizado em obediência.'}function ensureFeedback(c){let fb=$('.feedback,.makarios-feedback',c);if(!fb){fb=document.createElement('div');fb.className='makarios-feedback';c.appendChild(fb)}return fb}function ensureScore(){let a=$('#makarios-score-card');if(a)return a;a=document.createElement('section');a.id='makarios-score-card';a.className='makarios-score-card';const m=$('main')||$('.main')||$('.container')||$('.wrap')||document.body;m.appendChild(a);return a}function ensureSubmit(){if($('#makarios-submit-area'))return;const a=document.createElement('section');a.id='makarios-submit-area';a.className='makarios-submit-area';a.innerHTML='<label for="makarios-nome">Nome completo</label><input id="makarios-nome" type="text" placeholder="Digite seu nome completo"><button id="makarios-submit-btn" type="button">Enviar resultado</button><div id="makarios-submit-status" class="makarios-submit-status">Resultado enviado para a planilha.</div>';const m=$('main')||$('.main')||$('.container')||$('.wrap')||document.body;m.appendChild(a)}function updateProgress(){const cs=cards(),a=cs.filter(c=>c.dataset.answered==='true').length,p=cs.length?Math.round(a/cs.length*100):0;$$('.progress-bar-fill,.progress-fill,#progressBar,.progress-bar').forEach(b=>{b.style.width=p+'%'});const ct=$('.progress-count');if(ct)ct.textContent=a+'/'+cs.length}function updateScore(){const cs=cards(),a=cs.filter(c=>c.dataset.answered==='true').length,h=cs.filter(c=>c.dataset.ok==='true').length,t=cs.length,p=t?Math.round(h/t*100):0,area=ensureScore();area.innerHTML=`<h3>${a<t?'Resultado parcial':'Resultado final'}</h3><div class="makarios-score-number">${h}/${t} · ${p}%</div><p class="makarios-score-message">${a<t?'Verifique todas as questões para fechar sua nota antes do envio.':scoreMsg(p)}</p>`;updateProgress();window.MAKARIOS_SCORE={hits:h,total:t,pct:p,complete:a===t};return window.MAKARIOS_SCORE}function defExp(c){const l=corrects(c).map(x=>x.toUpperCase()).join(', ');if(isIncorrect(c))return`A alternativa incorreta é ${l}. Ela é a opção que contradiz o ensino bíblico ou o sentido correto do conteúdo.`;if(isMulti(c))return`As alternativas corretas são ${l}. Nesta questão, era necessário marcar todas as afirmações verdadeiras.`;return`A alternativa correta é ${l}.`}function selectOption(c,o){if(o.classList.contains('locked'))return;const inp=o.querySelector('input');if(isMulti(c)){o.classList.toggle('selected');if(inp)inp.checked=o.classList.contains('selected')}else{opts(c).forEach(x=>{x.classList.remove('selected');const xi=x.querySelector('input');if(xi)xi.checked=false});o.classList.add('selected');if(inp)inp.checked=true}}function verify(c){const s=selected(c);if(!s.length){alert('Marque uma alternativa antes de verificar.');return}const cor=corrects(c),ok=norm(s)===norm(cor);opts(c).forEach(o=>{const v=val(o),inp=o.querySelector('input');o.classList.add('locked');o.classList.remove('correct-answer','wrong-answer','correct','wrong');if(cor.includes(v))o.classList.add('correct-answer','correct');if(s.includes(v)&&!cor.includes(v))o.classList.add('wrong-answer','wrong');if(inp)inp.disabled=true});c.classList.add('answered');c.dataset.answered='true';c.dataset.ok=ok?'true':'false';const fb=ensureFeedback(c),mode=isIncorrect(c)?'Nesta pergunta, a alternativa destacada em verde é a INCORRETA que deveria ser marcada.':isMulti(c)?'Nesta pergunta, era necessário marcar TODAS as alternativas corretas.':'Nesta pergunta, havia UMA resposta correta.';fb.innerHTML=`<strong>${ok?'Resposta correta.':'Resposta revisada.'}</strong><br>${mode}<br>${c.dataset.explanation||defExp(c)}`;fb.classList.add('show');fb.style.display='block';updateScore()}function submit(){const s=updateScore();if(!s.complete){alert('Verifique todas as respostas antes de enviar o resultado.');return}const i=$('#makarios-nome'),nome=i?i.value.trim():'';if(!nome){alert('Informe seu nome completo antes de enviar.');return}const params=new URLSearchParams({exercicio:EXERCICIO,nome,pontuacao:String(s.hits),nota:`${s.hits}/${s.total}`,data:new Date().toLocaleString('pt-BR')});let iframe=document.querySelector('iframe[name="makarios_submit_frame"]');if(!iframe){iframe=document.createElement('iframe');iframe.name='makarios_submit_frame';iframe.style.display='none';document.body.appendChild(iframe)}const form=document.createElement('form');form.method='GET';form.action=APP_URL;form.target='makarios_submit_frame';form.style.display='none';for(const[k,v]of params.entries()){const inp=document.createElement('input');inp.name=k;inp.value=v;form.appendChild(inp)}document.body.appendChild(form);form.submit();setTimeout(()=>form.remove(),1000);const st=$('#makarios-submit-status');if(st){st.textContent='Resultado enviado para a planilha.';st.classList.add('show');st.style.display='block'}alert('Resultado enviado com sucesso.')}function init(){cards().forEach((c,ci)=>{if(!c.dataset.correct&&c.dataset.answer)c.dataset.correct=c.dataset.answer;const b=$('.question-badge,.q-badge,.q-tipo',c);if(b){if(isIncorrect(c)){b.textContent='MARQUE A INCORRETA';b.classList.add('wrong')}else if(isMulti(c)){b.textContent='MARQUE TODAS AS CORRETAS';b.classList.add('multi')}else b.textContent='UMA RESPOSTA CORRETA'}opts(c).forEach((o,oi)=>{o.classList.add('makarios-option');o.style.pointerEvents='auto';if(!o.dataset.value&&!o.dataset.val)o.dataset.value=String.fromCharCode(97+oi);let inp=o.querySelector('input');if(!inp){inp=document.createElement('input');inp.type=isMulti(c)?'checkbox':'radio';inp.name='q'+(ci+1);inp.value=val(o);inp.style.display='none';o.insertBefore(inp,o.firstChild)}else{inp.type=isMulti(c)?'checkbox':'radio';inp.name='q'+(ci+1);inp.value=val(o)}o.addEventListener('click',function(e){e.preventDefault();e.stopPropagation();selectOption(c,o)},true)});let btn=$('.makarios-verify-btn,.verify-btn,.btn-check',c);if(!btn){btn=document.createElement('button');btn.type='button';btn.className='verify-btn';btn.textContent='Verificar resposta';c.appendChild(btn)}btn.type='button';btn.textContent=btn.textContent.trim()||'Verificar resposta';btn.addEventListener('click',function(e){e.preventDefault();e.stopPropagation();verify(c)},true)});ensureScore();ensureSubmit();const sb=$('#makarios-submit-btn');if(sb){sb.type='button';sb.addEventListener('click',function(e){e.preventDefault();e.stopPropagation();submit()},true)}updateScore()}if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init()})();</script></body>
+<script id="audit-js">(function(){const EXERCICIO="Essência \u2014 Semana 2",APP_URL="https://script.google.com/macros/s/AKfycbwYahR6Kd00Sc4dsaoMYSiapUbaXW9z-s2UFcwbYBh_WT_DtBpHyKTY0O02qOlXF9aq/exec",$=(s,r=document)=>r.querySelector(s),$$=(s,r=document)=>Array.from(r.querySelectorAll(s)),norm=a=>a.map(String).map(x=>x.trim()).filter(Boolean).sort().join(',');function cards(){return $$('.question-card,.q-card')}function opts(c){return $$('.makarios-option,.option,.opt',c)}function val(o){return o.dataset.value||o.dataset.val||(o.querySelector('input')&&o.querySelector('input').value)||''}function corrects(c){return(c.dataset.correct||c.getAttribute('data-answer')||'').split(',').map(x=>x.trim()).filter(Boolean)}function selected(c){return opts(c).filter(o=>o.classList.contains('selected')).map(val).filter(Boolean)}function isMulti(c){return c.dataset.type==='multi'||corrects(c).length>1||!!c.querySelector('input[type="checkbox"]')}function isIncorrect(c){const q=(($('.question-text,.q-text',c)||{}).textContent||'').toLowerCase();return c.dataset.type==='incorrect'||q.includes('incorreta')||q.includes('incorreto')||q.includes('errada')||q.includes('errado')||q.includes('n\u00e3o corresponde')}function scoreMsg(p){if(p>=90)return'Excelente. Voc\u00ea demonstrou dom\u00ednio e discernimento. Que esse conhecimento se transforme em maturidade, servi\u00e7o fiel e influ\u00eancia segundo o Reino.';if(p>=70)return'Muito bom. H\u00e1 fundamento sendo formado. Revise os pontos que errou e siga crescendo com const\u00e2ncia, porque forma\u00e7\u00e3o espiritual \u00e9 caminho, n\u00e3o apenas resultado.';if(p>=50)return'Voc\u00ea est\u00e1 em processo. Volte \u00e0s quest\u00f5es, revise o conte\u00fado e permita que a Palavra aprofunde sua forma\u00e7\u00e3o como disc\u00edpulo.';return'Este resultado \u00e9 um ponto de partida, n\u00e3o um r\u00f3tulo. O disc\u00edpulo cresce quando recebe corre\u00e7\u00e3o com humildade e transforma aprendizado em obeedi\u00eancia.'}function ensureFeedback(c){let fb=$('.feedback,.makarios-feedback',c);if(!fb){fb=document.createElement('div');fb.className='makarios-feedback';c.appendChild(fb)}return fb}function updateProgress(){const cs=cards(),a=cs.filter(c=>c.dataset.answered==='true').length,p=cs.length?Math.round(a/cs.length*100):0;$$('.progress-bar-fill,.progress-fill,#progressBar,.progress-bar').forEach(b=>{b.style.width=p+'%'});const ct=$('#progressCount');if(ct)ct.textContent=a+'/'+cs.length}function updateScore(){const cs=cards(),a=cs.filter(c=>c.dataset.answered==='true').length,h=cs.filter(c=>c.dataset.ok==='true').length,t=cs.length,complete=a===t,pct=t?Math.round(h/t*100):0;if(complete){const sv=$('#scoreValue'),sm=$('#scoreMsg'),sp=$('#scorePanel'),sa=$('#submitArea');if(sv)sv.innerHTML=h+'<span class="score-denom">/'+t+'</span>';if(sm)sm.textContent=scoreMsg(pct);if(sp)sp.style.display='block';if(sa)sa.style.display='block'}updateProgress();window.MAKARIOS_SCORE={hits:h,total:t,pct:pct,complete:complete};return window.MAKARIOS_SCORE}function defExp(c){const l=corrects(c).map(x=>x.toUpperCase()).join(', ');if(isIncorrect(c))return'A alternativa incorreta \u00e9 '+l+'. Ela \u00e9 a op\u00e7\u00e3o que contradiz o ensino b\u00edblico ou o sentido correto do conte\u00fado.';if(isMulti(c))return'As alternativas corretas s\u00e3o '+l+'. Nesta quest\u00e3o, era necess\u00e1rio marcar todas as afirma\u00e7\u00f5es verdadeiras.';return'A alternativa correta \u00e9 '+l+'.'}function selectOption(c,o){if(o.classList.contains('locked'))return;const inp=o.querySelector('input');if(isMulti(c)){o.classList.toggle('selected');if(inp)inp.checked=o.classList.contains('selected')}else{opts(c).forEach(x=>{x.classList.remove('selected');const xi=x.querySelector('input');if(xi)xi.checked=false});o.classList.add('selected');if(inp)inp.checked=true}}function verify(c){const s=selected(c);if(!s.length){alert('Marque uma alternativa antes de verificar.');return}const cor=corrects(c),ok=norm(s)===norm(cor);opts(c).forEach(o=>{const v=val(o),inp=o.querySelector('input');o.classList.add('locked');o.classList.remove('correct-answer','wrong-answer','correct','wrong');if(cor.includes(v))o.classList.add('correct-answer','correct');if(s.includes(v)&&!cor.includes(v))o.classList.add('wrong-answer','wrong');if(inp)inp.disabled=true});c.classList.add('answered');c.dataset.answered='true';c.dataset.ok=ok?'true':'false';const fb=ensureFeedback(c),mode=isIncorrect(c)?'Nesta pergunta, a alternativa destacada em verde \u00e9 a INCORRETA que deveria ser marcada.':isMulti(c)?'Nesta pergunta, era necess\u00e1rio marcar TODAS as alternativas corretas.':'Nesta pergunta, havia UMA resposta correta.';fb.innerHTML='<strong>'+(ok?'Resposta correta.':'Resposta revisada.')+'</strong><br>'+mode+'<br>'+(c.dataset.explanation||defExp(c));fb.classList.add('show');fb.style.display='block';updateScore()}function submit(){const s=updateScore();if(!s.complete){alert('Verifique todas as respostas antes de enviar o resultado.');return}const nome=($('#nomeInput')||{value:''}).value.trim();if(!nome){alert('Informe seu nome completo antes de enviar.');return}const hNome=$('#h_nome'),hPon=$('#h_pontuacao'),hNota=$('#h_nota'),hData=$('#h_data'),form=$('#submitForm');if(hNome)hNome.value=nome;if(hPon)hPon.value=String(s.hits);if(hNota)hNota.value=s.hits+'/'+s.total;if(hData)hData.value=new Date().toLocaleString('pt-BR');if(form)form.submit();const ok=$('#submitOk'),btn=$('#btnSubmit');if(ok)ok.style.display='block';if(btn)btn.disabled=true}function init(){const sp=$('#scorePanel'),sa=$('#submitArea'),so=$('#submitOk');if(sp)sp.style.display='none';if(sa)sa.style.display='none';if(so)so.style.display='none';cards().forEach((c,ci)=>{if(!c.dataset.correct&&c.dataset.answer)c.dataset.correct=c.dataset.answer;const b=$('.question-badge,.q-badge,.q-tipo',c);if(b){if(isIncorrect(c)){b.textContent='MARQUE A INCORRETA';b.classList.add('wrong')}else if(isMulti(c)){b.textContent='MARQUE TODAS AS CORRETAS';b.classList.add('multi')}else b.textContent='UMA RESPOSTA CORRETA'}opts(c).forEach((o,oi)=>{o.classList.add('makarios-option');o.style.pointerEvents='auto';if(!o.dataset.value&&!o.dataset.val)o.dataset.value=String.fromCharCode(97+oi);let inp=o.querySelector('input');if(!inp){inp=document.createElement('input');inp.type=isMulti(c)?'checkbox':'radio';inp.name='q'+(ci+1);inp.value=val(o);inp.style.display='none';o.insertBefore(inp,o.firstChild)}else{inp.type=isMulti(c)?'checkbox':'radio';inp.name='q'+(ci+1);inp.value=val(o)}o.addEventListener('click',function(e){e.preventDefault();e.stopPropagation();selectOption(c,o)},true)});let btn=$('.makarios-verify-btn,.verify-btn,.btn-check',c);if(!btn){btn=document.createElement('button');btn.type='button';btn.className='verify-btn';btn.textContent='Verificar resposta';c.appendChild(btn)}btn.type='button';btn.textContent=btn.textContent.trim()||'Verificar resposta';btn.addEventListener('click',function(e){e.preventDefault();e.stopPropagation();verify(c)},true)});const sb=$('#btnSubmit');if(sb){sb.type='button';sb.addEventListener('click',function(e){e.preventDefault();e.stopPropagation();submit()},true)}updateProgress()}if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init()})();</script>
+</body>
 </html>
