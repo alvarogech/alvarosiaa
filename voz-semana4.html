@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Voz – Semana 4 | Escola Makários | Escola Makários</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,700;0,800;1,700;1,800&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+
+  :root {
+    --bg: #ffffff;
+    --surface: #FFFFFF;
+    --surface2: #f5ede6;
+    --text: #1a1a2e;
+    --text2: #6b5c50;
+    --accent: #2E7FBF;
+    --accent-light: #e8f2fb;
+    --accent-mid: #d4784a;
+    --accent-dark: #1a5a8c;
+    --correct: #2a7a4b;
+    --correct-bg: #eaf5ee;
+    --wrong: #a8282a;
+    --wrong-bg: #faeaea;
+    --border: #d1dce8;
+    --radius: 14px;
+    --single-color: #2E7FBF;
+    --single-bg: #fdf1eb;
+    --multi-color: #2563a8;
+    --multi-bg: #eaf1fb;
+    --incorrect-color: #6d28a8;
+    --incorrect-bg: #f3edfb;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Barlow', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* NAV */
+  nav {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 60px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 1px 8px rgba(0,0,0,0.06);
+  }
+  .nav-logo {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--accent);
+    text-decoration: none;
+    letter-spacing: -0.02em;
+  }
+  .nav-links { display: flex; gap: 6px; }
+  .nav-links a {
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-decoration: none;
+    color: var(--text2);
+    padding: 5px 12px;
+    border-radius: 20px;
+    transition: all 0.18s;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .nav-links a:hover { background: var(--surface2); color: var(--accent); }
+  .nav-links a.active { background: var(--accent); color: #fff; }
+
+  /* PROGRESS BAR */
+  .progress-wrap {
+    background: var(--border);
+    height: 4px;
+    width: 100%;
+  }
+  .progress-bar {
+    height: 4px;
+    background: linear-gradient(90deg, var(--accent), var(--accent-mid));
+    width: 0%;
+    transition: width 0.5s cubic-bezier(.4,0,.2,1);
+  }
+
+  /* CONTAINER */
+  .container {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 40px 20px 80px;
+  }
+
+  /* BACK LINK */
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--text2);
+    text-decoration: none;
+    margin-bottom: 28px;
+    letter-spacing: 0.02em;
+    transition: color 0.18s;
+  }
+  .back-link:hover { color: var(--accent); }
+  .back-link svg { width: 14px; height: 14px; }
+
+  /* HEADER */
+  .exercise-header { margin-bottom: 36px; }
+  .volume-tag {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 900;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: var(--accent-light);
+    border-radius: 20px;
+    padding: 4px 14px;
+    margin-bottom: 14px;
+  }
+  .exercise-header h1 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: clamp(1.7rem, 4vw, 2.3rem);
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1.2;
+    margin-bottom: 10px;
+  }
+  .exercise-header p {
+    font-size: 0.95rem;
+    color: var(--text2);
+    font-weight: 600;
+  }
+
+  /* PROGRESS TEXT */
+  .progress-text {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 28px;
+  }
+  .progress-text span {
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--text2);
+  }
+  .progress-count {
+    font-size: 0.82rem;
+    font-weight: 800;
+    color: var(--accent);
+    background: var(--accent-light);
+    padding: 3px 10px;
+    border-radius: 20px;
+  }
+
+  /* LEGEND */
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 32px;
+    padding: 14px 18px;
+    background: var(--surface);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--text2);
+  }
+  .legend-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .legend-dot.single { background: var(--single-color); }
+  .legend-dot.multi  { background: var(--multi-color); }
+  .legend-dot.wrong  { background: var(--incorrect-color); }
+
+  /* QUESTION CARD */
+  .question-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 28px;
+    margin-bottom: 20px;
+    transition: box-shadow 0.2s;
+  }
+  .question-card:hover { box-shadow: 0 4px 20px rgba(46,127,191,0.08); }
+  .question-card.answered { opacity: 0.85; }
+
+  .q-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    margin-bottom: 18px;
+  }
+  .q-number {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 1;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .q-number.single   { color: var(--single-color); }
+  .q-number.multi    { color: var(--multi-color); }
+  .q-number.incorrect{ color: var(--incorrect-color); }
+
+  .q-meta { display: flex; flex-direction: column; gap: 6px; }
+  .q-badge {
+    display: inline-block;
+    font-size: 0.68rem;
+    font-weight: 900;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    border-radius: 20px;
+    padding: 2px 10px;
+    width: fit-content;
+  }
+  .q-badge.single    { background: var(--single-bg);    color: var(--single-color); }
+  .q-badge.multi     { background: var(--multi-bg);     color: var(--multi-color); }
+  .q-badge.incorrect { background: var(--incorrect-bg); color: var(--incorrect-color); }
+
+  .q-text {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1.5;
+  }
+
+  /* OPTIONS */
+  .options { display: flex; flex-direction: column; gap: 10px; margin-bottom: 18px; }
+
+  .option {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px 16px;
+    border: 2px solid var(--border);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.18s;
+    user-select: none;
+  }
+  .option:hover:not(.disabled) {
+    border-color: var(--accent-mid);
+    background: var(--accent-light);
+  }
+  .option.selected {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+  .option.disabled { cursor: default; }
+  .option.correct-reveal {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+  }
+  .option.wrong-reveal {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+  }
+
+  .option-marker {
+    width: 20px; height: 20px;
+    border: 2px solid var(--border);
+    border-radius: 50%;
+    flex-shrink: 0;
+    margin-top: 1px;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.18s;
+    font-size: 0.65rem;
+    font-weight: 900;
+  }
+  .option.selected .option-marker,
+  .option-marker.radio {
+    border-color: var(--accent);
+  }
+  .option.selected .option-marker {
+    background: var(--accent);
+    border-color: var(--accent);
+  }
+  .option-marker.checkbox { border-radius: 5px; }
+  .option.selected .option-marker.checkbox {
+    background: var(--accent);
+    border-color: var(--accent);
+  }
+  .option.correct-reveal .option-marker {
+    background: var(--correct);
+    border-color: var(--correct);
+  }
+  .option.wrong-reveal .option-marker {
+    background: var(--wrong);
+    border-color: var(--wrong);
+  }
+
+  .option-text {
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.45;
+  }
+  .option.correct-reveal .option-text { color: var(--correct); font-weight: 700; }
+  .option.wrong-reveal   .option-text { color: var(--wrong);   font-weight: 700; }
+
+  /* CHECK BUTTON */
+  .btn-check {
+    display: none;
+    width: 100%;
+    padding: 12px 20px;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    font-family: 'Barlow', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 800;
+    cursor: pointer;
+    transition: background 0.18s, transform 0.1s;
+    letter-spacing: 0.02em;
+  }
+  .btn-check:hover { background: var(--accent-dark); }
+  .btn-check:active { transform: scale(0.98); }
+
+  /* FEEDBACK */
+  .feedback {
+    display: none;
+    margin-top: 14px;
+    padding: 14px 16px;
+    border-radius: 10px;
+    font-size: 0.88rem;
+    font-weight: 700;
+    line-height: 1.5;
+  }
+  .feedback.correct {
+    background: var(--correct-bg);
+    color: var(--correct);
+    border: 1.5px solid #b6e0c8;
+  }
+  .feedback.incorrect {
+    background: var(--wrong-bg);
+    color: var(--wrong);
+    border: 1.5px solid #f0baba;
+  }
+  .feedback-icon { font-size: 1.1rem; margin-right: 4px; }
+
+  /* SCORE PANEL */
+  .score-panel {
+    display: none;
+    background: var(--surface);
+    border: 2px solid var(--accent);
+    border-radius: var(--radius);
+    padding: 36px 32px;
+    text-align: center;
+    margin-bottom: 28px;
+  }
+  .score-label {
+    font-size: 0.75rem;
+    font-weight: 900;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text2);
+    margin-bottom: 10px;
+  }
+  .score-value {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 4rem;
+    font-weight: 700;
+    color: var(--accent);
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+  .score-denom {
+    font-size: 1.2rem;
+    color: var(--text2);
+  }
+  .score-msg {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text2);
+    margin-top: 12px;
+  }
+
+  /* SUBMIT AREA */
+  .submit-area {
+    display: none;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 28px;
+  }
+  .submit-area h3 {
+    font-size: 1rem;
+    font-weight: 800;
+    color: var(--text);
+    margin-bottom: 6px;
+  }
+  .submit-area p {
+    font-size: 0.85rem;
+    color: var(--text2);
+    font-weight: 600;
+    margin-bottom: 18px;
+  }
+  .submit-row {
+    display: flex;
+    gap: 12px;
+    align-items: stretch;
+  }
+  .submit-row input {
+    flex: 1;
+    padding: 12px 16px;
+    border: 2px solid var(--border);
+    border-radius: 10px;
+    font-family: 'Barlow', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text);
+    background: var(--bg);
+    outline: none;
+    transition: border-color 0.18s;
+  }
+  .submit-row input:focus { border-color: var(--accent); }
+  .submit-row input::placeholder { color: var(--text2); opacity: 0.7; }
+  .btn-submit {
+    padding: 12px 24px;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    font-family: 'Barlow', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 800;
+    cursor: pointer;
+    transition: background 0.18s;
+    white-space: nowrap;
+  }
+  .btn-submit:hover { background: var(--accent-dark); }
+  .btn-submit:disabled {
+    background: var(--text2);
+    cursor: not-allowed;
+    opacity: 0.7;
+  }
+  .submit-ok {
+    display: none;
+    margin-top: 14px;
+    padding: 12px 16px;
+    background: var(--correct-bg);
+    border: 1.5px solid #b6e0c8;
+    border-radius: 10px;
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: var(--correct);
+  }
+
+  /* FOOTER */
+  footer {
+    text-align: center;
+    padding: 32px 20px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--text2);
+    border-top: 1px solid var(--border);
+    letter-spacing: 0.03em;
+  }
+
+  @media (max-width: 500px) {
+    .nav-links a { padding: 5px 8px; font-size: 0.72rem; }
+    .question-card { padding: 20px; }
+    .submit-row { flex-direction: column; }
+  }
+
+</style>
+</head>
+<body>
+<!-- NAV -->
+<nav>
+<a class="nav-logo" href="#"><img alt="Makários" class="makarios-logo-official" src="logo-makarios-oficial-azul.png"/></a>
+<div class="nav-links">
+<a href="essencia.html">Essência</a>
+<a href="caminho.html">Caminho</a>
+<a class="active" href="voz.html">Voz</a>
+</div>
+</nav>
+<!-- PROGRESS BAR -->
+<div class="progress-wrap">
+<div class="progress-bar" id="progressBar"></div>
+</div>
+<div class="container">
+<!-- BACK -->
+<a class="back-link" href="voz.html">
+<svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" viewbox="0 0 16 16">
+<path d="M10 3L5 8l5 5"></path>
+</svg>
+    Voltar para Voz
+  </a>
+<!-- HEADER -->
+<div class="exercise-header">
+<div class="volume-tag">Volume 3 · VOZ</div>
+<h1>Exercício de Fixação<br/>Semana 4</h1>
+<p>Visão & Valores da Igreja Emaús · Didaquê</p>
+</div>
+<!-- PROGRESS TEXT -->
+<div class="progress-text">
+<span>Responda todas as questões para registrar sua participação</span>
+<span class="progress-count" id="progressCount">0 / 10</span>
+</div>
+<!-- LEGEND -->
+<div class="legend">
+<div class="legend-item">
+<div class="legend-dot single"></div>
+<span>Única resposta correta</span>
+</div>
+<div class="legend-item">
+<div class="legend-dot multi"></div>
+<span>Múltiplas corretas</span>
+</div>
+<div class="legend-item">
+<div class="legend-dot wrong"></div>
+<span>Marque a incorreta</span>
+</div>
+</div>
+<!-- ═══════════════════════════════ QUESTÕES ═══════════════════════════════ -->
+<!-- Q1 — single -->
+<div class="question-card" data-correct="b" data-explanation="A alternativa correta é B. O nome vem de Lucas 24: dois discípulos caminhando para Emaús, derrotados. Cristo se aproxima, expõe as Escrituras (Revelação), rompe o pão (Nova Aliança) e o coração deles arde. Esses três movimentos definem a identidade da Igreja Emaús." data-qid="q1" data-type="single" id="q1">
+<div class="q-header">
+<div class="q-number single">01</div>
+<div class="q-meta">
+<span class="q-badge single">UMA RESPOSTA CORRETA</span>
+<p class="q-text">Qual é a origem do nome 'Igreja Emaús' e quais três pilares ela representa, segundo a apostila?</p>
+</div>
+</div>
+<div class="options" id="opts1">
+<div class="option makarios-option" data-val="a" data-value="a"><input name="q1" style="display:none" type="radio" value="a"/>
+<div class="option-marker radio"></div>
+<span class="option-text">Um topônimo bíblico escolhido aleatoriamente; os pilares são evangelismo, discipulado e missão</span>
+</div>
+<div class="option makarios-option" data-val="b" data-value="b"><input name="q1" style="display:none" type="radio" value="b"/>
+<div class="option-marker radio"></div>
+<span class="option-text">A narrativa de Lucas 24 — três pilares: Nova Aliança (partir do pão), Revelação (abertura das Escrituras) e coração ardendo</span>
+</div>
+<div class="option makarios-option" data-val="c" data-value="c"><input name="q1" style="display:none" type="radio" value="c"/>
+<div class="option-marker radio"></div>
+<span class="option-text">O nome de um missionário histórico; os pilares são oração, jejum e dízimo</span>
+</div>
+<div class="option makarios-option" data-val="d" data-value="d"><input name="q1" style="display:none" type="radio" value="d"/>
+<div class="option-marker radio"></div>
+<span class="option-text">Uma referência ao deserto, simbolizando a jornada de purificação espiritual do crente</span>
+</div>
+</div>
+<div class="feedback" id="fb1" style="display:none"></div>
+</div>
+<!-- Q2 — single -->
+<div class="question-card" data-correct="b" data-explanation="A alternativa correta é B. Essa é a visão declarada da Igreja Emaús: família que prioriza o relacionamento com Jesus, acredita na soberania da Palavra e influencia a sociedade pelo poder do Espírito Santo." data-qid="q2" data-type="single" id="q2">
+<div class="q-header">
+<div class="q-number single">02</div>
+<div class="q-meta">
+<span class="q-badge single">UMA RESPOSTA CORRETA</span>
+<p class="q-text">Qual é a visão declarada da Igreja Emaús, conforme a apostila?</p>
+</div>
+</div>
+<div class="options" id="opts2">
+<div class="option makarios-option" data-val="a" data-value="a"><input name="q2" style="display:none" type="radio" value="a"/>
+<div class="option-marker radio"></div>
+<span class="option-text">Ser a maior e mais influente igreja da cidade, alcançando nações por meio de programas sociais</span>
+</div>
+<div class="option makarios-option" data-val="b" data-value="b"><input name="q2" style="display:none" type="radio" value="b"/>
+<div class="option-marker radio"></div>
+<span class="option-text">Somos uma família que prioriza o relacionamento com Jesus, acredita na soberania da Palavra e influencia a sociedade através do poder do Espírito Santo</span>
+</div>
+<div class="option makarios-option" data-val="c" data-value="c"><input name="q2" style="display:none" type="radio" value="c"/>
+<div class="option-marker radio"></div>
+<span class="option-text">Plantar igrejas em todo o Brasil, formando líderes para cada esfera da sociedade com excelência</span>
+</div>
+<div class="option makarios-option" data-val="d" data-value="d"><input name="q2" style="display:none" type="radio" value="d"/>
+<div class="option-marker radio"></div>
+<span class="option-text">Ser referência em excelência musical e pregação expositiva para as igrejas da região</span>
+</div>
+</div>
+<div class="feedback" id="fb2" style="display:none"></div>
+</div>
+<!-- Q3 — single -->
+<div class="question-card" data-correct="b" data-explanation="A alternativa correta é B. A apostila usa a metáfora do trem: o destino é a visão; os trilhos são os valores. Sem os trilhos, o trem não chega. Sem o destino, os trilhos sustentam um movimento sem sentido. Paulo perseguia um alvo (Fp 3:14) — a obra de Deus começa com clareza de direção." data-qid="q3" data-type="single" id="q3">
+<div class="q-header">
+<div class="q-number single">03</div>
+<div class="q-meta">
+<span class="q-badge single">UMA RESPOSTA CORRETA</span>
+<p class="q-text">Qual é a distinção entre visão e valores, segundo a apostila?</p>
+</div>
+</div>
+<div class="options" id="opts3">
+<div class="option makarios-option" data-val="a" data-value="a"><input name="q3" style="display:none" type="radio" value="a"/>
+<div class="option-marker radio"></div>
+<span class="option-text">Visão e valores são sinônimos — ambos definem ao mesmo tempo o propósito e a identidade da igreja</span>
+</div>
+<div class="option makarios-option" data-val="b" data-value="b"><input name="q3" style="display:none" type="radio" value="b"/>
+<div class="option-marker radio"></div>
+<span class="option-text">Visão é a direção que Deus deu para a casa; valores são os princípios práticos que sustentam essa visão no dia a dia</span>
+</div>
+<div class="option makarios-option" data-val="c" data-value="c"><input name="q3" style="display:none" type="radio" value="c"/>
+<div class="option-marker radio"></div>
+<span class="option-text">Valores são mais importantes que a visão, pois definem como a cultura interna da igreja funciona</span>
+</div>
+<div class="option makarios-option" data-val="d" data-value="d"><input name="q3" style="display:none" type="radio" value="d"/>
+<div class="option-marker radio"></div>
+<span class="option-text">A visão é definida pelos membros em conjunto; os valores são determinados exclusivamente pela liderança</span>
+</div>
+</div>
+<div class="feedback" id="fb3" style="display:none"></div>
+</div>
+<!-- Q4 — multi -->
+<div class="question-card" data-correct="a,b,c" data-explanation="As alternativas corretas são A, B e C — totalizam os sete valores: Excelência, Intensidade, Radicalidade, Cultura de Adoração Extravagante, Profundidade nas Escrituras, União de Palavra e Poder, e Cuidado Pastoral uns com os outros. A alternativa D não consta entre os valores ensinados." data-qid="q4" data-type="multi" id="q4">
+<div class="q-header">
+<div class="q-number multi">04</div>
+<div class="q-meta">
+<span class="q-badge multi">MARQUE TODAS AS CORRETAS</span>
+<p class="q-text">Quais são os sete valores da Igreja Emaús apresentados na apostila? Marque os grupos corretos:</p>
+</div>
+</div>
+<div class="options" id="opts4">
+<div class="option makarios-option" data-val="a" data-value="a"><input name="q4" style="display:none" type="checkbox" value="a"/>
+<div class="option-marker checkbox"></div>
+<span class="option-text">Excelência, Intensidade e Radicalidade</span>
+</div>
+<div class="option makarios-option" data-val="b" data-value="b"><input name="q4" style="display:none" type="checkbox" value="b"/>
+<div class="option-marker checkbox"></div>
+<span class="option-text">Cultura de Adoração Extravagante e Profundidade nas Escrituras</span>
+</div>
+<div class="option makarios-option" data-val="c" data-value="c"><input name="q4" style="display:none" type="checkbox" value="c"/>
+<div class="option-marker checkbox"></div>
+<span class="option-text">União de Palavra e Poder e Cuidado Pastoral uns com os outros</span>
+</div>
+<div class="option makarios-option" data-val="d" data-value="d"><input name="q4" style="display:none" type="checkbox" value="d"/>
+<div class="option-marker checkbox"></div>
+<span class="option-text">Prosperidade, Crescimento numérico e Visibilidade pública</span>
+</div>
+</div>
+<div class="feedback" id="fb4" style="display:none"></div>
+</div>
+<!-- Q5 — single -->
+<div class="question-card" data-correct="b" data-explanation="A alternativa correta é B. A apostila é precisa: intensidade está ligada ao que fazemos — orar de verdade, festejar de verdade, servir com fervor (Rm 12:11). Radicalidade está ligada ao que não toleramos — carnalidade, tentação, impureza no meio da igreja (Ef 5:3)." data-qid="q5" data-type="single" id="q5">
+<div class="q-header">
+<div class="q-number single">05</div>
+<div class="q-meta">
+<span class="q-badge single">UMA RESPOSTA CORRETA</span>
+<p class="q-text">Qual é a distinção entre os valores 'Intensidade' e 'Radicalidade', segundo a apostila?</p>
+</div>
+</div>
+<div class="options" id="opts5">
+<div class="option makarios-option" data-val="a" data-value="a"><input name="q5" style="display:none" type="radio" value="a"/>
+<div class="option-marker radio"></div>
+<span class="option-text">Intensidade é exclusiva da adoração; radicalidade se aplica apenas ao evangelismo e à missão</span>
+</div>
+<div class="option makarios-option" data-val="b" data-value="b"><input name="q5" style="display:none" type="radio" value="b"/>
+<div class="option-marker radio"></div>
+<span class="option-text">Intensidade está ligada às coisas que fazemos com fervor; radicalidade está ligada às coisas que não toleramos — santidade prática</span>
+</div>
+<div class="option makarios-option" data-val="c" data-value="c"><input name="q5" style="display:none" type="radio" value="c"/>
+<div class="option-marker radio"></div>
+<span class="option-text">São valores sinônimos que descrevem o mesmo nível de comprometimento espiritual</span>
+</div>
+<div class="option makarios-option" data-val="d" data-value="d"><input name="q5" style="display:none" type="radio" value="d"/>
+<div class="option-marker radio"></div>
+<span class="option-text">Intensidade é um valor para líderes; radicalidade é aplicável a todos os membros</span>
+</div>
+</div>
+<div class="feedback" id="fb5" style="display:none"></div>
+</div>
+<!-- Q6 — single -->
+<div class="question-card" data-correct="b" data-explanation="A alternativa correta é B. A Didaquê é um documento histórico do final do séc. I / início do séc. II, influenciado pelo Evangelho de Mateus. Revela como a Igreja Primitiva vivia a fé. Não faz parte do cânon bíblico e deve ser lida como complemento, nunca como substituto das Escrituras (2Tm 3:16)." data-qid="q6" data-type="single" id="q6">
+<div class="q-header">
+<div class="q-number single">06</div>
+<div class="q-meta">
+<span class="q-badge single">UMA RESPOSTA CORRETA</span>
+<p class="q-text">O que é a Didaquê e qual é sua importância para a fé cristã, segundo a apostila?</p>
+</div>
+</div>
+<div class="options" id="opts6">
+<div class="option makarios-option" data-val="a" data-value="a"><input name="q6" style="display:none" type="radio" value="a"/>
+<div class="option-marker radio"></div>
+<span class="option-text">Um livro do Novo Testamento redescoberto no século XX, com autoridade canônica para a doutrina</span>
+</div>
+<div class="option makarios-option" data-val="b" data-value="b"><input name="q6" style="display:none" type="radio" value="b"/>
+<div class="option-marker radio"></div>
+<span class="option-text">Um documento histórico do final do séc. I / início do séc. II, 'O Ensino dos Doze Apóstolos' — testemunho valioso da Igreja Primitiva, mas sem autoridade canônica</span>
+</div>
+<div class="option makarios-option" data-val="c" data-value="c"><input name="q6" style="display:none" type="radio" value="c"/>
+<div class="option-marker radio"></div>
+<span class="option-text">Uma compilação de sermões de Agostinho sobre ética cristã, amplamente usada nas igrejas medievais</span>
+</div>
+<div class="option makarios-option" data-val="d" data-value="d"><input name="q6" style="display:none" type="radio" value="d"/>
+<div class="option-marker radio"></div>
+<span class="option-text">Um tratado teológico de Calvino sobre a prática do discipulado na tradição reformada</span>
+</div>
+</div>
+<div class="feedback" id="fb6" style="display:none"></div>
+</div>
+<!-- Q7 — incorrect -->
+<div class="question-card" data-correct="d" data-explanation="A alternativa incorreta é D. A apostila apresenta três posturas: neutralidade total, compromisso equilibrado e engajamento revolucionário. A alternativa D — separação e emigração — não é uma das posições discutidas. O ensino bíblico é ser sal e luz no mundo, não se isolar dele." data-qid="q7" data-type="incorrect" id="q7">
+<div class="q-header">
+<div class="q-number incorrect">07</div>
+<div class="q-meta">
+<span class="q-badge incorrect">MARQUE A INCORRETA</span>
+<p class="q-text">Qual das posturas sobre fé e política apresentadas na apostila NÃO está entre as três identificadas?</p>
+</div>
+</div>
+<div class="options" id="opts7">
+<div class="option makarios-option" data-val="a" data-value="a"><input name="q7" style="display:none" type="radio" value="a"/>
+<div class="option-marker radio"></div>
+<span class="option-text">Neutralidade total — a igreja não deve se envolver em questões políticas de forma alguma</span>
+</div>
+<div class="option makarios-option" data-val="b" data-value="b"><input name="q7" style="display:none" type="radio" value="b"/>
+<div class="option-marker radio"></div>
+<span class="option-text">Compromisso equilibrado — cristãos têm responsabilidade de exercer influência social e política à luz da fé</span>
+</div>
+<div class="option makarios-option" data-val="c" data-value="c"><input name="q7" style="display:none" type="radio" value="c"/>
+<div class="option-marker radio"></div>
+<span class="option-text">Engajamento revolucionário — a igreja deve criar partidos e assumir diretamente o poder do Estado</span>
+</div>
+<div class="option makarios-option" data-val="d" data-value="d"><input name="q7" style="display:none" type="radio" value="d"/>
+<div class="option-marker radio"></div>
+<span class="option-text">Separação completa — cristãos devem emigrar e formar comunidades à parte da sociedade secular</span>
+</div>
+</div>
+<div class="feedback" id="fb7" style="display:none"></div>
+</div>
+<!-- Q8 — multi -->
+<div class="question-card" data-correct="a,b,d" data-explanation="As alternativas corretas são A, B e D. A apostila é explícita: não se trata de impor religião, mas de defender o que a Palavra defende — a vida, a família, a integridade pública e o cuidado com a criação. A alternativa C contradiz o ensino: o foco da Bíblia nunca foi a conquista de poder político." data-qid="q8" data-type="multi" id="q8">
+<div class="q-header">
+<div class="q-number multi">08</div>
+<div class="q-meta">
+<span class="q-badge multi">MARQUE TODAS AS CORRETAS</span>
+<p class="q-text">Quais dos seguintes princípios o cristão deve defender na política, segundo a apostila do Didaquê? Marque os corretos:</p>
+</div>
+</div>
+<div class="options" id="opts8">
+<div class="option makarios-option" data-val="a" data-value="a"><input name="q8" style="display:none" type="checkbox" value="a"/>
+<div class="option-marker checkbox"></div>
+<span class="option-text">A santidade da vida desde a concepção e a defesa do casamento monogâmico e heterossexual</span>
+</div>
+<div class="option makarios-option" data-val="b" data-value="b"><input name="q8" style="display:none" type="checkbox" value="b"/>
+<div class="option-marker checkbox"></div>
+<span class="option-text">Transparência, integridade e combate à corrupção e ao suborno (Am 2:6; Is 5:23)</span>
+</div>
+<div class="option makarios-option" data-val="c" data-value="c"><input name="q8" style="display:none" type="checkbox" value="c"/>
+<div class="option-marker checkbox"></div>
+<span class="option-text">A imposição da religião cristã como religião oficial e obrigatória do Estado</span>
+</div>
+<div class="option makarios-option" data-val="d" data-value="d"><input name="q8" style="display:none" type="checkbox" value="d"/>
+<div class="option-marker checkbox"></div>
+<span class="option-text">A preservação do meio ambiente como expressão de mordomia da criação de Deus</span>
+</div>
+</div>
+<div class="feedback" id="fb8" style="display:none"></div>
+</div>
+<!-- Q9 — single -->
+<div class="question-card" data-correct="b" data-explanation="A alternativa correta é B. A história mostra que as maiores transformações sociais surgiram de homens e mulheres regenerados pelo evangelho — como William Wilberforce (fim da escravidão), George Müller (orfanatos) e John Wesley (reformas trabalhistas). A mudança começa pela renovação do coração (Rm 1:16; 2Co 5:17)." data-qid="q9" data-type="single" id="q9">
+<div class="q-header">
+<div class="q-number single">09</div>
+<div class="q-meta">
+<span class="q-badge single">UMA RESPOSTA CORRETA</span>
+<p class="q-text">O que a apostila afirma sobre a transformação da sociedade e o papel central do evangelho?</p>
+</div>
+</div>
+<div class="options" id="opts9">
+<div class="option makarios-option" data-val="a" data-value="a"><input name="q9" style="display:none" type="radio" value="a"/>
+<div class="option-marker radio"></div>
+<span class="option-text">A transformação social depende primariamente de partidos políticos alinhados com valores cristãos</span>
+</div>
+<div class="option makarios-option" data-val="b" data-value="b"><input name="q9" style="display:none" type="radio" value="b"/>
+<div class="option-marker radio"></div>
+<span class="option-text">A mudança duradoura não vem por armas ou revoluções ideológicas, mas pela renovação do coração humano pelo evangelho — como exemplificado por Wilberforce e Wesley</span>
+</div>
+<div class="option makarios-option" data-val="c" data-value="c"><input name="q9" style="display:none" type="radio" value="c"/>
+<div class="option-marker radio"></div>
+<span class="option-text">A igreja deve se retirar da sociedade para preservar sua pureza doutrinária e não se contaminar</span>
+</div>
+<div class="option makarios-option" data-val="d" data-value="d"><input name="q9" style="display:none" type="radio" value="d"/>
+<div class="option-marker radio"></div>
+<span class="option-text">O engajamento político é tão importante quanto a pregação do evangelho na missão da igreja</span>
+</div>
+</div>
+<div class="feedback" id="fb9" style="display:none"></div>
+</div>
+<!-- Q10 — single -->
+<div class="question-card" data-correct="b" data-explanation="A alternativa correta é B. A apostila é direta: cultura se forma por exemplo, não por decreto. Uma visão proclamada mas não encarnada é apenas retórica. Cada membro da casa é agente formador de cultura — para o bem ou para o mal — pelo modo como escolhe viver." data-qid="q10" data-type="single" id="q10">
+<div class="q-header">
+<div class="q-number single">10</div>
+<div class="q-meta">
+<span class="q-badge single">UMA RESPOSTA CORRETA</span>
+<p class="q-text">O que a afirmação 'Cultura não é ensinada, é vivida' significa na prática, segundo a apostila?</p>
+</div>
+</div>
+<div class="options" id="opts10">
+<div class="option makarios-option" data-val="a" data-value="a"><input name="q10" style="display:none" type="radio" value="a"/>
+<div class="option-marker radio"></div>
+<span class="option-text">Os valores não precisam ser pregados nos cultos, pois as pessoas os absorvem naturalmente com o tempo</span>
+</div>
+<div class="option makarios-option" data-val="b" data-value="b"><input name="q10" style="display:none" type="radio" value="b"/>
+<div class="option-marker radio"></div>
+<span class="option-text">A cultura da igreja é formada pelo exemplo de cada membro — quando você vive os valores, você constrói a igreja; quando os ignora, também está construindo algo diferente do que se quer ser</span>
+</div>
+<div class="option makarios-option" data-val="c" data-value="c"><input name="q10" style="display:none" type="radio" value="c"/>
+<div class="option-marker radio"></div>
+<span class="option-text">Somente a liderança sênior é responsável por formar e preservar a cultura da congregação</span>
+</div>
+<div class="option makarios-option" data-val="d" data-value="d"><input name="q10" style="display:none" type="radio" value="d"/>
+<div class="option-marker radio"></div>
+<span class="option-text">A cultura é transmitida exclusivamente pelos programas e treinamentos formais da escola</span>
+</div>
+</div>
+<div class="feedback" id="fb10" style="display:none"></div>
+</div>
+
+<!-- SCORE + SUBMIT -->
+<div id="makarios-score-area"></div>
+<div class="makarios-submit-area" id="makarios-submit-area" style="display:none">
+<label for="makarios-nome">Seu nome completo</label>
+<input id="makarios-nome" placeholder="Digite seu nome completo" type="text"/>
+<button id="makarios-submit-btn" type="button">Enviar resultado</button>
+<div class="makarios-submit-status" id="makarios-submit-status"></div>
+<div class="submit-ok" id="submitOk">✅ Participação registrada com sucesso!</div>
+</div>
+<!-- HIDDEN FORM -->
+<iframe name="submit_frame" style="display:none"></iframe>
+<form id="submitForm" method="GET" style="display:none" target="submit_frame">
+<input name="exercicio" type="hidden" value="VOZ - Semana 4"/>
+<input id="h_nome" name="nome" type="hidden" value=""/>
+<input id="h_pontuacao" name="pontuacao" type="hidden" value=""/>
+<input id="h_nota" name="nota" type="hidden" value=""/>
+<input id="h_data" name="data" type="hidden" value=""/>
+</form>
+</div><!-- /container -->
+<footer>Escola Makários · Igreja Emaús, Goiânia</footer>
+<script id="audit-js">(function(){const EXERCICIO="VOZ — Semana 4",APP_URL="https://script.google.com/macros/s/AKfycbwYahR6Kd00Sc4dsaoMYSiapUbaXW9z-s2UFcwbYBh_WT_DtBpHyKTY0O02qOlXF9aq/exec",$=(s,r=document)=>r.querySelector(s),$$=(s,r=document)=>Array.from(r.querySelectorAll(s)),norm=a=>a.map(String).map(x=>x.trim()).filter(Boolean).sort().join(',');function cards(){return $$('.question-card,.q-card')}function opts(c){return $$('.makarios-option,.option,.opt',c)}function val(o){return o.dataset.value||o.dataset.val||(o.querySelector('input')&&o.querySelector('input').value)||''}function corrects(c){return(c.dataset.correct||c.getAttribute('data-answer')||'').split(',').map(x=>x.trim()).filter(Boolean)}function selected(c){return opts(c).filter(o=>o.classList.contains('selected')).map(val).filter(Boolean)}function isMulti(c){return c.dataset.type==='multi'||corrects(c).length>1||!!c.querySelector('input[type="checkbox"]')}function isIncorrect(c){const q=(($('.question-text,.q-text',c)||{}).textContent||'').toLowerCase();return c.dataset.type==='incorrect'||q.includes('incorreta')||q.includes('incorreto')||q.includes('errada')||q.includes('errado')||q.includes('não corresponde')}function scoreMsg(p){if(p>=90)return'Excelente. Você demonstrou domínio e discernimento. Que esse conhecimento se transforme em maturidade, serviço fiel e influência segundo o Reino.';if(p>=70)return'Muito bom. Há fundamento sendo formado. Revise os pontos que errou e siga crescendo com constância, porque formação espiritual é caminho, não apenas resultado.';if(p>=50)return'Você está em processo. Volte às questões, revise o conteúdo e permita que a Palavra aprofunde sua formação como discípulo.';return'Este resultado é um ponto de partida, não um rótulo. O discípulo cresce quando recebe correção com humildade e transforma aprendizado em obediência.'}function ensureFeedback(c){let fb=$('.feedback,.makarios-feedback',c);if(!fb){fb=document.createElement('div');fb.className='makarios-feedback';c.appendChild(fb)}return fb}function ensureScore(){let a=$('#makarios-score-card');if(a)return a;a=document.createElement('section');a.id='makarios-score-card';a.className='makarios-score-card';const m=$('main')||$('.main')||$('.container')||$('.wrap')||document.body;m.appendChild(a);return a}function ensureSubmit(){if($('#makarios-submit-area'))return;const a=document.createElement('section');a.id='makarios-submit-area';a.className='makarios-submit-area';a.innerHTML='<label for="makarios-nome">Nome completo</label><input id="makarios-nome" type="text" placeholder="Digite seu nome completo"><button id="makarios-submit-btn" type="button">Enviar resultado</button><div id="makarios-submit-status" class="makarios-submit-status">Resultado enviado para a planilha.</div>';const m=$('main')||$('.main')||$('.container')||$('.wrap')||document.body;m.appendChild(a)}function updateProgress(){const cs=cards(),a=cs.filter(c=>c.dataset.answered==='true').length,p=cs.length?Math.round(a/cs.length*100):0;$$('.progress-bar-fill,.progress-fill,#progressBar,.progress-bar').forEach(b=>{b.style.width=p+'%'});const ct=$('.progress-count');if(ct)ct.textContent=a+'/'+cs.length}function updateScore(){const cs=cards(),a=cs.filter(c=>c.dataset.answered==='true').length,h=cs.filter(c=>c.dataset.ok==='true').length,t=cs.length,p=t?Math.round(h/t*100):0,area=ensureScore();area.innerHTML=`<h3>${a<t?'Resultado parcial':'Resultado final'}</h3><div class="makarios-score-number">${h}/${t} · ${p}%</div><p class="makarios-score-message">${a<t?'Verifique todas as questões para fechar sua nota antes do envio.':scoreMsg(p)}</p>`;updateProgress();window.MAKARIOS_SCORE={hits:h,total:t,pct:p,complete:a===t};return window.MAKARIOS_SCORE}function defExp(c){const l=corrects(c).map(x=>x.toUpperCase()).join(', ');if(isIncorrect(c))return`A alternativa incorreta é ${l}. Ela é a opção que contradiz o ensino bíblico ou o sentido correto do conteúdo.`;if(isMulti(c))return`As alternativas corretas são ${l}. Nesta questão, era necessário marcar todas as afirmações verdadeiras.`;return`A alternativa correta é ${l}.`}function selectOption(c,o){if(o.classList.contains('locked'))return;const inp=o.querySelector('input');if(isMulti(c)){o.classList.toggle('selected');if(inp)inp.checked=o.classList.contains('selected')}else{opts(c).forEach(x=>{x.classList.remove('selected');const xi=x.querySelector('input');if(xi)xi.checked=false});o.classList.add('selected');if(inp)inp.checked=true}}function verify(c){const s=selected(c);if(!s.length){alert('Marque uma alternativa antes de verificar.');return}const cor=corrects(c),ok=norm(s)===norm(cor);opts(c).forEach(o=>{const v=val(o),inp=o.querySelector('input');o.classList.add('locked');o.classList.remove('correct-answer','wrong-answer','correct','wrong');if(cor.includes(v))o.classList.add('correct-answer','correct');if(s.includes(v)&&!cor.includes(v))o.classList.add('wrong-answer','wrong');if(inp)inp.disabled=true});c.classList.add('answered');c.dataset.answered='true';c.dataset.ok=ok?'true':'false';const fb=ensureFeedback(c),mode=isIncorrect(c)?'Nesta pergunta, a alternativa destacada em verde é a INCORRETA que deveria ser marcada.':isMulti(c)?'Nesta pergunta, era necessário marcar TODAS as alternativas corretas.':'Nesta pergunta, havia UMA resposta correta.';fb.innerHTML=`<strong>${ok?'Resposta correta.':'Resposta revisada.'}</strong><br>${mode}<br>${c.dataset.explanation||defExp(c)}`;fb.classList.add('show');fb.style.display='block';updateScore()}function submit(){const s=updateScore();if(!s.complete){alert('Verifique todas as respostas antes de enviar o resultado.');return}const i=$('#makarios-nome'),nome=i?i.value.trim():'';if(!nome){alert('Informe seu nome completo antes de enviar.');return}const params=new URLSearchParams({exercicio:EXERCICIO,nome,pontuacao:String(s.hits),nota:`${s.hits}/${s.total}`,data:new Date().toLocaleString('pt-BR')});let iframe=document.querySelector('iframe[name="makarios_submit_frame"]');if(!iframe){iframe=document.createElement('iframe');iframe.name='makarios_submit_frame';iframe.style.display='none';document.body.appendChild(iframe)}const form=document.createElement('form');form.method='GET';form.action=APP_URL;form.target='makarios_submit_frame';form.style.display='none';for(const[k,v]of params.entries()){const inp=document.createElement('input');inp.name=k;inp.value=v;form.appendChild(inp)}document.body.appendChild(form);form.submit();setTimeout(()=>form.remove(),1000);const st=$('#makarios-submit-status');if(st){st.textContent='Resultado enviado para a planilha.';st.classList.add('show');st.style.display='block'}alert('Resultado enviado com sucesso.')}function init(){cards().forEach((c,ci)=>{if(!c.dataset.correct&&c.dataset.answer)c.dataset.correct=c.dataset.answer;const b=$('.question-badge,.q-badge,.q-tipo',c);if(b){if(isIncorrect(c)){b.textContent='MARQUE A INCORRETA';b.classList.add('wrong')}else if(isMulti(c)){b.textContent='MARQUE TODAS AS CORRETAS';b.classList.add('multi')}else b.textContent='UMA RESPOSTA CORRETA'}opts(c).forEach((o,oi)=>{o.classList.add('makarios-option');o.style.pointerEvents='auto';if(!o.dataset.value&&!o.dataset.val)o.dataset.value=String.fromCharCode(97+oi);let inp=o.querySelector('input');if(!inp){inp=document.createElement('input');inp.type=isMulti(c)?'checkbox':'radio';inp.name='q'+(ci+1);inp.value=val(o);inp.style.display='none';o.insertBefore(inp,o.firstChild)}else{inp.type=isMulti(c)?'checkbox':'radio';inp.name='q'+(ci+1);inp.value=val(o)}o.addEventListener('click',function(e){e.preventDefault();e.stopPropagation();selectOption(c,o)},true)});let btn=$('.makarios-verify-btn,.verify-btn,.btn-check',c);if(!btn){btn=document.createElement('button');btn.type='button';btn.className='verify-btn';btn.textContent='Verificar resposta';c.appendChild(btn)}btn.type='button';btn.textContent=btn.textContent.trim()||'Verificar resposta';btn.addEventListener('click',function(e){e.preventDefault();e.stopPropagation();verify(c)},true)});ensureScore();ensureSubmit();const sb=$('#makarios-submit-btn');if(sb){sb.type='button';sb.addEventListener('click',function(e){e.preventDefault();e.stopPropagation();submit()},true)}updateScore()}if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init()})();</script>
+</body>
+</html>
