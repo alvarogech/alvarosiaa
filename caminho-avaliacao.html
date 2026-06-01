@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Avaliação Final · Caminho | Escola Makários</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800&family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--blue:#2E7FBF;--blue-dark:#1a5a8c;--blue-light:#e8f2fb;--green:#2a7a4b;--green-bg:#eaf5ee;--red:#c0392b;--red-bg:#faeaea;--text:#16192b;--text2:#4a5568;--text3:#9aa7b8;--surface:#ffffff;--surface2:#f7f9fc;--border:#dde3ec;--radius:16px;--radius-sm:10px;--shadow:0 2px 12px rgba(22,25,43,.07);--shadow-md:0 6px 28px rgba(22,25,43,.10)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Barlow',sans-serif;background:var(--surface2);color:var(--text);min-height:100vh;line-height:1.6}
+.av-nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:60px;position:sticky;top:0;z-index:100}
+.av-nav-logo img{height:36px;width:auto;display:block}
+.av-nav-links{display:flex;gap:6px}
+.av-nav-links a{text-decoration:none;font-size:.78rem;font-weight:700;padding:6px 14px;border-radius:20px;color:var(--text2);transition:all .2s}
+.av-nav-links a:hover{background:var(--blue-light);color:var(--blue)}
+.av-timer-bar{background:var(--surface);border-bottom:1px solid var(--border);padding:9px 24px;display:flex;align-items:center;gap:14px;position:sticky;top:60px;z-index:90}
+.av-timer-label{font-size:11px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:var(--text3);white-space:nowrap}
+.av-timer-track{flex:1;height:5px;background:var(--border);border-radius:99px;overflow:hidden}
+.av-timer-fill{height:100%;background:var(--blue);border-radius:99px;transition:width 1s linear}
+.av-timer-fill.urgent{background:var(--red)}
+.av-timer-count{font-size:1rem;font-weight:800;color:var(--blue);min-width:56px;text-align:right;font-variant-numeric:tabular-nums}
+.av-timer-count.urgent{color:var(--red);animation:blink 1s step-end infinite}
+@keyframes blink{50%{opacity:.4}}
+.av-progress-row{background:var(--surface);border-bottom:1px solid var(--border);padding:8px 24px;display:flex;align-items:center;gap:12px;font-size:12px;font-weight:700;color:var(--text3)}
+.av-progress-track{flex:1;height:4px;background:var(--border);border-radius:99px;overflow:hidden}
+.av-progress-fill{height:100%;background:var(--blue);border-radius:99px;width:0%;transition:width .4s ease}
+.av-container{max-width:780px;margin:0 auto;padding:32px 20px 80px}
+.av-back-link{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;color:var(--blue);text-decoration:none;letter-spacing:.02em;margin-bottom:28px}
+.av-back-link:hover{color:var(--blue-dark)}
+.av-page-header{background:var(--blue);color:#fff;border-radius:var(--radius);padding:2rem 2rem 1.75rem;margin-bottom:32px;position:relative;overflow:hidden}
+.av-page-header::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 85% -10%,rgba(255,255,255,.13) 0%,transparent 55%),radial-gradient(ellipse at 10% 110%,rgba(0,0,0,.07) 0%,transparent 50%);pointer-events:none}
+.av-volume-tag{font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;opacity:.75;margin-bottom:6px}
+.av-page-header h1{font-family:'Barlow Condensed',sans-serif;font-size:clamp(1.8rem,5vw,2.8rem);font-weight:800;line-height:1.05;margin-bottom:10px}
+.av-page-header p{font-size:.93rem;opacity:.82;line-height:1.65}
+.av-header-meta{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+.av-header-chip{display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.22);border-radius:99px;padding:4px 12px;font-size:12px;font-weight:700}
+.av-card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);padding:1.75rem;margin-bottom:16px;transition:border-color .2s;box-shadow:var(--shadow)}
+.av-card.confirmed{border-color:var(--blue);background:#fafcff}
+.av-card-header{display:flex;gap:14px;align-items:flex-start;margin-bottom:1.25rem}
+.av-qnum{width:36px;height:36px;border-radius:10px;background:var(--blue);color:#fff;font-size:.85rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-variant-numeric:tabular-nums}
+.av-card.confirmed .av-qnum{background:var(--blue-dark)}
+.av-card-meta{flex:1}
+.av-badge{display:inline-block;font-size:10px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;padding:3px 10px;border-radius:99px;margin-bottom:8px}
+.badge-single{background:var(--blue-light);color:var(--blue);border:1px solid rgba(46,127,191,.2)}
+.badge-multi{background:#e8f0fb;color:#2563a8;border:1px solid rgba(37,99,168,.2)}
+.badge-incorrect{background:#f3edfb;color:#6d28a8;border:1px solid rgba(109,40,168,.2)}
+.av-qtext{font-size:.97rem;line-height:1.65;color:var(--text);font-weight:500}
+.av-options{display:flex;flex-direction:column;gap:9px;margin-bottom:1.25rem}
+.av-option{display:flex;align-items:flex-start;gap:12px;border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:11px 14px;cursor:pointer;transition:all .15s;background:var(--surface);user-select:none}
+.av-option:hover:not(.locked){background:var(--blue-light);border-color:var(--blue)}
+.av-option.selected{background:var(--blue-light);border-color:var(--blue)}
+.av-option.locked{cursor:default;pointer-events:none}
+.av-option-letter{width:26px;height:26px;border-radius:7px;flex-shrink:0;background:var(--border);color:var(--text2);font-size:.75rem;font-weight:800;display:flex;align-items:center;justify-content:center;transition:all .15s}
+.av-option.selected .av-option-letter{background:var(--blue);color:#fff}
+.av-option-text{font-size:.92rem;line-height:1.55;color:var(--text);padding-top:2px}
+.av-option.reveal-correct{background:var(--green-bg)!important;border-color:var(--green)!important}
+.av-option.reveal-correct .av-option-letter{background:var(--green)!important;color:#fff!important}
+.av-option.reveal-wrong{background:var(--red-bg)!important;border-color:var(--red)!important}
+.av-option.reveal-wrong .av-option-letter{background:var(--red)!important;color:#fff!important}
+.av-confirm-row{display:flex;align-items:center;gap:12px}
+.av-confirm-btn{padding:9px 22px;background:var(--blue);color:#fff;border:none;border-radius:var(--radius-sm);font-family:'Barlow',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:all .15s}
+.av-confirm-btn:hover{background:var(--blue-dark);transform:translateY(-1px)}
+.av-confirmed-badge{font-size:12px;font-weight:700;color:var(--green);display:flex;align-items:center;gap:5px}
+.av-submit-area{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);padding:1.75rem;margin-bottom:16px;box-shadow:var(--shadow);display:none}
+.av-submit-area h3{font-size:1.05rem;font-weight:800;margin-bottom:4px}
+.av-submit-area p{font-size:.9rem;color:var(--text2);margin-bottom:16px;line-height:1.6}
+.av-submit-area label{display:block;font-size:12px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;color:var(--text2);margin-bottom:6px}
+.av-nome-input{width:100%;padding:12px 14px;border:1.5px solid var(--border);border-radius:var(--radius-sm);font-family:'Barlow',sans-serif;font-size:15px;color:var(--text);background:var(--surface);outline:none;transition:border-color .15s;margin-bottom:14px}
+.av-nome-input:focus{border-color:var(--blue)}
+.av-submit-btn{display:block;width:100%;padding:14px;background:var(--blue);color:#fff;border:none;border-radius:var(--radius-sm);font-family:'Barlow',sans-serif;font-size:15px;font-weight:800;cursor:pointer;transition:all .15s}
+.av-submit-btn:hover{background:var(--blue-dark)}
+.av-submit-sent{display:none;margin-top:10px;font-size:13px;font-weight:700;color:var(--green)}
+.av-submit-sent.show{display:block}
+.av-resultado{display:none;background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);padding:2.5rem 2rem;text-align:center;box-shadow:var(--shadow-md);margin-bottom:32px;animation:fadeUp .5s ease}
+.av-resultado.show{display:block}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+.av-resultado-circle{width:120px;height:120px;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;margin:0 auto 1.5rem}
+.av-resultado-circle.aprovado{background:var(--green-bg)}
+.av-resultado-circle.reprovado{background:var(--red-bg)}
+.av-nota-big{font-size:2.2rem;font-weight:800;line-height:1}
+.av-nota-total{font-size:12px;font-weight:600;opacity:.7}
+.aprovado .av-nota-big{color:var(--green)}
+.reprovado .av-nota-big{color:var(--red)}
+.av-resultado-badge{display:inline-block;padding:5px 16px;border-radius:99px;font-size:12px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;margin-bottom:14px}
+.av-resultado-badge.aprovado{background:var(--green-bg);color:var(--green)}
+.av-resultado-badge.reprovado{background:var(--red-bg);color:var(--red)}
+.av-resultado-title{font-size:1.6rem;font-weight:800;margin-bottom:.5rem}
+.aprovado.av-resultado-title{color:var(--green)}
+.reprovado.av-resultado-title{color:var(--red)}
+.av-resultado-msg{font-size:.95rem;line-height:1.75;color:var(--text2);max-width:480px;margin:0 auto 1.5rem}
+.av-resultado-nota{font-size:14px;color:var(--text2)}
+.av-resultado-nota strong{color:var(--text)}
+@media(max-width:520px){.av-container{padding:20px 14px 60px}.av-card{padding:1.25rem}.av-page-header{padding:1.5rem}.av-timer-bar,.av-progress-row{padding:8px 14px}.av-nav{padding:0 14px}.av-nav-links a{padding:5px 10px;font-size:.73rem}}
+</style>
+</head>
+<body>
+<nav class="av-nav">
+  <a class="av-nav-logo" href="caminho.html"><img src="logo-makarios-oficial-azul.png" alt="Makários"></a>
+  <div class="av-nav-links">
+    <a href="essencia.html">Essência</a>
+    <a href="caminho.html">Caminho</a>
+    <a href="voz.html">Voz</a>
+    
+  </div>
+</nav>
+<div class="av-timer-bar">
+  <span class="av-timer-label">Tempo restante</span>
+  <div class="av-timer-track"><div class="av-timer-fill" id="timerFill"></div></div>
+  <span class="av-timer-count" id="timerCount">40:00</span>
+</div>
+<div class="av-progress-row">
+  <span id="progressText">0 de 15 confirmadas</span>
+  <div class="av-progress-track"><div class="av-progress-fill" id="progressFill"></div></div>
+</div>
+<div class="av-container">
+  <a class="av-back-link" href="caminho.html">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3L5 8l5 5"/></svg>
+    Voltar
+  </a>
+  <div class="av-page-header">
+    <div class="av-volume-tag">Volume 2 · Caminho</div>
+    <h1>Avaliação Final</h1>
+    <p>Responda com atenção. O resultado será exibido apenas após o envio.</p>
+    <div class="av-header-meta">
+      <span class="av-header-chip">📋 15 questões</span>
+      <span class="av-header-chip">⏱ 40 minutos</span>
+      <span class="av-header-chip">✉ Somente a primeira resposta é considerada</span>
+    </div>
+  </div>
+  <div class="av-card" data-qid="q1" data-correct="c" data-type="incorrect" data-explanation="A alternativa que deve ser marcada como incorreta é C. Ela contradiz o ensino bíblico ou o sentido correto do tema. Jesus ensina que o Reino transforma primeiro quem somos diante de Deus; caráter cristão não é aparência, mas conformação à vida de Cristo. As demais alternativas preservam melhor o conjunto do ensino das Escrituras." id="av-card-1">
+    <div class="av-card-header">
+      <div class="av-qnum">01</div>
+      <div class="av-card-meta">
+        <span class="av-badge badge-incorrect">MARQUE A INCORRETA</span>
+        <div class="av-qtext">Sobre como o caráter de uma pessoa é revelado, marque a afirmação INCORRETA segundo a apostila.</div>
+      </div>
+    </div>
+    <div class="av-options" id="av-opts-1">
+      <div class="av-option" data-value="a">
+        <input type="radio" name="q1" value="a" style="display:none">
+        <span class="av-option-letter">A</span>
+        <span class="av-option-text">O verdadeiro caráter é revelado no secreto, quando ninguém está olhando — integridade é fazer o certo sem plateia.</span>
+      </div>
+<div class="av-option" data-value="b">
+        <input type="radio" name="q1" value="b" style="display:none">
+        <span class="av-option-letter">B</span>
+        <span class="av-option-text">Romanos 5:3-4 ensina que a tribulação produz perseverança, e a perseverança, caráter aprovado.</span>
+      </div>
+<div class="av-option" data-value="c">
+        <input type="radio" name="q1" value="c" style="display:none">
+        <span class="av-option-letter">C</span>
+        <span class="av-option-text">O caráter de uma pessoa é determinado principalmente pela sua aparência e pela impressão que causa nos outros.</span>
+      </div>
+<div class="av-option" data-value="d">
+        <input type="radio" name="q1" value="d" style="display:none">
+        <span class="av-option-letter">D</span>
+        <span class="av-option-text">Como a pessoa lida com dinheiro, poder e elogios expõe sua integridade e intenções.</span>
+      </div>
+<div class="av-option" data-value="e">
+        <input type="radio" name="q1" value="e" style="display:none">
+        <span class="av-option-letter">E</span>
+        <span class="av-option-text">Pessoas maduras aceitam correção com humildade; quem resiste à repreensão revela orgulho (Pv 12:1).</span>
+      </div>
+
+    </div>
+    <div class="av-confirm-row">
+      <button class="av-confirm-btn" type="button" data-card="1">Confirmar resposta</button>
+      <span class="av-confirmed-badge" style="display:none">✓ Resposta confirmada</span>
+    </div>
+  </div>
+
+<div class="av-card" data-qid="q2" data-correct="c" data-type="single" data-explanation="A alternativa correta é C. O ponto de partida para a transformação do caráter é o novo nascimento em Cristo; sem Cristo no coração, qualquer mudança será apenas externa ou temporária." id="av-card-2">
+    <div class="av-card-header">
+      <div class="av-qnum">02</div>
+      <div class="av-card-meta">
+        <span class="av-badge badge-single">UMA RESPOSTA CORRETA</span>
+        <div class="av-qtext">Qual é o ponto de partida para a transformação do caráter, segundo a apostila de Caráter de Cristo?</div>
+      </div>
+    </div>
+    <div class="av-options" id="av-opts-2">
+      <div class="av-option" data-value="a">
+        <input type="radio" name="q2" value="a" style="display:none">
+        <span class="av-option-letter">A</span>
+        <span class="av-option-text">Frequentar uma escola bíblica e acumular conhecimento teológico.</span>
+      </div>
+<div class="av-option" data-value="b">
+        <input type="radio" name="q2" value="b" style="display:none">
+        <span class="av-option-letter">B</span>
+        <span class="av-option-text">Desenvolver disciplinas espirituais como jejum e oração constante.</span>
+      </div>
+<div class="av-option" data-value="c">
+        <input type="radio" name="q2" value="c" style="display:none">
+        <span class="av-option-letter">C</span>
+        <span class="av-option-text">O novo nascimento em Cristo — sem Cristo no coração, qualquer mudança será apenas externa ou temporária (2Co 5:17).</span>
+      </div>
+<div class="av-option" data-value="d">
+        <input type="radio" name="q2" value="d" style="display:none">
+        <span class="av-option-letter">D</span>
+        <span class="av-option-text">A imitação de modelos cristãos exemplares na comunidade.</span>
+      </div>
+<div class="av-option" data-value="e">
+        <input type="radio" name="q2" value="e" style="display:none">
+        <span class="av-option-letter">E</span>
+        <span class="av-option-text">A participação regular em cultos e atividades da igreja local.</span>
+      </div>
+
+    </div>
+    <div class="av-confirm-row">
+      <button class="av-confirm-btn" type="button" data-card="2">Confirmar resposta</button>
+      <span class="av-confirmed-badge" style="display:none">✓ Resposta confirmada</span>
+    </div>
+  </div>
+
+<div class="av-card" data-qid="q3" data-correct="b" data-type="single" data-explanation="A alternativa correta é B. A resposta foi revisada à luz do ensino bíblico geral: Cristo, a Palavra e a obra do Espírito são o critério para avaliar a alternativa correta. Resposta: B) Separar, consagrar para uso sagrado — ser distinto, diferente do comum ou profano." id="av-card-3">
+    <div class="av-card-header">
+      <div class="av-qnum">03</div>
+      <div class="av-card-meta">
+        <span class="av-badge badge-single">UMA RESPOSTA CORRETA</span>
+        <div class="av-qtext">A palavra hebraica "qādôsh" (santo) significa fundamentalmente:</div>
+      </div>
+    </div>
+    <div class="av-options" id="av-opts-3">
+      <div class="av-option" data-value="a">
+        <input type="radio" name="q3" value="a" style="display:none">
+        <span class="av-option-letter">A</span>
+        <span class="av-option-text">Perfeito em todas as virtudes morais.</span>
+      </div>
+<div class="av-option" data-value="b">
+        <input type="radio" name="q3" value="b" style="display:none">
+        <span class="av-option-letter">B</span>
+        <span class="av-option-text">Separar, consagrar para uso sagrado — ser distinto, diferente do comum ou profano.</span>
+      </div>
+<div class="av-option" data-value="c">
+        <input type="radio" name="q3" value="c" style="display:none">
+        <span class="av-option-letter">C</span>
+        <span class="av-option-text">Livre de pecado por esforço e dedicação pessoal.</span>
+      </div>
+<div class="av-option" data-value="d">
+        <input type="radio" name="q3" value="d" style="display:none">
+        <span class="av-option-letter">D</span>
+        <span class="av-option-text">Elevado a uma posição de liderança espiritual na comunidade.</span>
+      </div>
+<div class="av-option" data-value="e">
+        <input type="radio" name="q3" value="e" style="display:none">
+        <span class="av-option-letter">E</span>
+        <span class="av-option-text">Aprovado por Deus após uma vida de obediência perfeita.</span>
+      </div>
+
+    </div>
+    <div class="av-confirm-row">
+      <button class="av-confirm-btn" type="button" data-card="3">Confirmar resposta</button>
+      <span class="av-confirmed-badge" style="display:none">✓ Resposta confirmada</span>
+    </div>
+  </div>
+
+<div class="av-card" data-qid="q4" data-correct="b" data-type="single" data-explanation="A alternativa correta é B. Mathētēs, no contexto do Novo Testamento, indica alguém que segue um mestre para aprender dele e ser formado à sua semelhança; o discípulo não é apenas membro de uma comunidade religiosa." id="av-card-4">
+    <div class="av-card-header">
+      <div class="av-qnum">04</div>
+      <div class="av-card-meta">
+        <span class="av-badge badge-single">UMA RESPOSTA CORRETA</span>
+        <div class="av-qtext">O que significa a palavra "discípulo" no grego do Novo Testamento (mathētēs)?</div>
+      </div>
+    </div>
+    <div class="av-options" id="av-opts-4">
+      <div class="av-option" data-value="a">
+        <input type="radio" name="q4" value="a" style="display:none">
+        <span class="av-option-letter">A</span>
+        <span class="av-option-text">Servo obediente que executa ordens sem questionar.</span>
+      </div>
+<div class="av-option" data-value="b">
+        <input type="radio" name="q4" value="b" style="display:none">
+        <span class="av-option-letter">B</span>
+        <span class="av-option-text">Alguém que segue um mestre com o objetivo de aprender e se tornar como ele (Lc 6:40).</span>
+      </div>
+<div class="av-option" data-value="c">
+        <input type="radio" name="q4" value="c" style="display:none">
+        <span class="av-option-letter">C</span>
+        <span class="av-option-text">Membro fiel de uma comunidade religiosa organizada.</span>
+      </div>
+<div class="av-option" data-value="d">
+        <input type="radio" name="q4" value="d" style="display:none">
+        <span class="av-option-letter">D</span>
+        <span class="av-option-text">Pessoa que memorizou os ensinamentos das Escrituras.</span>
+      </div>
+<div class="av-option" data-value="e">
+        <input type="radio" name="q4" value="e" style="display:none">
+        <span class="av-option-letter">E</span>
+        <span class="av-option-text">Lider espiritual escolhido pela comunidade para ensinar.</span>
+      </div>
+
+    </div>
+    <div class="av-confirm-row">
+      <button class="av-confirm-btn" type="button" data-card="4">Confirmar resposta</button>
+      <span class="av-confirmed-badge" style="display:none">✓ Resposta confirmada</span>
+    </div>
+  </div>
+
+<div class="av-card" data-qid="q5" data-correct="d" data-type="incorrect" data-explanation="A alternativa que deve ser marcada como incorreta é D. Ela contradiz o ensino bíblico ou o sentido correto do tema. O discipulado bíblico envolve seguir Cristo, ser formado em comunidade e multiplicar em outros aquilo que recebemos do Senhor. As demais alternativas preservam melhor o conjunto do ensino das Escrituras." id="av-card-5">
+    <div class="av-card-header">
+      <div class="av-qnum">05</div>
+      <div class="av-card-meta">
+        <span class="av-badge badge-incorrect">MARQUE A INCORRETA</span>
+        <div class="av-qtext">Sobre os três relacionamentos fundamentais do discipulado (Paulo, Barnabé e Timóteo), marque a afirmação INCORRETA.</div>
+      </div>
+    </div>
+    <div class="av-options" id="av-opts-5">
+      <div class="av-option" data-value="a">
+        <input type="radio" name="q5" value="a" style="display:none">
+        <span class="av-option-letter">A</span>
+        <span class="av-option-text">Paulo representa a figura da autoridade espiritual que nos corrige, encoraja e aponta para o propósito de Deus.</span>
+      </div>
+<div class="av-option" data-value="b">
+        <input type="radio" name="q5" value="b" style="display:none">
+        <span class="av-option-letter">B</span>
+        <span class="av-option-text">Barnabé representa o companheiro de caminhada — amizade saudável que cria vulnerabilidade, encorajamento e confronto em amor.</span>
+      </div>
+<div class="av-option" data-value="c">
+        <input type="radio" name="q5" value="c" style="display:none">
+        <span class="av-option-letter">C</span>
+        <span class="av-option-text">Timóteo representa quem discipulamos — assumir o compromisso da Grande Comissão multiplicando em outros o que recebemos de Cristo.</span>
+      </div>
+<div class="av-option" data-value="d">
+        <input type="radio" name="q5" value="d" style="display:none">
+        <span class="av-option-letter">D</span>
+        <span class="av-option-text">Um discipulado completo é aquele que olha apenas para cima (Paulo), pois receber instrução de um líder experiente é suficiente para crescer espiritualmente.</span>
+      </div>
+<div class="av-option" data-value="e">
+        <input type="radio" name="q5" value="e" style="display:none">
+        <span class="av-option-letter">E</span>
+        <span class="av-option-text">Sem Paulo não temos direção; sem Barnabé não temos encorajamento; sem Timóteo não temos continuidade.</span>
+      </div>
+
+    </div>
+    <div class="av-confirm-row">
+      <button class="av-confirm-btn" type="button" data-card="5">Confirmar resposta</button>
+      <span class="av-confirmed-badge" style="display:none">✓ Resposta confirmada</span>
+    </div>
+  </div>
+
+<div class="av-card" data-qid="q6" data-correct="b" data-type="single" data-explanation="A alternativa correta é B. Efésios 6 ensina que a luta espiritual é real, mas o cristão permanece firme a partir da vitória de Cristo e vestido com os recursos de Deus. Resposta: B) Lutar a partir da vitória já conquistada por Cristo na cruz." id="av-card-6">
+    <div class="av-card-header">
+      <div class="av-qnum">06</div>
+      <div class="av-card-meta">
+        <span class="av-badge badge-single">UMA RESPOSTA CORRETA</span>
+        <div class="av-qtext">Segundo a apostila, qual é a postura correta do cristão diante da guerra espiritual?</div>
+      </div>
+    </div>
+    <div class="av-options" id="av-opts-6">
+      <div class="av-option" data-value="a">
+        <input type="radio" name="q6" value="a" style="display:none">
+        <span class="av-option-letter">A</span>
+        <span class="av-option-text">Lutar para conquistar a vitória, pois ela depende do nosso esforço espiritual. <div</span>
+      </div>
+<div class="av-option" data-value="b">
+        <input type="radio" name="q6" value="b" style="display:none">
+        <span class="av-option-letter">B</span>
+        <span class="av-option-text">Lutar a partir da vitória já conquistada por Cristo na cruz. <div</span>
+      </div>
+<div class="av-option" data-value="c">
+        <input type="radio" name="q6" value="c" style="display:none">
+        <span class="av-option-letter">C</span>
+        <span class="av-option-text">Evitar o combate espiritual e confiar que Deus resolverá tudo sem nossa participação. <div</span>
+      </div>
+<div class="av-option" data-value="d">
+        <input type="radio" name="q6" value="d" style="display:none">
+        <span class="av-option-letter">D</span>
+        <span class="av-option-text">Participar da guerra espiritual apenas se sentir um chamado específico para isso.</span>
+      </div>
+
+    </div>
+    <div class="av-confirm-row">
+      <button class="av-confirm-btn" type="button" data-card="6">Confirmar resposta</button>
+      <span class="av-confirmed-badge" style="display:none">✓ Resposta confirmada</span>
+    </div>
+  </div>
+
+<div class="av-card" data-qid="q7" data-correct="c" data-type="incorrect" data-explanation="A alternativa que deve ser marcada como incorreta é C. Ela contradiz o ensino bíblico ou o sentido correto do tema. Efésios 6 ensina que a luta espiritual é real, mas o cristão permanece firme a partir da vitória de Cristo e vestido com os recursos de Deus. As demais alternativas preservam melhor o conjunto do ensino das Escrituras." id="av-card-7">
+    <div class="av-card-header">
+      <div class="av-qnum">07</div>
+      <div class="av-card-meta">
+        <span class="av-badge badge-incorrect">MARQUE A INCORRETA</span>
+        <div class="av-qtext">Sobre a armadura de Deus (Efésios 6), qual das afirmações abaixo está <strong>errada</strong>?</div>
+      </div>
+    </div>
+    <div class="av-options" id="av-opts-7">
+      <div class="av-option" data-value="a">
+        <input type="radio" name="q7" value="a" style="display:none">
+        <span class="av-option-letter">A</span>
+        <span class="av-option-text">O cinto da verdade sustenta toda a armadura; sem ele, as demais peças ficam soltas. <div</span>
+      </div>
+<div class="av-option" data-value="b">
+        <input type="radio" name="q7" value="b" style="display:none">
+        <span class="av-option-letter">B</span>
+        <span class="av-option-text">A couraça da justiça protege o coração do homem interior contra os ataques do inimigo. <div</span>
+      </div>
+<div class="av-option" data-value="c">
+        <input type="radio" name="q7" value="c" style="display:none">
+        <span class="av-option-letter">C</span>
+        <span class="av-option-text">O escudo da fé é uma peça fixa e estática; o crente não precisa erguê-lo ativamente. <div</span>
+      </div>
+<div class="av-option" data-value="d">
+        <input type="radio" name="q7" value="d" style="display:none">
+        <span class="av-option-letter">D</span>
+        <span class="av-option-text">A espada do Espírito é a única peça predominantemente ofensiva entre as descritas por Paulo.</span>
+      </div>
+
+    </div>
+    <div class="av-confirm-row">
+      <button class="av-confirm-btn" type="button" data-card="7">Confirmar resposta</button>
+      <span class="av-confirmed-badge" style="display:none">✓ Resposta confirmada</span>
+    </div>
+  </div>
+
+<div class="av-card" data-qid="q8" data-correct="d" data-type="single" data-explanation="A alternativa correta é D. Efésios 6 ensina que a luta espiritual é real, mas o cristão permanece firme a partir da vitória de Cristo e vestido com os recursos de Deus. Resposta: D) mente, porque nela residem decisões, pensamentos e convicções — alvo prioritário do inimigo." id="av-card-8">
+    <div class="av-card-header">
+      <div class="av-qnum">08</div>
+      <div class="av-card-meta">
+        <span class="av-badge badge-single">UMA RESPOSTA CORRETA</span>
+        <div class="av-qtext">O "campo de batalha" prioritário identificado na apostila de Guerra Espiritual é:</div>
+      </div>
+    </div>
+    <div class="av-options" id="av-opts-8">
+      <div class="av-option" data-value="a">
+        <input type="radio" name="q8" value="a" style="display:none">
+        <span class="av-option-letter">A</span>
+        <span class="av-option-text">O ambiente familiar, porque o inimigo sempre ataca a semente desde o Éden. <div</span>
+      </div>
+<div class="av-option" data-value="b">
+        <input type="radio" name="q8" value="b" style="display:none">
+        <span class="av-option-letter">B</span>
+        <span class="av-option-text">O território nacional, pois o diabo odeia as nações porque Jesus é o Desejado delas. <div</span>
+      </div>
+<div class="av-option" data-value="c">
+        <input type="radio" name="q8" value="c" style="display:none">
+        <span class="av-option-letter">C</span>
+        <span class="av-option-text">A comunidade de fé, porque a principal estratégia do inimigo é a divisão na Igreja. <div</span>
+      </div>
+<div class="av-option" data-value="d">
+        <input type="radio" name="q8" value="d" style="display:none">
+        <span class="av-option-letter">D</span>
+        <span class="av-option-text">A mente, porque nela residem decisões, pensamentos e convicções — alvo prioritário do inimigo.</span>
+      </div>
+
+    </div>
+    <div class="av-confirm-row">
+      <button class="av-confirm-btn" type="button" data-card="8">Confirmar resposta</button>
+      <span class="av-confirmed-badge" style="display:none">✓ Resposta confirmada</span>
+    </div>
+  </div>
+
+<div class="av-card" data-qid="q9" data-correct="b" data-type="incorrect" data-explanation="A alternativa que deve ser marcada como incorreta é B. Ela contradiz o ensino bíblico ou o sentido correto do tema. Efésios 4 apresenta os dons ministeriais como graça de Cristo para edificar, equipar e amadurecer a Igreja, não para autopromoção. As demais alternativas preservam melhor o conjunto do ensino das Escrituras." id="av-card-9">
+    <div class="av-card-header">
+      <div class="av-qnum">09</div>
+      <div class="av-card-meta">
+        <span class="av-badge badge-incorrect">MARQUE A INCORRETA</span>
+        <div class="av-qtext">Sobre os <strong>dons ministeriais</strong>, qual das afirmações está <strong>errada</strong>?</div>
+      </div>
+    </div>
+    <div class="av-options" id="av-opts-9">
+      <div class="av-option" data-value="a">
+        <input type="radio" name="q9" value="a" style="display:none">
+        <span class="av-option-letter">A</span>
+        <span class="av-option-text">Os dons ministeriais foram concedidos por Jesus Cristo ressuscitado, não pelo Pai ou pelo Espírito. <div</span>
+      </div>
+<div class="av-option" data-value="b">
+        <input type="radio" name="q9" value="b" style="display:none">
+        <span class="av-option-letter">B</span>
+        <span class="av-option-text">Os dons ministeriais e os dons espirituais (1 Coríntios 12) são a mesma coisa — apenas nomes diferentes para as mesmas m</span>
+      </div>
+<div class="av-option" data-value="c">
+        <input type="radio" name="q9" value="c" style="display:none">
+        <span class="av-option-letter">C</span>
+        <span class="av-option-text">Os dons ministeriais são contínuos, enquanto os dons espirituais são ocasionais e momentâneos. <div</span>
+      </div>
+<div class="av-option" data-value="d">
+        <input type="radio" name="q9" value="d" style="display:none">
+        <span class="av-option-letter">D</span>
+        <span class="av-option-text">Os cinco dons ministeriais existem para preparar os santos, edificar o Corpo de Cristo e conduzi-lo à maturidade.</span>
+      </div>
+
+    </div>
+    <div class="av-confirm-row">
+      <button class="av-confirm-btn" type="button" data-card="9">Confirmar resposta</button>
+      <span class="av-confirmed-badge" style="display:none">✓ Resposta confirmada</span>
+    </div>
+  </div>
+
+<div class="av-card" data-qid="q10" data-correct="b" data-type="single" data-explanation="A alternativa correta é B. A resposta foi revisada à luz do ensino bíblico geral: Cristo, a Palavra e a obra do Espírito são o critério para avaliar a alternativa correta. Resposta: B) Evangelista — porque sua paixão pelos perdidos o impulsiona para além das fronteiras da Igreja." id="av-card-10">
+    <div class="av-card-header">
+      <div class="av-qnum">10</div>
+      <div class="av-card-meta">
+        <span class="av-badge badge-single">UMA RESPOSTA CORRETA</span>
+        <div class="av-qtext">Na ilustração dos "cinco dedos da mão", qual don corresponde ao <strong>dedo médio</strong> — "o que chega mais longe"?</div>
+      </div>
+    </div>
+    <div class="av-options" id="av-opts-10">
+      <div class="av-option" data-value="a">
+        <input type="radio" name="q10" value="a" style="display:none">
+        <span class="av-option-letter">A</span>
+        <span class="av-option-text">Apóstolo — porque toca todos os outros ministérios. <div</span>
+      </div>
+<div class="av-option" data-value="b">
+        <input type="radio" name="q10" value="b" style="display:none">
+        <span class="av-option-letter">B</span>
+        <span class="av-option-text">Evangelista — porque sua paixão pelos perdidos o impulsiona para além das fronteiras da Igreja. <div</span>
+      </div>
+<div class="av-option" data-value="c">
+        <input type="radio" name="q10" value="c" style="display:none">
+        <span class="av-option-letter">C</span>
+        <span class="av-option-text">Profeta — porque aponta o caminho e enxerga mais longe que os demais. <div</span>
+      </div>
+<div class="av-option" data-value="d">
+        <input type="radio" name="q10" value="d" style="display:none">
+        <span class="av-option-letter">D</span>
+        <span class="av-option-text">Pastor — porque é a pessoa de aliança e permanece com o rebanho por mais tempo.</span>
+      </div>
+
+    </div>
+    <div class="av-confirm-row">
+      <button class="av-confirm-btn" type="button" data-card="10">Confirmar resposta</button>
+      <span class="av-confirmed-badge" style="display:none">✓ Resposta confirmada</span>
+    </div>
+  </div>
+
+<div class="av-card" data-qid="q11" data-correct="b" data-type="single" data-explanation="A alternativa correta é B. Biblicamente, a restauração interior não é autoajuda nem fuga do passado; ela nasce da obra de Cristo e da ação do Espírito Santo que ilumina, cura e conduz o discípulo à inteireza. Isaías 53.5 e Romanos 12.2 ajudam a conectar cura, redenção e renovação da mente." id="av-card-11">
+    <div class="av-card-header">
+      <div class="av-qnum">11</div>
+      <div class="av-card-meta">
+        <span class="av-badge badge-single">UMA RESPOSTA CORRETA</span>
+        <div class="av-qtext">Segundo a apostila de Cura Interior, qual é a melhor definição de cura interior?</div>
+      </div>
+    </div>
+    <div class="av-options" id="av-opts-11">
+      <div class="av-option" data-value="a">
+        <input type="radio" name="q11" value="a" style="display:none">
+        <span class="av-option-letter">A</span>
+        <span class="av-option-text">Um método de autoajuda para esquecer dores antigas e seguir em frente sem olhar para o passado. <div</span>
+      </div>
+<div class="av-option" data-value="b">
+        <input type="radio" name="q11" value="b" style="display:none">
+        <span class="av-option-letter">B</span>
+        <span class="av-option-text">O agir de Deus restaurando o homem interior — mente, emoções, lembranças, sonhos e a dimensão da alma marcada por dores,</span>
+      </div>
+<div class="av-option" data-value="c">
+        <input type="radio" name="q11" value="c" style="display:none">
+        <span class="av-option-letter">C</span>
+        <span class="av-option-text">Uma técnica emocional para eliminar qualquer lembrança difícil da vida cristã. <div</span>
+      </div>
+<div class="av-option" data-value="d">
+        <input type="radio" name="q11" value="d" style="display:none">
+        <span class="av-option-letter">D</span>
+        <span class="av-option-text">Um processo exclusivo para pessoas que ainda não nasceram de novo.</span>
+      </div>
+
+    </div>
+    <div class="av-confirm-row">
+      <button class="av-confirm-btn" type="button" data-card="11">Confirmar resposta</button>
+      <span class="av-confirmed-badge" style="display:none">✓ Resposta confirmada</span>
+    </div>
+  </div>
+
+<div class="av-card" data-qid="q12" data-correct="a,b,c,d" data-type="multi" data-explanation="As alternativas corretas são A, B, C e D. A apostila mostra que feridas não tratadas podem influenciar identidade, relacionamentos, chamado, corpo e vida espiritual. A alternativa E é falsa, porque a salvação é completa em Cristo, mas a alma ainda precisa ser tratada e renovada pela verdade." id="av-card-12">
+    <div class="av-card-header">
+      <div class="av-qnum">12</div>
+      <div class="av-card-meta">
+        <span class="av-badge badge-multi">MARQUE TODAS AS CORRETAS</span>
+        <div class="av-qtext">Quais efeitos de feridas emocionais não tratadas são apresentados na apostila?</div>
+      </div>
+    </div>
+    <div class="av-options" id="av-opts-12">
+      <div class="av-option" data-value="a">
+        <input type="checkbox" name="q12" value="a" style="display:none">
+        <span class="av-option-letter">A</span>
+        <span class="av-option-text">Elas podem moldar a identidade, fazendo a dor falar mais alto que a Palavra de Deus. <div</span>
+      </div>
+<div class="av-option" data-value="b">
+        <input type="checkbox" name="q12" value="b" style="display:none">
+        <span class="av-option-letter">B</span>
+        <span class="av-option-text">Elas podem afetar relacionamentos, levando a pessoa a projetar dores antigas em vínculos atuais. <div</span>
+      </div>
+<div class="av-option" data-value="c">
+        <input type="checkbox" name="q12" value="c" style="display:none">
+        <span class="av-option-letter">C</span>
+        <span class="av-option-text">Elas podem limitar o chamado de Deus, enterrando dons e oportunidades por medo ou inferioridade. <div</span>
+      </div>
+<div class="av-option" data-value="d">
+        <input type="checkbox" name="q12" value="d" style="display:none">
+        <span class="av-option-letter">D</span>
+        <span class="av-option-text">Elas podem afetar corpo e espírito, enfraquecendo a sensibilidade espiritual e gerando sintomas. <div</span>
+      </div>
+<div class="av-option" data-value="e">
+        <input type="checkbox" name="q12" value="e" style="display:none">
+        <span class="av-option-letter">E</span>
+        <span class="av-option-text">Elas não exercem influência real sobre a vida cristã depois da conversão.</span>
+      </div>
+
+    </div>
+    <div class="av-confirm-row">
+      <button class="av-confirm-btn" type="button" data-card="12">Confirmar resposta</button>
+      <span class="av-confirmed-badge" style="display:none">✓ Resposta confirmada</span>
+    </div>
+  </div>
+
+<div class="av-card" data-qid="q13" data-correct="a" data-type="incorrect" data-explanation="A alternativa incorreta é A. A renovação da mente é obra de Deus, mas envolve rendição, permanência em Cristo, oração, Palavra, meditação e disciplina espiritual. Romanos 12.2 apresenta transformação como processo contínuo, não como automatismo passivo." id="av-card-13">
+    <div class="av-card-header">
+      <div class="av-qnum">13</div>
+      <div class="av-card-meta">
+        <span class="av-badge badge-incorrect">MARQUE A INCORRETA</span>
+        <div class="av-qtext">Sobre renovação da mente, qual afirmação está incorreta?</div>
+      </div>
+    </div>
+    <div class="av-options" id="av-opts-13">
+      <div class="av-option" data-value="a">
+        <input type="radio" name="q13" value="a" style="display:none">
+        <span class="av-option-letter">A</span>
+        <span class="av-option-text">A renovação da mente acontece automaticamente, sem disciplina espiritual, sem Palavra e sem permanência em Cristo. <div</span>
+      </div>
+<div class="av-option" data-value="b">
+        <input type="radio" name="q13" value="b" style="display:none">
+        <span class="av-option-letter">B</span>
+        <span class="av-option-text">Romanos 12.2 ensina que não devemos nos conformar com o padrão deste século. <div</span>
+      </div>
+<div class="av-option" data-value="c">
+        <input type="radio" name="q13" value="c" style="display:none">
+        <span class="av-option-letter">C</span>
+        <span class="av-option-text">A transformação cristã acontece de dentro para fora, pela ação do Espírito Santo. <div</span>
+      </div>
+<div class="av-option" data-value="d">
+        <input type="radio" name="q13" value="d" style="display:none">
+        <span class="av-option-letter">D</span>
+        <span class="av-option-text">A mente deve ser treinada a substituir pensamentos de engano por verdades bíblicas.</span>
+      </div>
+
+    </div>
+    <div class="av-confirm-row">
+      <button class="av-confirm-btn" type="button" data-card="13">Confirmar resposta</button>
+      <span class="av-confirmed-badge" style="display:none">✓ Resposta confirmada</span>
+    </div>
+  </div>
+
+<div class="av-card" data-qid="q14" data-correct="c" data-type="incorrect" data-explanation="A alternativa incorreta é C. Os sacramentos não têm vida em si mesmos nem salvam automaticamente. Eles são meios de graça que apontam para Cristo, confirmam e fortalecem a fé daqueles que já foram regenerados pelo Espírito." id="av-card-14">
+    <div class="av-card-header">
+      <div class="av-qnum">14</div>
+      <div class="av-card-meta">
+        <span class="av-badge badge-incorrect">MARQUE A INCORRETA</span>
+        <div class="av-qtext">Sobre os sacramentos, qual afirmação está incorreta?</div>
+      </div>
+    </div>
+    <div class="av-options" id="av-opts-14">
+      <div class="av-option" data-value="a">
+        <input type="radio" name="q14" value="a" style="display:none">
+        <span class="av-option-letter">A</span>
+        <span class="av-option-text">São sinais visíveis instituídos por Deus para apontar para Cristo e seus benefícios. <div</span>
+      </div>
+<div class="av-option" data-value="b">
+        <input type="radio" name="q14" value="b" style="display:none">
+        <span class="av-option-letter">B</span>
+        <span class="av-option-text">Servem para ensinar, lembrar, expressar unidade e fortalecer a fé da Igreja. <div</span>
+      </div>
+<div class="av-option" data-value="c">
+        <input type="radio" name="q14" value="c" style="display:none">
+        <span class="av-option-letter">C</span>
+        <span class="av-option-text">Têm vida em si mesmos e produzem novo nascimento automaticamente em qualquer pessoa que participe deles. <div</span>
+      </div>
+<div class="av-option" data-value="d">
+        <input type="radio" name="q14" value="d" style="display:none">
+        <span class="av-option-letter">D</span>
+        <span class="av-option-text">Na apostila, Jesus instituiu dois sacramentos: o batismo e a ceia.</span>
+      </div>
+
+    </div>
+    <div class="av-confirm-row">
+      <button class="av-confirm-btn" type="button" data-card="14">Confirmar resposta</button>
+      <span class="av-confirmed-badge" style="display:none">✓ Resposta confirmada</span>
+    </div>
+  </div>
+
+<div class="av-card" data-qid="q15" data-correct="d" data-type="single" data-explanation="A alternativa correta é D. O batismo, segundo a apostila, é uma ordenança instituída por Cristo, sinal público de fé, arrependimento e identificação com o corpo de Cristo. Ele não é um ritual vazio nem substitui a conversão genuína." id="av-card-15">
+    <div class="av-card-header">
+      <div class="av-qnum">15</div>
+      <div class="av-card-meta">
+        <span class="av-badge badge-single">UMA RESPOSTA CORRETA</span>
+        <div class="av-qtext">Qual afirmação expressa corretamente o ensino da apostila sobre o batismo?</div>
+      </div>
+    </div>
+    <div class="av-options" id="av-opts-15">
+      <div class="av-option" data-value="a">
+        <input type="radio" name="q15" value="a" style="display:none">
+        <span class="av-option-letter">A</span>
+        <span class="av-option-text">O batismo deve acontecer antes da fé, para produzir arrependimento no coração da pessoa. <div</span>
+      </div>
+<div class="av-option" data-value="b">
+        <input type="radio" name="q15" value="b" style="display:none">
+        <span class="av-option-letter">B</span>
+        <span class="av-option-text">O batismo é um ato privado sem relação com a comunidade da fé. <div</span>
+      </div>
+<div class="av-option" data-value="c">
+        <input type="radio" name="q15" value="c" style="display:none">
+        <span class="av-option-letter">C</span>
+        <span class="av-option-text">O batismo é apenas um símbolo cultural sem ordem de Cristo. <div</span>
+      </div>
+<div class="av-option" data-value="d">
+        <input type="radio" name="q15" value="d" style="display:none">
+        <span class="av-option-letter">D</span>
+        <span class="av-option-text">O batismo é uma ordenança visível da nova aliança, testemunho público da fé em Cristo, ligado ao arrependimento, à união</span>
+      </div>
+
+    </div>
+    <div class="av-confirm-row">
+      <button class="av-confirm-btn" type="button" data-card="15">Confirmar resposta</button>
+      <span class="av-confirmed-badge" style="display:none">✓ Resposta confirmada</span>
+    </div>
+  </div>
+  <div class="av-submit-area" id="submitArea">
+    <h3>Enviar avaliação</h3>
+    <p>Todas as respostas foram confirmadas. Digite seu nome e envie para registrar sua participação.</p>
+    <label for="avNome">Nome completo</label>
+    <input class="av-nome-input" id="avNome" type="text" placeholder="Digite seu nome completo">
+    <button class="av-submit-btn" id="submitBtn" type="button">Enviar avaliação</button>
+    <div class="av-submit-sent" id="submitSent">✓ Avaliação registrada com sucesso.</div>
+  </div>
+  <div class="av-resultado" id="resultado"></div>
+</div>
+<footer style="border-top:1px solid var(--border);text-align:center;padding:24px 16px;color:var(--text3);font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase">Escola Makários · Igreja Emaús, Goiânia</footer>
+<iframe name="av_submit_frame" style="display:none"></iframe>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  var APP_URL   = 'https://script.google.com/macros/s/AKfycbwYahR6Kd00Sc4dsaoMYSiapUbaXW9z-s2UFcwbYBh_WT_DtBpHyKTY0O02qOlXF9aq/exec';
+  var EXERCICIO = 'Caminho — Avaliação Final';
+  var TOTAL     = 15;
+  var TOTAL_SECS = 40 * 60;
+
+  document.querySelectorAll('.av-card').forEach(function(card) {
+    var isMulti = card.dataset.type === 'multi';
+    card.querySelectorAll('.av-option').forEach(function(opt) {
+      opt.addEventListener('click', function() {
+        if (opt.classList.contains('locked')) return;
+        if (isMulti) {
+          opt.classList.toggle('selected');
+        } else {
+          card.querySelectorAll('.av-option').forEach(function(o) { o.classList.remove('selected'); });
+          opt.classList.add('selected');
+        }
+        card.querySelectorAll('.av-option').forEach(function(o) {
+          var l = o.querySelector('.av-option-letter');
+          if (!l) return;
+          if (o.classList.contains('selected')) { l.style.background='var(--blue)'; l.style.color='#fff'; }
+          else { l.style.background='var(--border)'; l.style.color='var(--text2)'; }
+        });
+      });
+    });
+  });
+
+  var confirmed = 0;
+  document.querySelectorAll('.av-confirm-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var n = parseInt(btn.dataset.card);
+      var card = document.getElementById('av-card-' + n);
+      if (!card.querySelectorAll('.av-option.selected').length) { alert('Selecione uma alternativa antes de confirmar.'); return; }
+      card.querySelectorAll('.av-option').forEach(function(o) { o.classList.add('locked'); });
+      card.classList.add('confirmed');
+      btn.style.display = 'none';
+      var badge = btn.nextElementSibling;
+      if (badge) badge.style.display = 'flex';
+      confirmed++;
+      updateProgress();
+      if (confirmed === TOTAL) showSubmitArea();
+    });
+  });
+
+  function updateProgress() {
+    var pct = Math.round(confirmed / TOTAL * 100);
+    var fill = document.getElementById('progressFill');
+    var txt  = document.getElementById('progressText');
+    if (fill) fill.style.width = pct + '%';
+    if (txt)  txt.textContent = confirmed + ' de ' + TOTAL + ' confirmada' + (confirmed === 1 ? '' : 's');
+  }
+
+  function showSubmitArea() {
+    var area = document.getElementById('submitArea');
+    if (area) { area.style.display = 'block'; setTimeout(function() { area.scrollIntoView({behavior:'smooth',block:'nearest'}); }, 100); }
+  }
+
+  function calcScore() {
+    var hits = 0;
+    document.querySelectorAll('.av-card').forEach(function(card) {
+      var correct = card.dataset.correct.split(',').map(function(x) { return x.trim(); }).sort();
+      var sel = [];
+      card.querySelectorAll('.av-option.selected').forEach(function(o) { sel.push(o.dataset.value); });
+      sel.sort();
+      if (correct.join(',') === sel.join(',')) hits++;
+    });
+    return hits;
+  }
+
+  function revealAnswers() {
+    document.querySelectorAll('.av-card').forEach(function(card) {
+      var correct = card.dataset.correct.split(',').map(function(x) { return x.trim(); });
+      card.querySelectorAll('.av-option').forEach(function(opt) {
+        var v = opt.dataset.value;
+        var l = opt.querySelector('.av-option-letter');
+        if (correct.indexOf(v) !== -1) {
+          opt.classList.add('reveal-correct');
+          if (l) { l.style.background='var(--green)'; l.style.color='#fff'; }
+        } else if (opt.classList.contains('selected')) {
+          opt.classList.add('reveal-wrong');
+          if (l) { l.style.background='var(--red)'; l.style.color='#fff'; }
+        }
+      });
+    });
+  }
+
+  function showResult(hits) {
+    var pct = Math.round(hits / TOTAL * 100);
+    var aprovado = pct >= 60;
+    var cls   = aprovado ? 'aprovado' : 'reprovado';
+    var title = aprovado ? 'Aprovado!' : 'Em processo';
+    var msg   = aprovado
+      ? 'Parabéns. Você demonstrou domínio do conteúdo estudado. Que esse conhecimento se aprofunde em convicção viva, obediência fiel e caráter formado pela Palavra.'
+      : 'Este resultado é um ponto de partida, não um rótulo. Revise o conteúdo das apostilas, volte às questões e permita que a Palavra forme em você raízes cada vez mais profundas. Entre em contato com a Vitória Gonçalves pelo (62) 99199-0501 — ela poderá orientar seus próximos passos.';
+    var el = document.getElementById('resultado');
+    el.innerHTML =
+      '<div class="av-resultado-circle ' + cls + '"><span class="av-nota-big">' + hits + '</span><span class="av-nota-total">de ' + TOTAL + '</span></div>' +
+      '<div class="av-resultado-badge ' + cls + '">' + (aprovado ? '✓ Aprovado' : '● Em processo') + '</div>' +
+      '<div class="av-resultado-title ' + cls + '">' + title + '</div>' +
+      '<p class="av-resultado-msg">' + msg + '</p>' +
+      '<p class="av-resultado-nota">Nota: <strong>' + hits + '/' + TOTAL + ' · ' + pct + '%</strong></p>';
+    el.classList.add('show');
+    setTimeout(function() { el.scrollIntoView({behavior:'smooth',block:'start'}); }, 100);
+  }
+
+  document.getElementById('submitBtn').addEventListener('click', function() {
+    var nome = (document.getElementById('avNome').value || '').trim();
+    if (!nome) { alert('Informe seu nome completo antes de enviar.'); return; }
+    clearInterval(window._avTimer);
+    revealAnswers();
+    var hits = calcScore();
+    var form = document.createElement('form');
+    form.method='GET'; form.action=APP_URL; form.target='av_submit_frame'; form.style.display='none';
+    var fields = {exercicio:EXERCICIO,nome:nome,pontuacao:String(hits),nota:hits+'/'+TOTAL,data:new Date().toLocaleString('pt-BR')};
+    Object.keys(fields).forEach(function(k) { var i=document.createElement('input'); i.name=k; i.value=fields[k]; form.appendChild(i); });
+    document.body.appendChild(form); form.submit();
+    setTimeout(function() { form.remove(); }, 1000);
+    document.getElementById('submitBtn').disabled = true;
+    document.getElementById('avNome').disabled = true;
+    var sent = document.getElementById('submitSent');
+    if (sent) { sent.classList.add('show'); sent.style.display='block'; }
+    showResult(hits);
+  });
+
+  var remaining = TOTAL_SECS;
+  function tick() {
+    var m = Math.floor(remaining/60), s = remaining%60;
+    var disp = document.getElementById('timerCount');
+    var fill = document.getElementById('timerFill');
+    if (disp) disp.textContent = String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
+    if (fill) fill.style.width = (remaining/TOTAL_SECS*100)+'%';
+    if (remaining <= 300) { if(disp) disp.classList.add('urgent'); if(fill) fill.classList.add('urgent'); }
+    if (remaining <= 0) {
+      clearInterval(window._avTimer);
+      if (disp) disp.textContent = '00:00';
+      showSubmitArea();
+      var nome = (document.getElementById('avNome').value||'').trim();
+      if (nome) document.getElementById('submitBtn').click();
+      else alert('O tempo acabou! Digite seu nome e clique em Enviar avaliação.');
+      return;
+    }
+    remaining--;
+  }
+  tick();
+  window._avTimer = setInterval(tick, 1000);
+  updateProgress();
+});
+</script>
+</body>
+</html>

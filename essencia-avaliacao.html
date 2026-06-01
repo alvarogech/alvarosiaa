@@ -1,0 +1,1084 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Avaliação Final · Essência | Escola Makários</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800&family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ── RESET & BASE ─────────────────────────────────────────────────── */
+:root {
+  --blue:       #2E7FBF;
+  --blue-dark:  #1a5a8c;
+  --blue-light: #e8f2fb;
+  --green:      #2a7a4b;
+  --green-bg:   #eaf5ee;
+  --red:        #c0392b;
+  --red-bg:     #faeaea;
+  --amber:      #b45309;
+  --amber-bg:   #fef3c7;
+  --text:       #16192b;
+  --text2:      #4a5568;
+  --text3:      #9aa7b8;
+  --surface:    #ffffff;
+  --surface2:   #f7f9fc;
+  --border:     #dde3ec;
+  --border-strong: #b0bec9;
+  --radius:     16px;
+  --radius-sm:  10px;
+  --shadow:     0 2px 12px rgba(22,25,43,.07);
+  --shadow-md:  0 6px 28px rgba(22,25,43,.10);
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Barlow', sans-serif; background: var(--surface2); color: var(--text); min-height: 100vh; line-height: 1.6; }
+
+/* ── NAV ──────────────────────────────────────────────────────────── */
+.av-nav {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 0 24px;
+  display: flex; align-items: center; justify-content: space-between;
+  height: 60px; position: sticky; top: 0; z-index: 100;
+}
+.av-nav-logo img { height: 36px; width: auto; display: block; }
+.av-nav-links { display: flex; gap: 6px; }
+.av-nav-links a {
+  text-decoration: none; font-size: .78rem; font-weight: 700;
+  padding: 6px 14px; border-radius: 20px; color: var(--text2); transition: all .2s;
+}
+.av-nav-links a:hover { background: var(--blue-light); color: var(--blue); }
+
+/* ── TIMER BAR ────────────────────────────────────────────────────── */
+.av-timer-bar {
+  background: var(--surface); border-bottom: 1px solid var(--border);
+  padding: 9px 24px; display: flex; align-items: center; gap: 14px;
+  position: sticky; top: 60px; z-index: 90;
+}
+.av-timer-label { font-size: 11px; font-weight: 800; letter-spacing: .07em; text-transform: uppercase; color: var(--text3); white-space: nowrap; }
+.av-timer-track { flex: 1; height: 5px; background: var(--border); border-radius: 99px; overflow: hidden; }
+.av-timer-fill  { height: 100%; background: var(--blue); border-radius: 99px; transition: width 1s linear; }
+.av-timer-fill.urgent { background: var(--red); }
+.av-timer-count {
+  font-size: 1rem; font-weight: 800; color: var(--blue); min-width: 56px; text-align: right;
+  font-variant-numeric: tabular-nums; letter-spacing: .02em;
+}
+.av-timer-count.urgent { color: var(--red); animation: blink 1s step-end infinite; }
+@keyframes blink { 50% { opacity: .4 } }
+
+/* ── PROGRESS ROW ─────────────────────────────────────────────────── */
+.av-progress-row {
+  background: var(--surface); border-bottom: 1px solid var(--border);
+  padding: 8px 24px; display: flex; align-items: center; gap: 12px;
+  font-size: 12px; font-weight: 700; color: var(--text3);
+}
+.av-progress-track { flex:1; height: 4px; background: var(--border); border-radius: 99px; overflow: hidden; }
+.av-progress-fill  { height: 100%; background: var(--blue); border-radius: 99px; width: 0%; transition: width .4s ease; }
+
+/* ── LAYOUT ───────────────────────────────────────────────────────── */
+.av-container { max-width: 780px; margin: 0 auto; padding: 32px 20px 80px; }
+.av-back-link {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 12px; font-weight: 700; color: var(--blue); text-decoration: none;
+  letter-spacing: .02em; margin-bottom: 28px;
+}
+.av-back-link:hover { color: var(--blue-dark); }
+
+/* ── PAGE HEADER ──────────────────────────────────────────────────── */
+.av-page-header {
+  background: var(--blue); color: #fff;
+  border-radius: var(--radius); padding: 2rem 2rem 1.75rem;
+  margin-bottom: 32px; position: relative; overflow: hidden;
+}
+.av-page-header::before {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 85% -10%, rgba(255,255,255,.13) 0%, transparent 55%),
+              radial-gradient(ellipse at 10% 110%, rgba(0,0,0,.07) 0%, transparent 50%);
+  pointer-events: none;
+}
+.av-volume-tag { font-size: 11px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; opacity: .75; margin-bottom: 6px; }
+.av-page-header h1 { font-family: 'Barlow Condensed', sans-serif; font-size: clamp(1.8rem,5vw,2.8rem); font-weight: 800; line-height: 1.05; margin-bottom: 10px; }
+.av-page-header p { font-size: .93rem; opacity: .82; line-height: 1.65; }
+.av-header-meta {
+  display: flex; gap: 10px; flex-wrap: wrap; margin-top: 16px;
+}
+.av-header-chip {
+  display: inline-flex; align-items: center; gap: 5px;
+  background: rgba(255,255,255,.15); border: 1px solid rgba(255,255,255,.22);
+  border-radius: 99px; padding: 4px 12px; font-size: 12px; font-weight: 700;
+}
+
+/* ── QUESTION CARD ────────────────────────────────────────────────── */
+.av-card {
+  background: var(--surface); border: 1.5px solid var(--border);
+  border-radius: var(--radius); padding: 1.75rem;
+  margin-bottom: 16px; transition: border-color .2s;
+  box-shadow: var(--shadow);
+}
+.av-card.confirmed { border-color: var(--blue); background: #fafcff; }
+.av-card-header { display: flex; gap: 14px; align-items: flex-start; margin-bottom: 1.25rem; }
+.av-qnum {
+  width: 36px; height: 36px; border-radius: 10px;
+  background: var(--blue); color: #fff;
+  font-size: .85rem; font-weight: 800; display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; font-variant-numeric: tabular-nums;
+}
+.av-card.confirmed .av-qnum { background: var(--blue-dark); }
+.av-card-meta { flex: 1; }
+.av-badge {
+  display: inline-block; font-size: 10px; font-weight: 800;
+  letter-spacing: .07em; text-transform: uppercase;
+  padding: 3px 10px; border-radius: 99px; margin-bottom: 8px;
+}
+.badge-single   { background: var(--blue-light); color: var(--blue); border: 1px solid rgba(46,127,191,.2); }
+.badge-multi    { background: #e8f0fb; color: #2563a8; border: 1px solid rgba(37,99,168,.2); }
+.badge-incorrect { background: #f3edfb; color: #6d28a8; border: 1px solid rgba(109,40,168,.2); }
+.av-qtext { font-size: .97rem; line-height: 1.65; color: var(--text); font-weight: 500; }
+
+/* ── OPTIONS ──────────────────────────────────────────────────────── */
+.av-options { display: flex; flex-direction: column; gap: 9px; margin-bottom: 1.25rem; }
+.av-option {
+  display: flex; align-items: flex-start; gap: 12px;
+  border: 1.5px solid var(--border); border-radius: var(--radius-sm);
+  padding: 11px 14px; cursor: pointer; transition: all .15s; background: var(--surface);
+  user-select: none;
+}
+.av-option:hover:not(.locked) { background: var(--blue-light); border-color: var(--blue); }
+.av-option.selected { background: var(--blue-light); border-color: var(--blue); }
+.av-option.locked   { cursor: default; pointer-events: none; }
+.av-option-letter {
+  width: 26px; height: 26px; border-radius: 7px; flex-shrink: 0;
+  background: var(--border); color: var(--text2);
+  font-size: .75rem; font-weight: 800; letter-spacing: .03em;
+  display: flex; align-items: center; justify-content: center;
+  transition: all .15s;
+}
+.av-option.selected .av-option-letter { background: var(--blue); color: #fff; }
+.av-option-text  { font-size: .92rem; line-height: 1.55; color: var(--text); padding-top: 2px; }
+
+/* ── POST-SUBMIT option reveal ────────────────────────────────────── */
+.av-option.reveal-correct { background: var(--green-bg) !important; border-color: var(--green) !important; }
+.av-option.reveal-correct .av-option-letter { background: var(--green) !important; color: #fff !important; }
+.av-option.reveal-wrong   { background: var(--red-bg) !important; border-color: var(--red) !important; }
+.av-option.reveal-wrong   .av-option-letter { background: var(--red) !important; color: #fff !important; }
+
+/* ── CONFIRM ROW ──────────────────────────────────────────────────── */
+.av-confirm-row { display: flex; align-items: center; gap: 12px; }
+.av-confirm-btn {
+  padding: 9px 22px; background: var(--blue); color: #fff;
+  border: none; border-radius: var(--radius-sm);
+  font-family: 'Barlow', sans-serif; font-size: 13px; font-weight: 700;
+  cursor: pointer; transition: all .15s; letter-spacing: .02em;
+}
+.av-confirm-btn:hover { background: var(--blue-dark); transform: translateY(-1px); }
+.av-confirm-btn:disabled { opacity: .35; cursor: default; transform: none; }
+.av-confirmed-badge {
+  font-size: 12px; font-weight: 700; color: var(--green);
+  display: flex; align-items: center; gap: 5px;
+}
+
+/* ── SUBMIT AREA ──────────────────────────────────────────────────── */
+.av-submit-area {
+  background: var(--surface); border: 1.5px solid var(--border);
+  border-radius: var(--radius); padding: 1.75rem;
+  margin-bottom: 16px; box-shadow: var(--shadow);
+  display: none;
+}
+.av-submit-area h3 { font-size: 1.05rem; font-weight: 800; margin-bottom: 4px; }
+.av-submit-area p  { font-size: .9rem; color: var(--text2); margin-bottom: 16px; line-height: 1.6; }
+.av-submit-area label { display: block; font-size: 12px; font-weight: 800; letter-spacing: .04em; text-transform: uppercase; color: var(--text2); margin-bottom: 6px; }
+.av-nome-input {
+  width: 100%; padding: 12px 14px;
+  border: 1.5px solid var(--border); border-radius: var(--radius-sm);
+  font-family: 'Barlow', sans-serif; font-size: 15px; color: var(--text);
+  background: var(--surface); outline: none; transition: border-color .15s;
+  margin-bottom: 14px;
+}
+.av-nome-input:focus { border-color: var(--blue); }
+.av-submit-btn {
+  display: block; width: 100%; padding: 14px;
+  background: var(--blue); color: #fff; border: none;
+  border-radius: var(--radius-sm); font-family: 'Barlow', sans-serif;
+  font-size: 15px; font-weight: 800; cursor: pointer; transition: all .15s;
+  letter-spacing: .02em;
+}
+.av-submit-btn:hover { background: var(--blue-dark); }
+.av-submit-sent { display: none; margin-top: 10px; font-size: 13px; font-weight: 700; color: var(--green); }
+.av-submit-sent.show { display: block; }
+
+/* ── RESULTADO ────────────────────────────────────────────────────── */
+.av-resultado {
+  display: none; background: var(--surface); border: 1.5px solid var(--border);
+  border-radius: var(--radius); padding: 2.5rem 2rem;
+  text-align: center; box-shadow: var(--shadow-md);
+  margin-bottom: 32px; animation: fadeUp .5s ease;
+}
+.av-resultado.show { display: block; }
+@keyframes fadeUp { from { opacity:0; transform:translateY(16px) } to { opacity:1; transform:none } }
+.av-resultado-circle {
+  width: 120px; height: 120px; border-radius: 50%;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  margin: 0 auto 1.5rem;
+}
+.av-resultado-circle.aprovado { background: var(--green-bg); }
+.av-resultado-circle.reprovado { background: var(--red-bg); }
+.av-nota-big   { font-size: 2.2rem; font-weight: 800; line-height: 1; }
+.av-nota-total { font-size: 12px; font-weight: 600; opacity: .7; }
+.aprovado .av-nota-big { color: var(--green); }
+.reprovado .av-nota-big { color: var(--red); }
+.av-resultado-badge {
+  display: inline-block; padding: 5px 16px; border-radius: 99px;
+  font-size: 12px; font-weight: 800; letter-spacing: .07em; text-transform: uppercase;
+  margin-bottom: 14px;
+}
+.av-resultado-badge.aprovado { background: var(--green-bg); color: var(--green); }
+.av-resultado-badge.reprovado { background: var(--red-bg); color: var(--red); }
+.av-resultado-title { font-size: 1.6rem; font-weight: 800; margin-bottom: .5rem; }
+.aprovado.av-resultado-title { color: var(--green); }
+.reprovado.av-resultado-title { color: var(--red); }
+.av-resultado-msg { font-size: .95rem; line-height: 1.75; color: var(--text2); max-width: 480px; margin: 0 auto 1.5rem; }
+.av-resultado-nota { font-size: 14px; color: var(--text2); }
+.av-resultado-nota strong { color: var(--text); }
+
+/* ── RESPONSIVE ───────────────────────────────────────────────────── */
+@media (max-width: 520px) {
+  .av-container { padding: 20px 14px 60px; }
+  .av-card { padding: 1.25rem; }
+  .av-page-header { padding: 1.5rem; }
+  .av-timer-bar, .av-progress-row { padding: 8px 14px; }
+  .av-nav { padding: 0 14px; }
+  .av-nav-links a { padding: 5px 10px; font-size: .73rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="av-nav">
+  <a class="av-nav-logo" href="essencia.html"><img src="logo-makarios-oficial-azul.png" alt="Makários"></a>
+  <div class="av-nav-links">
+    <a href="essencia.html">Essência</a>
+    <a href="caminho.html">Caminho</a>
+    <a href="voz.html">Voz</a>
+  </div>
+</nav>
+
+<!-- TIMER -->
+<div class="av-timer-bar">
+  <span class="av-timer-label">Tempo restante</span>
+  <div class="av-timer-track"><div class="av-timer-fill" id="timerFill"></div></div>
+  <span class="av-timer-count" id="timerCount">40:00</span>
+</div>
+
+<!-- PROGRESS -->
+<div class="av-progress-row">
+  <span id="progressText">0 de 15 confirmadas</span>
+  <div class="av-progress-track"><div class="av-progress-fill" id="progressFill"></div></div>
+</div>
+
+<div class="av-container">
+
+  <a class="av-back-link" href="essencia.html">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M10 3L5 8l5 5"/>
+    </svg>
+    Voltar para Essência
+  </a>
+
+  <!-- HEADER -->
+  <div class="av-page-header">
+    <div class="av-volume-tag">Volume 1 · Essência</div>
+    <h1>Avaliação Final</h1>
+    <p>Responda com atenção. O resultado será exibido apenas após o envio.</p>
+    <div class="av-header-meta">
+      <span class="av-header-chip">📋 15 questões</span>
+      <span class="av-header-chip">⏱ 40 minutos</span>
+      <span class="av-header-chip">✉ Somente a primeira resposta é considerada</span>
+    </div>
+  </div>
+
+  <!-- QUESTÕES -->
+  <div class="av-card" data-qid="q1" data-correct="c" data-type="single" data-explanation="A alternativa correta é C. A resposta se alinha ao testemunho bíblico de um só Deus, revelado como Pai, Filho e Espírito Santo, sem divisão de essência e sem hierarquia de divindade. Resposta: C) São três Pessoas coiguais e coeternas, que agem em plena unidade e harmonia, com papéis distintos especialmente no plano da redenção." id="av-card-1">
+    <div class="av-card-header">
+      <div class="av-qnum">01</div>
+      <div class="av-card-meta">
+        <span class="av-badge badge-single">UMA RESPOSTA CORRETA</span>
+        <div class="av-qtext">Deus é um só em essência, mas subsiste eternamente em três Pessoas distintas. O que melhor descreve essa relação entre o Pai, o Filho e o Espírito Santo?</div>
+      </div>
+    </div>
+    <div class="av-options" id="av-opts-1">
+      <div class="av-option" data-value="a">
+        <input type="radio" name="q1" value="a" style="display:none">
+        <span class="av-option-letter">A</span>
+        <span class="av-option-text">São três deuses independentes que cooperam entre si.</span>
+      </div>
+<div class="av-option" data-value="b">
+        <input type="radio" name="q1" value="b" style="display:none">
+        <span class="av-option-letter">B</span>
+        <span class="av-option-text">São três modos ou formas diferentes que Deus assume em momentos distintos.</span>
+      </div>
+<div class="av-option" data-value="c">
+        <input type="radio" name="q1" value="c" style="display:none">
+        <span class="av-option-letter">C</span>
+        <span class="av-option-text">São três Pessoas coiguais e coeternas, que agem em plena unidade e harmonia, com papéis distintos especialmente no plano da redenção.</span>
+      </div>
+<div class="av-option" data-value="d">
+        <input type="radio" name="q1" value="d" style="display:none">
+        <span class="av-option-letter">D</span>
+        <span class="av-option-text">O Pai é superior ao Filho, e o Filho é superior ao Espírito Santo em dignidade.</span>
+      </div>
+<div class="av-option" data-value="e">
+        <input type="radio" name="q1" value="e" style="display:none">
+        <span class="av-option-letter">E</span>
+        <span class="av-option-text">A Trindade é um mistério que a Bíblia não busca explicar ou fundamentar.</span>
+      </div>
+    </div>
+    <div class="av-confirm-row">
+      <button class="av-confirm-btn" type="button" data-card="1">Confirmar resposta</button>
+      <span class="av-confirmed-badge" style="display:none">✓ Resposta confirmada</span>
+    </div>
+  </div>
+
+<div class="av-card" data-qid="q2" data-correct="b" data-type="incorrect" data-explanation="A alternativa que deve ser marcada como incorreta é B. Ela contradiz o ensino bíblico ou o sentido correto do tema. A Escritura afirma que a glória pertence ao Senhor; o ser humano participa dos efeitos da glória pela graça, mas não toma para si aquilo que pertence somente a Deus. As demais alternativas preservam melhor o conjunto do ensino das Escrituras." id="av-card-2">
+    <div class="av-card-header">
+      <div class="av-qnum">02</div>
+      <div class="av-card-meta">
+        <span class="av-badge badge-incorrect">MARQUE A INCORRETA</span>
+        <div class="av-qtext">Sobre a glória de Deus, marque a afirmação INCORRETA.</div>
+      </div>
+    </div>
+    <div class="av-options" id="av-opts-2">
+      <div class="av-option" data-value="a">
+        <input type="radio" name="q4" value="a" style="display:none">
+        <span class="av-option-letter">A</span>
+        <span class="av-option-text">A glória (kabod/doxa) é a manifestação visível e majestosa de quem Deus é — a soma de todos os Seus atributos em ação.</span>
+      </div>
+<div class="av-option" data-value="b">
+        <input type="radio" name="q4" value="b" style="display:none">
+        <span class="av-option-letter">B</span>
+        <span class="av-option-text">Deus pode compartilhar Sua glória com seres humanos excepcionalmente santos, conforme Isaías 42:8.</span>
+      </div>
+<div class="av-option" data-value="c">
+        <input type="radio" name="q4" value="c" style="display:none">
+        <span class="av-option-letter">C</span>
+        <span class="av-option-text">Perdemos o acesso à glória de Deus por causa do pecado, conforme Romanos 3:23.</span>
+      </div>
+<div class="av-option" data-value="d">
+        <input type="radio" name="q4" value="d" style="display:none">
+        <span class="av-option-letter">D</span>
+        <span class="av-option-text">A glória de Deus se tornou acessível em Cristo, que é o resplendor dessa glória (Hb 1:3; 2Co 4:4-6).</span>
+      </div>
+<div class="av-option" data-value="e">
+        <input type="radio" name="q4" value="e" style="display:none">
+        <span class="av-option-letter">E</span>
+        <span class="av-option-text">Na eternidade, teremos nosso corpo tomado pela glória de Deus (Rm 8:21; 1Co 15:42).</span>
+      </div>
+    </div>
+    <div class="av-confirm-row">
+      <button class="av-confirm-btn" type="button" data-card="2">Confirmar resposta</button>
+      <span class="av-confirmed-badge" style="display:none">✓ Resposta confirmada</span>
+    </div>
+  </div>
+
+<div class="av-card" data-qid="q3" data-correct="b" data-type="single" data-explanation="A alternativa correta é B. Gênesis mostra que o pecado rompe a comunhão com Deus, mas também anuncia a promessa redentiva que encontra seu cumprimento em Cristo. Resposta: B) promessa em Gênesis 3:15 de um descendente da mulher que esmagaria a cabeça da serpente — a primeira profecia messiânica." id="av-card-3">
+    <div class="av-card-header">
+      <div class="av-qnum">03</div>
+      <div class="av-card-meta">
+        <span class="av-badge badge-single">UMA RESPOSTA CORRETA</span>
+        <div class="av-qtext">O que é o "Protoevangelho" mencionado na apostila de Redenção?</div>
+      </div>
+    </div>
+    <div class="av-options" id="av-opts-3">
+      <div class="av-option" data-value="a">
+        <input type="radio" name="q8" value="a" style="display:none">
+        <span class="av-option-letter">A</span>
+        <span class="av-option-text">O sermão do monte, considerado o primeiro grande discurso de Jesus.</span>
+      </div>
+<div class="av-option" data-value="b">
+        <input type="radio" name="q8" value="b" style="display:none">
+        <span class="av-option-letter">B</span>
+        <span class="av-option-text">A promessa em Gênesis 3:15 de um descendente da mulher que esmagaria a cabeça da serpente — a primeira profecia messiânica.</span>
+      </div>
+<div class="av-option" data-value="c">
+        <input type="radio" name="q8" value="c" style="display:none">
+        <span class="av-option-letter">C</span>
+        <span class="av-option-text">O primeiro livro da Bíblia, onde está registrada a criação do mundo.</span>
+      </div>
+<div class="av-option" data-value="d">
+        <input type="radio" name="q8" value="d" style="display:none">
+        <span class="av-option-letter">D</span>
+        <span class="av-option-text">A promessa feita a Abraão de que nele seriam benditas todas as nações.</span>
+      </div>
+<div class="av-option" data-value="e">
+        <input type="radio" name="q8" value="e" style="display:none">
+        <span class="av-option-letter">E</span>
+        <span class="av-option-text">A primeira vez que a palavra "evangelho" aparece no Novo Testamento.</span>
+      </div>
+    </div>
+    <div class="av-confirm-row">
+      <button class="av-confirm-btn" type="button" data-card="3">Confirmar resposta</button>
+      <span class="av-confirmed-badge" style="display:none">✓ Resposta confirmada</span>
+    </div>
+  </div>
+
+<div class="av-card" data-qid="q4" data-correct="a,b,c,e" data-type="multi" data-explanation="As alternativas corretas são A, B, C, E. A salvação bíblica é obra da graça de Deus em Cristo: perdão, justificação, reconciliação e transformação são frutos da obra consumada de Jesus. Nesta questão, era necessário marcar todas as afirmações que concordam com o ensino bíblico apresentado. Respostas parciais não completam o raciocínio." id="av-card-4">
+    <div class="av-card-header">
+      <div class="av-qnum">04</div>
+      <div class="av-card-meta">
+        <span class="av-badge badge-multi">MARQUE TODAS AS CORRETAS</span>
+        <div class="av-qtext">Sobre a Nova Aliança, marque todas as afirmações corretas.</div>
+      </div>
+    </div>
+    <div class="av-options" id="av-opts-4">
+      <div class="av-option" data-value="a">
+        <input type="checkbox" name="q11" value="a" style="display:none">
+        <span class="av-option-letter">A</span>
+        <span class="av-option-text">É fundamentada na obra consumada de Jesus na cruz, e não no cumprimento da Lei por parte do homem.</span>
+      </div>
+<div class="av-option" data-value="b">
+        <input type="checkbox" name="q11" value="b" style="display:none">
+        <span class="av-option-letter">B</span>
+        <span class="av-option-text">Na Nova Aliança, a obediência é a consequência de quem está nela, não a condição para entrar nela.</span>
+      </div>
+<div class="av-option" data-value="c">
+        <input type="checkbox" name="q11" value="c" style="display:none">
+        <span class="av-option-letter">C</span>
+        <span class="av-option-text">Cristo é sacerdote e oferta ao mesmo tempo — ofereceu a si mesmo de uma vez por todas (Hb 9:28).</span>
+      </div>
+<div class="av-option" data-value="d">
+        <input type="checkbox" name="q11" value="d" style="display:none">
+        <span class="av-option-letter">D</span>
+        <span class="av-option-text">A Nova Aliança exige que cumpramos toda a Lei de Moisés como condição para sermos abençoados.</span>
+      </div>
+<div class="av-option" data-value="e">
+        <input type="checkbox" name="q11" value="e" style="display:none">
+        <span class="av-option-letter">E</span>
+        <span class="av-option-text">O perdão na Nova Aliança é total e definitivo — Deus prometeu jamais se lembrar dos nossos pecados (Jr 31:34).</span>
+      </div>
+    </div>
+    <div class="av-confirm-row">
+      <button class="av-confirm-btn" type="button" data-card="4">Confirmar resposta</button>
+      <span class="av-confirmed-badge" style="display:none">✓ Resposta confirmada</span>
+    </div>
+  </div>
+
+<div class="av-card" data-qid="q5" data-correct="c" data-type="single" data-explanation="A alternativa correta é C. A resposta foi revisada à luz do ensino bíblico geral: Cristo, a Palavra e a obra do Espírito são o critério para avaliar a alternativa correta. Resposta: C) Porque a redenção ficou entre amor e justiça: a justiça se cumpre porque um homem foi morto; o amor se manifestou porque o próprio Deus se fez carne e morreu em nosso lugar (Rm 5:8)." id="av-card-5">
+    <div class="av-card-header">
+      <div class="av-qnum">05</div>
+      <div class="av-card-meta">
+        <span class="av-badge badge-single">UMA RESPOSTA CORRETA</span>
+        <div class="av-qtext">Por que a cruz foi a solução para o problema do pecado humano, segundo a apostila de Redenção?</div>
+      </div>
+    </div>
+    <div class="av-options" id="av-opts-5">
+      <div class="av-option" data-value="a">
+        <input type="radio" name="q14" value="a" style="display:none">
+        <span class="av-option-letter">A</span>
+        <span class="av-option-text">Porque demonstrou que Deus é misericordioso e ignora a justiça quando tem amor.</span>
+      </div>
+<div class="av-option" data-value="b">
+        <input type="radio" name="q14" value="b" style="display:none">
+        <span class="av-option-letter">B</span>
+        <span class="av-option-text">Porque Jesus era humano e, por isso, podia morrer no lugar dos humanos, sem envolver a divindade.</span>
+      </div>
+<div class="av-option" data-value="c">
+        <input type="radio" name="q14" value="c" style="display:none">
+        <span class="av-option-letter">C</span>
+        <span class="av-option-text">Porque a redenção ficou entre amor e justiça: a justiça se cumpre porque um homem foi morto; o amor se manifestou porque o próprio Deus se fez carne e morreu em nosso lugar (Rm 5:8).</span>
+      </div>
+<div class="av-option" data-value="d">
+        <input type="radio" name="q14" value="d" style="display:none">
+        <span class="av-option-letter">D</span>
+        <span class="av-option-text">Porque a morte de Jesus foi um exemplo de amor que inspira os seres humanos a viverem melhor.</span>
+      </div>
+<div class="av-option" data-value="e">
+        <input type="radio" name="q14" value="e" style="display:none">
+        <span class="av-option-letter">E</span>
+        <span class="av-option-text">Porque foi a única forma de Deus provar para Satanás que o amor é mais forte que a morte.</span>
+      </div>
+    </div>
+    <div class="av-confirm-row">
+      <button class="av-confirm-btn" type="button" data-card="5">Confirmar resposta</button>
+      <span class="av-confirmed-badge" style="display:none">✓ Resposta confirmada</span>
+    </div>
+  </div>
+
+<div class="av-card" data-qid="q6" data-correct="b" data-type="single" data-explanation="A alternativa correta é B. Gênesis apresenta o ser humano criado à imagem de Deus, com dignidade, vocação e dependência do Criador. Resposta: B) Que Jesus tem o caráter idêntico do Pai" id="av-card-6">
+    <div class="av-card-header">
+      <div class="av-qnum">06</div>
+      <div class="av-card-meta">
+        <span class="av-badge badge-single">UMA RESPOSTA CORRETA</span>
+        <div class="av-qtext">Segundo a apostila, a palavra "caráter" aparece uma única vez no Novo Testamento, em Hebreus 1:3, traduzida como "imagem". O que esse versículo afirma sobre Jesus?</div>
+      </div>
+    </div>
+    <div class="av-options" id="av-opts-6">
+      <div class="av-option" data-value="a">
+        <input type="radio" name="q2" value="a" style="display:none">
+        <span class="av-option-letter">A</span>
+        <span class="av-option-text">Que Jesus é superior aos anjos em poder</span>
+      </div>
+<div class="av-option" data-value="b">
+        <input type="radio" name="q2" value="b" style="display:none">
+        <span class="av-option-letter">B</span>
+        <span class="av-option-text">Que Jesus tem o caráter idêntico do Pai</span>
+      </div>
+<div class="av-option" data-value="c">
+        <input type="radio" name="q2" value="c" style="display:none">
+        <span class="av-option-letter">C</span>
+        <span class="av-option-text">Que Jesus escolheu os doze discípulos</span>
+      </div>
+<div class="av-option" data-value="d">
+        <input type="radio" name="q2" value="d" style="display:none">
+        <span class="av-option-letter">D</span>
+        <span class="av-option-text">Que Jesus é a única fonte de perdão</span>
+      </div>
+    </div>
+    <div class="av-confirm-row">
+      <button class="av-confirm-btn" type="button" data-card="6">Confirmar resposta</button>
+      <span class="av-confirmed-badge" style="display:none">✓ Resposta confirmada</span>
+    </div>
+  </div>
+
+<div class="av-card" data-qid="q7" data-correct="c" data-type="incorrect" data-explanation="A alternativa que deve ser marcada como incorreta é C. Ela contradiz o ensino bíblico ou o sentido correto do tema. Jesus ensina que o Reino transforma primeiro quem somos diante de Deus; caráter cristão não é aparência, mas conformação à vida de Cristo. As demais alternativas preservam melhor o conjunto do ensino das Escrituras." id="av-card-7">
+    <div class="av-card-header">
+      <div class="av-qnum">07</div>
+      <div class="av-card-meta">
+        <span class="av-badge badge-incorrect">MARQUE A INCORRETA</span>
+        <div class="av-qtext">Sobre as circunstâncias que revelam o caráter de uma pessoa, marque a afirmação <strong>incorreta</strong>:</div>
+      </div>
+    </div>
+    <div class="av-options" id="av-opts-7">
+      <div class="av-option" data-value="a">
+        <input type="radio" name="q4" value="a" style="display:none">
+        <span class="av-option-letter">A</span>
+        <span class="av-option-text">O verdadeiro caráter se revela no secreto, sem plateia ou busca de aprovação (1 Samuel 16:7)</span>
+      </div>
+<div class="av-option" data-value="b">
+        <input type="radio" name="q4" value="b" style="display:none">
+        <span class="av-option-letter">B</span>
+        <span class="av-option-text">A tribulação produz perseverança e, por fim, caráter aprovado (Romanos 5:3-4)</span>
+      </div>
+<div class="av-option" data-value="c">
+        <input type="radio" name="q4" value="c" style="display:none">
+        <span class="av-option-letter">C</span>
+        <span class="av-option-text">Quem tem caráter verdadeiro nunca enfrenta conflitos ou dificuldades relacionais</span>
+      </div>
+<div class="av-option" data-value="d">
+        <input type="radio" name="q4" value="d" style="display:none">
+        <span class="av-option-letter">D</span>
+        <span class="av-option-text">A forma como tratamos os mais fracos e sem influência revela nosso caráter (Tiago 1:27)</span>
+      </div>
+    </div>
+    <div class="av-confirm-row">
+      <button class="av-confirm-btn" type="button" data-card="7">Confirmar resposta</button>
+      <span class="av-confirmed-badge" style="display:none">✓ Resposta confirmada</span>
+    </div>
+  </div>
+
+<div class="av-card" data-qid="q8" data-correct="c" data-type="incorrect" data-explanation="A alternativa que deve ser marcada como incorreta é C. Ela contradiz o ensino bíblico ou o sentido correto do tema. A restauração do interior deve ser vista à luz da cruz, da verdade da Palavra e da ação do Espírito, não como mera técnica humana. As demais alternativas preservam melhor o conjunto do ensino das Escrituras." id="av-card-8">
+    <div class="av-card-header">
+      <div class="av-qnum">08</div>
+      <div class="av-card-meta">
+        <span class="av-badge badge-incorrect">MARQUE A INCORRETA</span>
+        <div class="av-qtext">Sobre cura interior, marque a afirmação <strong>incorreta</strong>:</div>
+      </div>
+    </div>
+    <div class="av-options" id="av-opts-8">
+      <div class="av-option" data-value="a">
+        <input type="radio" name="q7" value="a" style="display:none">
+        <span class="av-option-letter">A</span>
+        <span class="av-option-text">Cura interior é o processo de restauração do homem interior — mente, emoções e lembranças marcadas pelo pecado ou por traumas</span>
+      </div>
+<div class="av-option" data-value="b">
+        <input type="radio" name="q7" value="b" style="display:none">
+        <span class="av-option-letter">B</span>
+        <span class="av-option-text">A base da cura interior é a obra da cruz: Jesus levou não apenas nossos pecados, mas também nossas dores e traumas emocionais (Isaías 53:5)</span>
+      </div>
+<div class="av-option" data-value="c">
+        <input type="radio" name="q7" value="c" style="display:none">
+        <span class="av-option-letter">C</span>
+        <span class="av-option-text">Cura interior é essencialmente uma técnica de autoajuda que depende da força de vontade humana para funcionar</span>
+      </div>
+<div class="av-option" data-value="d">
+        <input type="radio" name="q7" value="d" style="display:none">
+        <span class="av-option-letter">D</span>
+        <span class="av-option-text">O objetivo da cura interior é que cada cristão viva com inteireza diante de Deus, não fragmentado nem governado por feridas ou medos</span>
+      </div>
+    </div>
+    <div class="av-confirm-row">
+      <button class="av-confirm-btn" type="button" data-card="8">Confirmar resposta</button>
+      <span class="av-confirmed-badge" style="display:none">✓ Resposta confirmada</span>
+    </div>
+  </div>
+
+<div class="av-card" data-qid="q9" data-correct="c" data-type="single" data-explanation="A alternativa correta é C. A resposta foi revisada à luz do ensino bíblico geral: Cristo, a Palavra e a obra do Espírito são o critério para avaliar a alternativa correta. Resposta: C) Que a transformação é uma metamorfose completa — de dentro para fora, como a lagarta que se torna borboleta" id="av-card-9">
+    <div class="av-card-header">
+      <div class="av-qnum">09</div>
+      <div class="av-card-meta">
+        <span class="av-badge badge-single">UMA RESPOSTA CORRETA</span>
+        <div class="av-qtext">Em Romanos 12:2, Paulo usa a palavra grega <em>metamorfóo</em> para descrever a renovação da mente. O que essa palavra indica sobre o processo de transformação do cristão?</div>
+      </div>
+    </div>
+    <div class="av-options" id="av-opts-9">
+      <div class="av-option" data-value="a">
+        <input type="radio" name="q10" value="a" style="display:none">
+        <span class="av-option-letter">A</span>
+        <span class="av-option-text">Que a transformação é instantânea e ocorre apenas no momento da conversão</span>
+      </div>
+<div class="av-option" data-value="b">
+        <input type="radio" name="q10" value="b" style="display:none">
+        <span class="av-option-letter">B</span>
+        <span class="av-option-text">Que a transformação depende exclusivamente do esforço e disciplina humanos</span>
+      </div>
+<div class="av-option" data-value="c">
+        <input type="radio" name="q10" value="c" style="display:none">
+        <span class="av-option-letter">C</span>
+        <span class="av-option-text">Que a transformação é uma metamorfose completa — de dentro para fora, como a lagarta que se torna borboleta</span>
+      </div>
+<div class="av-option" data-value="d">
+        <input type="radio" name="q10" value="d" style="display:none">
+        <span class="av-option-letter">D</span>
+        <span class="av-option-text">Que a transformação acontece apenas por meio de experiências de sofrimento</span>
+      </div>
+    </div>
+    <div class="av-confirm-row">
+      <button class="av-confirm-btn" type="button" data-card="9">Confirmar resposta</button>
+      <span class="av-confirmed-badge" style="display:none">✓ Resposta confirmada</span>
+    </div>
+  </div>
+
+<div class="av-card" data-qid="q10" data-correct="c" data-type="single" data-explanation="A alternativa correta é C. A resposta foi revisada à luz do ensino bíblico geral: Cristo, a Palavra e a obra do Espírito são o critério para avaliar a alternativa correta. Resposta: C) É confiança plena em Deus que se expressa em ações concretas; sem obras, a fé está morta." id="av-card-10">
+    <div class="av-card-header">
+      <div class="av-qnum">10</div>
+      <div class="av-card-meta">
+        <span class="av-badge badge-single">UMA RESPOSTA CORRETA</span>
+        <div class="av-qtext">Segundo Hebreus 11:1, a fé é definida como a certeza de coisas que se esperam e a convicção de fatos que não se veem. Com base na apostila, qual das afirmações abaixo melhor descreve o que a <strong>fé bíblica</strong> é e como ela se distingue de outras formas de crença?</div>
+      </div>
+    </div>
+    <div class="av-options" id="av-opts-10">
+      <div class="av-option" data-value="a">
+        <input type="radio" name="q1" value="a" style="display:none">
+        <span class="av-option-letter">A</span>
+        <span class="av-option-text">É otimismo religioso: uma atitude mental positiva que acredita que Deus pode agir.</span>
+      </div>
+<div class="av-option" data-value="b">
+        <input type="radio" name="q1" value="b" style="display:none">
+        <span class="av-option-letter">B</span>
+        <span class="av-option-text">É qualquer forma de crença sincera — inclusive a dos demônios, que também creem em Deus.</span>
+      </div>
+<div class="av-option" data-value="c">
+        <input type="radio" name="q1" value="c" style="display:none">
+        <span class="av-option-letter">C</span>
+        <span class="av-option-text">É confiança plena em Deus que se expressa em ações concretas; sem obras, a fé está morta.</span>
+      </div>
+<div class="av-option" data-value="d">
+        <input type="radio" name="q1" value="d" style="display:none">
+        <span class="av-option-letter">D</span>
+        <span class="av-option-text">É um sentimento espiritual interno que independe de qualquer evidência ou ação exterior.</span>
+      </div>
+    </div>
+    <div class="av-confirm-row">
+      <button class="av-confirm-btn" type="button" data-card="10">Confirmar resposta</button>
+      <span class="av-confirmed-badge" style="display:none">✓ Resposta confirmada</span>
+    </div>
+  </div>
+
+<div class="av-card" data-qid="q11" data-correct="a,b,c,d" data-type="multi" data-explanation="As alternativas corretas são A, B, C, D. A resposta foi revisada à luz do ensino bíblico geral: Cristo, a Palavra e a obra do Espírito são o critério para avaliar a alternativa correta. Nesta questão, era necessário marcar todas as afirmações que concordam com o ensino bíblico apresentado. Respostas parciais não completam o raciocínio." id="av-card-11">
+    <div class="av-card-header">
+      <div class="av-qnum">11</div>
+      <div class="av-card-meta">
+        <span class="av-badge badge-multi">MARQUE TODAS AS CORRETAS</span>
+        <div class="av-qtext">De acordo com a apostila sobre A Fé, quais são os <strong>inimigos da fé</strong> identificados? Marque todas as opções corretas.</div>
+      </div>
+    </div>
+    <div class="av-options" id="av-opts-11">
+      <div class="av-option" data-value="a">
+        <input type="checkbox" name="q3" value="a" style="display:none">
+        <span class="av-option-letter">A</span>
+        <span class="av-option-text">A dúvida — conflito interno entre crer ou não crer.</span>
+      </div>
+<div class="av-option" data-value="b">
+        <input type="checkbox" name="q3" value="b" style="display:none">
+        <span class="av-option-letter">B</span>
+        <span class="av-option-text">A incredulidade — decisão consciente de rejeitar o que Deus disse.</span>
+      </div>
+<div class="av-option" data-value="c">
+        <input type="checkbox" name="q3" value="c" style="display:none">
+        <span class="av-option-letter">C</span>
+        <span class="av-option-text">O medo — quando paralisa a fé e leva a desconfiar do caráter de Deus.</span>
+      </div>
+<div class="av-option" data-value="d">
+        <input type="checkbox" name="q3" value="d" style="display:none">
+        <span class="av-option-letter">D</span>
+        <span class="av-option-text">Os sentidos naturais — quando nos fazem andar pelo que sentimos em vez da Palavra.</span>
+      </div>
+<div class="av-option" data-value="e">
+        <input type="checkbox" name="q3" value="e" style="display:none">
+        <span class="av-option-letter">E</span>
+        <span class="av-option-text">As tribulações — que sempre destroem a fé do crente sem exceção.</span>
+      </div>
+    </div>
+    <div class="av-confirm-row">
+      <button class="av-confirm-btn" type="button" data-card="11">Confirmar resposta</button>
+      <span class="av-confirmed-badge" style="display:none">✓ Resposta confirmada</span>
+    </div>
+  </div>
+
+<div class="av-card" data-qid="q12" data-correct="c" data-type="incorrect" data-explanation="A alternativa que deve ser marcada como incorreta é C. Ela contradiz o ensino bíblico ou o sentido correto do tema. A resposta foi revisada à luz do ensino bíblico geral: Cristo, a Palavra e a obra do Espírito são o critério para avaliar a alternativa correta. As demais alternativas preservam melhor o conjunto do ensino das Escrituras." id="av-card-12">
+    <div class="av-card-header">
+      <div class="av-qnum">12</div>
+      <div class="av-card-meta">
+        <span class="av-badge badge-incorrect">MARQUE A INCORRETA</span>
+        <div class="av-qtext">A apostila ensina que a fé precisa crescer e ser aperfeiçoada. Qual das afirmações abaixo é <strong>incorreta</strong> sobre o crescimento da fé?</div>
+      </div>
+    </div>
+    <div class="av-options" id="av-opts-12">
+      <div class="av-option" data-value="a">
+        <input type="radio" name="q4" value="a" style="display:none">
+        <span class="av-option-letter">A</span>
+        <span class="av-option-text">Deus concedeu uma medida de fé a cada crente, mas espera que ela cresça e amadureça (Rm 12:3).</span>
+      </div>
+<div class="av-option" data-value="b">
+        <input type="radio" name="q4" value="b" style="display:none">
+        <span class="av-option-letter">B</span>
+        <span class="av-option-text">As tribulações podem ser usadas por Deus para aperfeiçoar a fé, removendo impurezas como o fogo purifica o ouro.</span>
+      </div>
+<div class="av-option" data-value="c">
+        <input type="radio" name="q4" value="c" style="display:none">
+        <span class="av-option-letter">C</span>
+        <span class="av-option-text">Quando Jesus fala em "fé como um grão de mostarda", refere-se ao <em>tamanho mínimo</em> de fé necessário — quanto menor a fé, mais ela funciona.</span>
+      </div>
+<div class="av-option" data-value="d">
+        <input type="radio" name="q4" value="d" style="display:none">
+        <span class="av-option-letter">D</span>
+        <span class="av-option-text">A perseverança é sinal de grande fé — aqueles que creem por anos demonstram com constância que realmente confiam em Deus.</span>
+      </div>
+    </div>
+    <div class="av-confirm-row">
+      <button class="av-confirm-btn" type="button" data-card="12">Confirmar resposta</button>
+      <span class="av-confirmed-badge" style="display:none">✓ Resposta confirmada</span>
+    </div>
+  </div>
+
+<div class="av-card" data-qid="q13" data-correct="b" data-type="incorrect" data-explanation="A alternativa que deve ser marcada como incorreta é B. Ela contradiz o ensino bíblico ou o sentido correto do tema. A resposta foi revisada à luz do ensino bíblico geral: Cristo, a Palavra e a obra do Espírito são o critério para avaliar a alternativa correta. As demais alternativas preservam melhor o conjunto do ensino das Escrituras." id="av-card-13">
+    <div class="av-card-header">
+      <div class="av-qnum">13</div>
+      <div class="av-card-meta">
+        <span class="av-badge badge-incorrect">MARQUE A INCORRETA</span>
+        <div class="av-qtext">A apostila sobre Disciplinas Espirituais aborda a relação entre <strong>graça e disciplina</strong>. Qual afirmação abaixo está <strong>incorreta</strong> sobre esse tema?</div>
+      </div>
+    </div>
+    <div class="av-options" id="av-opts-13">
+      <div class="av-option" data-value="a">
+        <input type="radio" name="q7" value="a" style="display:none">
+        <span class="av-option-letter">A</span>
+        <span class="av-option-text">A graça não justifica a passividade; Paulo afirmou que "trabalhava mais do que todos os outros" exatamente por causa da graça de Deus (1Co 15:10).</span>
+      </div>
+<div class="av-option" data-value="b">
+        <input type="radio" name="q7" value="b" style="display:none">
+        <span class="av-option-letter">B</span>
+        <span class="av-option-text">Praticar as disciplinas espirituais torna o cristão mais amado e mais justo diante de Deus, aumentando seu valor aos olhos do Pai.</span>
+      </div>
+<div class="av-option" data-value="c">
+        <input type="radio" name="q7" value="c" style="display:none">
+        <span class="av-option-letter">C</span>
+        <span class="av-option-text">As disciplinas são "meios de graça" — não ganham mérito, mas nos aproximam de Deus e fazem Suas riquezas em Cristo explodirem em nosso espírito.</span>
+      </div>
+<div class="av-option" data-value="d">
+        <input type="radio" name="q7" value="d" style="display:none">
+        <span class="av-option-letter">D</span>
+        <span class="av-option-text">Nossa posição em Cristo não muda por aquilo que fazemos ou deixamos de fazer — somos amados independentemente da nossa prática espiritual.</span>
+      </div>
+    </div>
+    <div class="av-confirm-row">
+      <button class="av-confirm-btn" type="button" data-card="13">Confirmar resposta</button>
+      <span class="av-confirmed-badge" style="display:none">✓ Resposta confirmada</span>
+    </div>
+  </div>
+
+<div class="av-card" data-qid="q14" data-correct="b" data-type="single" data-explanation="A alternativa correta é B. Os dons espirituais não são habilidades naturais, mas manifestações sobrenaturais do Espírito Santo com o propósito de capacitar os crentes para o serviço no Corpo de Cristo (1Co 12:1)." id="av-card-14">
+    <div class="av-card-header">
+      <div class="av-qnum">14</div>
+      <div class="av-card-meta">
+        <span class="av-badge badge-single">UMA RESPOSTA CORRETA</span>
+        <div class="av-qtext">O que são os dons espirituais, segundo a apostila de Dons Espirituais?</div>
+      </div>
+    </div>
+    <div class="av-options" id="av-opts-14">
+      <div class="av-option" data-value="a">
+        <input type="radio" name="q1" value="a" style="display:none">
+        <span class="av-option-letter">A</span>
+        <span class="av-option-text">Habilidades naturais aprimoradas pelo esforço e dedicação humana</span>
+      </div>
+<div class="av-option" data-value="b">
+        <input type="radio" name="q1" value="b" style="display:none">
+        <span class="av-option-letter">B</span>
+        <span class="av-option-text">Manifestações sobrenaturais concedidas pelo Espírito Santo para capacitar os crentes a servirem no Corpo de Cristo</span>
+      </div>
+<div class="av-option" data-value="c">
+        <input type="radio" name="q1" value="c" style="display:none">
+        <span class="av-option-letter">C</span>
+        <span class="av-option-text">Títulos ministeriais outorgados pela liderança da igreja local</span>
+      </div>
+<div class="av-option" data-value="d">
+        <input type="radio" name="q1" value="d" style="display:none">
+        <span class="av-option-letter">D</span>
+        <span class="av-option-text">Frutos do caráter cristão adquiridos gradualmente pelo crescimento espiritual</span>
+      </div>
+    </div>
+    <div class="av-confirm-row">
+      <button class="av-confirm-btn" type="button" data-card="14">Confirmar resposta</button>
+      <span class="av-confirmed-badge" style="display:none">✓ Resposta confirmada</span>
+    </div>
+  </div>
+
+<div class="av-card" data-qid="q15" data-correct="c" data-type="incorrect" data-explanation="A alternativa incorreta é C. A apostila não estabelece hierarquia entre louvor e adoração — ambos são dimensões complementares do culto. O louvor celebra as obras e os atributos de Deus; a adoração se concentra em Sua pessoa de forma íntima. O louvor, de fato, prepara o caminho para a adoração." id="av-card-15">
+    <div class="av-card-header">
+      <div class="av-qnum">15</div>
+      <div class="av-card-meta">
+        <span class="av-badge badge-incorrect">MARQUE A INCORRETA</span>
+        <div class="av-qtext">Qual das alternativas abaixo apresenta uma afirmação INCORRETA sobre a diferença entre louvor e adoração?</div>
+      </div>
+    </div>
+    <div class="av-options" id="av-opts-15">
+      <div class="av-option" data-value="a">
+        <input type="radio" name="q8" value="a" style="display:none">
+        <span class="av-option-letter">A</span>
+        <span class="av-option-text">O louvor exalta Deus por quem Ele é e o que faz; a adoração é reverência profunda à Sua pessoa</span>
+      </div>
+<div class="av-option" data-value="b">
+        <input type="radio" name="q8" value="b" style="display:none">
+        <span class="av-option-letter">B</span>
+        <span class="av-option-text">O louvor pode ser coletivo e celebrativo; a adoração é mais íntima e reverente</span>
+      </div>
+<div class="av-option" data-value="c">
+        <input type="radio" name="q8" value="c" style="display:none">
+        <span class="av-option-letter">C</span>
+        <span class="av-option-text">O louvor é mais importante que a adoração; por isso, a Bíblia dedica mais atenção a ele</span>
+      </div>
+<div class="av-option" data-value="d">
+        <input type="radio" name="q8" value="d" style="display:none">
+        <span class="av-option-letter">D</span>
+        <span class="av-option-text">O louvor prepara o caminho para a adoração, como porta de entrada na presença de Deus (Sl 100:4)</span>
+      </div>
+    </div>
+    <div class="av-confirm-row">
+      <button class="av-confirm-btn" type="button" data-card="15">Confirmar resposta</button>
+      <span class="av-confirmed-badge" style="display:none">✓ Resposta confirmada</span>
+    </div>
+  </div>
+
+  <!-- ENVIO -->
+  <div class="av-submit-area" id="submitArea">
+    <h3>Enviar avaliação</h3>
+    <p>Todas as respostas foram confirmadas. Digite seu nome e envie para registrar sua participação.</p>
+    <label for="avNome">Nome completo</div>
+    <input class="av-nome-input" id="avNome" type="text" placeholder="Digite seu nome completo">
+    <button class="av-submit-btn" id="submitBtn" type="button">Enviar avaliação</button>
+    <div class="av-submit-sent" id="submitSent">✓ Avaliação registrada com sucesso.</div>
+  </div>
+
+  <!-- RESULTADO -->
+  <div class="av-resultado" id="resultado"></div>
+
+</div>
+
+<footer style="border-top:1px solid var(--border);text-align:center;padding:24px 16px;color:var(--text3);font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase">
+  Escola Makários · Igreja Emaús, Goiânia
+</footer>
+
+<iframe name="av_submit_frame" style="display:none"></iframe>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  var APP_URL   = 'https://script.google.com/macros/s/AKfycbwYahR6Kd00Sc4dsaoMYSiapUbaXW9z-s2UFcwbYBh_WT_DtBpHyKTY0O02qOlXF9aq/exec';
+  var EXERCICIO = 'Essência — Avaliação Final';
+  var TOTAL     = 15;
+  var TOTAL_SECS = 40 * 60;
+
+  // ── option click ──────────────────────────────────────────────
+  document.querySelectorAll('.av-card').forEach(function(card) {
+    var isMulti = card.dataset.type === 'multi';
+    card.querySelectorAll('.av-option').forEach(function(opt) {
+      opt.addEventListener('click', function() {
+        if (opt.classList.contains('locked')) return;
+        if (isMulti) {
+          opt.classList.toggle('selected');
+        } else {
+          card.querySelectorAll('.av-option').forEach(function(o) {
+            o.classList.remove('selected');
+          });
+          opt.classList.add('selected');
+        }
+        // update letter color
+        card.querySelectorAll('.av-option').forEach(function(o) {
+          var letter = o.querySelector('.av-option-letter');
+          if (!letter) return;
+          if (o.classList.contains('selected')) {
+            letter.style.background = 'var(--blue)';
+            letter.style.color = '#fff';
+          } else {
+            letter.style.background = 'var(--border)';
+            letter.style.color = 'var(--text2)';
+          }
+        });
+      });
+    });
+  });
+
+  // ── confirm button ────────────────────────────────────────────
+  var confirmed = 0;
+  document.querySelectorAll('.av-confirm-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var n = parseInt(btn.dataset.card);
+      var card = document.getElementById('av-card-' + n);
+      var sel = card.querySelectorAll('.av-option.selected');
+      if (!sel.length) { alert('Selecione uma alternativa antes de confirmar.'); return; }
+
+      card.querySelectorAll('.av-option').forEach(function(o) { o.classList.add('locked'); });
+      card.classList.add('confirmed');
+      btn.style.display = 'none';
+      var badge = btn.nextElementSibling;
+      if (badge) { badge.style.display = 'flex'; }
+
+      confirmed++;
+      updateProgress();
+      if (confirmed === TOTAL) showSubmitArea();
+    });
+  });
+
+  // ── progress ──────────────────────────────────────────────────
+  function updateProgress() {
+    var pct = Math.round(confirmed / TOTAL * 100);
+    var fill = document.getElementById('progressFill');
+    var txt  = document.getElementById('progressText');
+    if (fill) fill.style.width = pct + '%';
+    if (txt)  txt.textContent = confirmed + ' de ' + TOTAL + ' confirmada' + (confirmed === 1 ? '' : 's');
+  }
+
+  // ── submit area ───────────────────────────────────────────────
+  function showSubmitArea() {
+    var area = document.getElementById('submitArea');
+    if (area) {
+      area.style.display = 'block';
+      setTimeout(function() { area.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }, 100);
+    }
+  }
+
+  // ── calc score ─────────────────────────────────────────────────
+  function calcScore() {
+    var hits = 0;
+    document.querySelectorAll('.av-card').forEach(function(card) {
+      var correct = card.dataset.correct.split(',').map(function(x) { return x.trim(); }).sort();
+      var sel = [];
+      card.querySelectorAll('.av-option.selected').forEach(function(o) { sel.push(o.dataset.value); });
+      sel.sort();
+      if (correct.join(',') === sel.join(',')) hits++;
+    });
+    return hits;
+  }
+
+  // ── reveal answers ─────────────────────────────────────────────
+  function revealAnswers() {
+    document.querySelectorAll('.av-card').forEach(function(card) {
+      var correct = card.dataset.correct.split(',').map(function(x) { return x.trim(); });
+      card.querySelectorAll('.av-option').forEach(function(opt) {
+        var v = opt.dataset.value;
+        var letter = opt.querySelector('.av-option-letter');
+        if (correct.indexOf(v) !== -1) {
+          opt.classList.add('reveal-correct');
+          if (letter) { letter.style.background = 'var(--green)'; letter.style.color = '#fff'; }
+        } else if (opt.classList.contains('selected')) {
+          opt.classList.add('reveal-wrong');
+          if (letter) { letter.style.background = 'var(--red)'; letter.style.color = '#fff'; }
+        }
+      });
+    });
+  }
+
+  // ── show result ────────────────────────────────────────────────
+  function showResult(hits) {
+    var pct = Math.round(hits / TOTAL * 100);
+    var aprovado = pct >= 60;
+    var cls   = aprovado ? 'aprovado' : 'reprovado';
+    var title = aprovado ? 'Aprovado!' : 'Em processo';
+    var msg   = aprovado
+      ? 'Parabéns. Você demonstrou domínio dos fundamentos da fé cristã. Que esse conhecimento se aprofunde em convicção viva, obediência fiel e caráter formado pela Palavra.'
+      : 'Este resultado é um ponto de partida, não um rótulo. Revise o conteúdo das apostilas, volte às questões e permita que a Palavra forme em você raízes cada vez mais profundas. Entre em contato com a Vitória Gonçalves pelo (62) 99199-0501 — ela poderá orientar seus próximos passos.';
+    var el = document.getElementById('resultado');
+    el.innerHTML =
+      '<div class="av-resultado-circle ' + cls + '">' +
+        '<span class="av-nota-big">' + hits + '</span>' +
+        '<span class="av-nota-total">de ' + TOTAL + '</span>' +
+      '</div>' +
+      '<div class="av-resultado-badge ' + cls + '">' + (aprovado ? '✓ Aprovado' : '● Em processo') + '</div>' +
+      '<div class="av-resultado-title ' + cls + '">' + title + '</div>' +
+      '<p class="av-resultado-msg">' + msg + '</p>' +
+      '<p class="av-resultado-nota">Nota: <strong>' + hits + '/' + TOTAL + ' · ' + pct + '%</strong></p>';
+    el.classList.add('show');
+    setTimeout(function() { el.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 100);
+  }
+
+  // ── submit ─────────────────────────────────────────────────────
+  document.getElementById('submitBtn').addEventListener('click', function() {
+    var nome = (document.getElementById('avNome').value || '').trim();
+    if (!nome) { alert('Informe seu nome completo antes de enviar.'); return; }
+
+    clearInterval(window._avTimer);
+    revealAnswers();
+    var hits = calcScore();
+
+    var form = document.createElement('form');
+    form.method = 'GET'; form.action = APP_URL;
+    form.target = 'av_submit_frame'; form.style.display = 'none';
+    var fields = { exercicio: EXERCICIO, nome: nome, pontuacao: String(hits), nota: hits + '/' + TOTAL, data: new Date().toLocaleString('pt-BR') };
+    Object.keys(fields).forEach(function(k) {
+      var inp = document.createElement('input'); inp.name = k; inp.value = fields[k]; form.appendChild(inp);
+    });
+    document.body.appendChild(form); form.submit();
+    setTimeout(function() { form.remove(); }, 1000);
+
+    document.getElementById('submitBtn').disabled = true;
+    document.getElementById('avNome').disabled = true;
+    var sent = document.getElementById('submitSent');
+    if (sent) { sent.classList.add('show'); sent.style.display = 'block'; }
+
+    showResult(hits);
+  });
+
+  // ── timer ──────────────────────────────────────────────────────
+  var remaining = TOTAL_SECS;
+  function tick() {
+    var m = Math.floor(remaining / 60);
+    var s = remaining % 60;
+    var disp = document.getElementById('timerCount');
+    var fill = document.getElementById('timerFill');
+    if (disp) disp.textContent = String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0');
+    if (fill) fill.style.width = (remaining / TOTAL_SECS * 100) + '%';
+    if (remaining <= 300) {
+      if (disp) disp.classList.add('urgent');
+      if (fill) fill.classList.add('urgent');
+    }
+    if (remaining <= 0) {
+      clearInterval(window._avTimer);
+      if (disp) disp.textContent = '00:00';
+      showSubmitArea();
+      var nome = (document.getElementById('avNome').value || '').trim();
+      if (nome) {
+        document.getElementById('submitBtn').click();
+      } else {
+        alert('O tempo acabou! Digite seu nome e clique em Enviar avaliação.');
+      }
+      return;
+    }
+    remaining--;
+  }
+  tick();
+  window._avTimer = setInterval(tick, 1000);
+
+  updateProgress();
+});
+</script>
+</body>
+</html>

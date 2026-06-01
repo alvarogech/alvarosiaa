@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Avaliação Final · Voz | Escola Makários</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800&family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ── RESET & BASE ─────────────────────────────────────────────────── */
+:root {
+  --blue:       #2E7FBF;
+  --blue-dark:  #1a5a8c;
+  --blue-light: #e8f2fb;
+  --green:      #2a7a4b;
+  --green-bg:   #eaf5ee;
+  --red:        #c0392b;
+  --red-bg:     #faeaea;
+  --amber:      #b45309;
+  --amber-bg:   #fef3c7;
+  --text:       #16192b;
+  --text2:      #4a5568;
+  --text3:      #9aa7b8;
+  --surface:    #ffffff;
+  --surface2:   #f7f9fc;
+  --border:     #dde3ec;
+  --border-strong: #b0bec9;
+  --radius:     16px;
+  --radius-sm:  10px;
+  --shadow:     0 2px 12px rgba(22,25,43,.07);
+  --shadow-md:  0 6px 28px rgba(22,25,43,.10);
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Barlow', sans-serif; background: var(--surface2); color: var(--text); min-height: 100vh; line-height: 1.6; }
+
+/* ── NAV ──────────────────────────────────────────────────────────── */
+.av-nav {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 0 24px;
+  display: flex; align-items: center; justify-content: space-between;
+  height: 60px; position: sticky; top: 0; z-index: 100;
+}
+.av-nav-logo img { height: 36px; width: auto; display: block; }
+.av-nav-links { display: flex; gap: 6px; }
+.av-nav-links a {
+  text-decoration: none; font-size: .78rem; font-weight: 700;
+  padding: 6px 14px; border-radius: 20px; color: var(--text2); transition: all .2s;
+}
+.av-nav-links a:hover { background: var(--blue-light); color: var(--blue); }
+
+/* ── TIMER BAR ────────────────────────────────────────────────────── */
+.av-timer-bar {
+  background: var(--surface); border-bottom: 1px solid var(--border);
+  padding: 9px 24px; display: flex; align-items: center; gap: 14px;
+  position: sticky; top: 60px; z-index: 90;
+}
+.av-timer-label { font-size: 11px; font-weight: 800; letter-spacing: .07em; text-transform: uppercase; color: var(--text3); white-space: nowrap; }
+.av-timer-track { flex: 1; height: 5px; background: var(--border); border-radius: 99px; overflow: hidden; }
+.av-timer-fill  { height: 100%; background: var(--blue); border-radius: 99px; transition: width 1s linear; }
+.av-timer-fill.urgent { background: var(--red); }
+.av-timer-count {
+  font-size: 1rem; font-weight: 800; color: var(--blue); min-width: 56px; text-align: right;
+  font-variant-numeric: tabular-nums; letter-spacing: .02em;
+}
+.av-timer-count.urgent { color: var(--red); animation: blink 1s step-end infinite; }
+@keyframes blink { 50% { opacity: .4 } }
+
+/* ── PROGRESS ROW ─────────────────────────────────────────────────── */
+.av-progress-row {
+  background: var(--surface); border-bottom: 1px solid var(--border);
+  padding: 8px 24px; display: flex; align-items: center; gap: 12px;
+  font-size: 12px; font-weight: 700; color: var(--text3);
+}
+.av-progress-track { flex:1; height: 4px; background: var(--border); border-radius: 99px; overflow: hidden; }
+.av-progress-fill  { height: 100%; background: var(--blue); border-radius: 99px; width: 0%; transition: width .4s ease; }
+
+/* ── LAYOUT ───────────────────────────────────────────────────────── */
+.av-container { max-width: 780px; margin: 0 auto; padding: 32px 20px 80px; }
+.av-back-link {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 12px; font-weight: 700; color: var(--blue); text-decoration: none;
+  letter-spacing: .02em; margin-bottom: 28px;
+}
+.av-back-link:hover { color: var(--blue-dark); }
+
+/* ── PAGE HEADER ──────────────────────────────────────────────────── */
+.av-page-header {
+  background: var(--blue); color: #fff;
+  border-radius: var(--radius); padding: 2rem 2rem 1.75rem;
+  margin-bottom: 32px; position: relative; overflow: hidden;
+}
+.av-page-header::before {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 85% -10%, rgba(255,255,255,.13) 0%, transparent 55%),
+              radial-gradient(ellipse at 10% 110%, rgba(0,0,0,.07) 0%, transparent 50%);
+  pointer-events: none;
+}
+.av-volume-tag { font-size: 11px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; opacity: .75; margin-bottom: 6px; }
+.av-page-header h1 { font-family: 'Barlow Condensed', sans-serif; font-size: clamp(1.8rem,5vw,2.8rem); font-weight: 800; line-height: 1.05; margin-bottom: 10px; }
+.av-page-header p { font-size: .93rem; opacity: .82; line-height: 1.65; }
+.av-header-meta {
+  display: flex; gap: 10px; flex-wrap: wrap; margin-top: 16px;
+}
+.av-header-chip {
+  display: inline-flex; align-items: center; gap: 5px;
+  background: rgba(255,255,255,.15); border: 1px solid rgba(255,255,255,.22);
+  border-radius: 99px; padding: 4px 12px; font-size: 12px; font-weight: 700;
+}
+
+/* ── QUESTION CARD ────────────────────────────────────────────────── */
+.av-card {
+  background: var(--surface); border: 1.5px solid var(--border);
+  border-radius: var(--radius); padding: 1.75rem;
+  margin-bottom: 16px; transition: border-color .2s;
+  box-shadow: var(--shadow);
+}
+.av-card.confirmed { border-color: var(--blue); background: #fafcff; }
+.av-card-header { display: flex; gap: 14px; align-items: flex-start; margin-bottom: 1.25rem; }
+.av-qnum {
+  width: 36px; height: 36px; border-radius: 10px;
+  background: var(--blue); color: #fff;
+  font-size: .85rem; font-weight: 800; display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; font-variant-numeric: tabular-nums;
+}
+.av-card.confirmed .av-qnum { background: var(--blue-dark); }
+.av-card-meta { flex: 1; }
+.av-badge {
+  display: inline-block; font-size: 10px; font-weight: 800;
+  letter-spacing: .07em; text-transform: uppercase;
+  padding: 3px 10px; border-radius: 99px; margin-bottom: 8px;
+}
+.badge-single   { background: var(--blue-light); color: var(--blue); border: 1px solid rgba(46,127,191,.2); }
+.badge-multi    { background: #e8f0fb; color: #2563a8; border: 1px solid rgba(37,99,168,.2); }
+.badge-incorrect { background: #f3edfb; color: #6d28a8; border: 1px solid rgba(109,40,168,.2); }
+.av-qtext { font-size: .97rem; line-height: 1.65; color: var(--text); font-weight: 500; }
+
+/* ── OPTIONS ──────────────────────────────────────────────────────── */
+.av-options { display: flex; flex-direction: column; gap: 9px; margin-bottom: 1.25rem; }
+.av-option {
+  display: flex; align-items: flex-start; gap: 12px;
+  border: 1.5px solid var(--border); border-radius: var(--radius-sm);
+  padding: 11px 14px; cursor: pointer; transition: all .15s; background: var(--surface);
+  user-select: none;
+}
+.av-option:hover:not(.locked) { background: var(--blue-light); border-color: var(--blue); }
+.av-option.selected { background: var(--blue-light); border-color: var(--blue); }
+.av-option.locked   { cursor: default; pointer-events: none; }
+.av-option-letter {
+  width: 26px; height: 26px; border-radius: 7px; flex-shrink: 0;
+  background: var(--border); color: var(--text2);
+  font-size: .75rem; font-weight: 800; letter-spacing: .03em;
+  display: flex; align-items: center; justify-content: center;
+  transition: all .15s;
+}
+.av-option.selected .av-option-letter { background: var(--blue); color: #fff; }
+.av-option-text  { font-size: .92rem; line-height: 1.55; color: var(--text); padding-top: 2px; }
+
+/* ── POST-SUBMIT option reveal ────────────────────────────────────── */
+.av-option.reveal-correct { background: var(--green-bg) !important; border-color: var(--green) !important; }
+.av-option.reveal-correct .av-option-letter { background: var(--green) !important; color: #fff !important; }
+.av-option.reveal-wrong   { background: var(--red-bg) !important; border-color: var(--red) !important; }
+.av-option.reveal-wrong   .av-option-letter { background: var(--red) !important; color: #fff !important; }
+
+/* ── CONFIRM ROW ──────────────────────────────────────────────────── */
+.av-confirm-row { display: flex; align-items: center; gap: 12px; }
+.av-confirm-btn {
+  padding: 9px 22px; background: var(--blue); color: #fff;
+  border: none; border-radius: var(--radius-sm);
+  font-family: 'Barlow', sans-serif; font-size: 13px; font-weight: 700;
+  cursor: pointer; transition: all .15s; letter-spacing: .02em;
+}
+.av-confirm-btn:hover { background: var(--blue-dark); transform: translateY(-1px); }
+.av-confirm-btn:disabled { opacity: .35; cursor: default; transform: none; }
+.av-confirmed-badge {
+  font-size: 12px; font-weight: 700; color: var(--green);
+  display: flex; align-items: center; gap: 5px;
+}
+
+/* ── SUBMIT AREA ──────────────────────────────────────────────────── */
+.av-submit-area {
+  background: var(--surface); border: 1.5px solid var(--border);
+  border-radius: var(--radius); padding: 1.75rem;
+  margin-bottom: 16px; box-shadow: var(--shadow);
+  display: none;
+}
+.av-submit-area h3 { font-size: 1.05rem; font-weight: 800; margin-bottom: 4px; }
+.av-submit-area p  { font-size: .9rem; color: var(--text2); margin-bottom: 16px; line-height: 1.6; }
+.av-submit-area label { display: block; font-size: 12px; font-weight: 800; letter-spacing: .04em; text-transform: uppercase; color: var(--text2); margin-bottom: 6px; }
+.av-nome-input {
+  width: 100%; padding: 12px 14px;
+  border: 1.5px solid var(--border); border-radius: var(--radius-sm);
+  font-family: 'Barlow', sans-serif; font-size: 15px; color: var(--text);
+  background: var(--surface); outline: none; transition: border-color .15s;
+  margin-bottom: 14px;
+}
+.av-nome-input:focus { border-color: var(--blue); }
+.av-submit-btn {
+  display: block; width: 100%; padding: 14px;
+  background: var(--blue); color: #fff; border: none;
+  border-radius: var(--radius-sm); font-family: 'Barlow', sans-serif;
+  font-size: 15px; font-weight: 800; cursor: pointer; transition: all .15s;
+  letter-spacing: .02em;
+}
+.av-submit-btn:hover { background: var(--blue-dark); }
+.av-submit-sent { display: none; margin-top: 10px; font-size: 13px; font-weight: 700; color: var(--green); }
+.av-submit-sent.show { display: block; }
+
+/* ── RESULTADO ────────────────────────────────────────────────────── */
+.av-resultado {
+  display: none; background: var(--surface); border: 1.5px solid var(--border);
+  border-radius: var(--radius); padding: 2.5rem 2rem;
+  text-align: center; box-shadow: var(--shadow-md);
+  margin-bottom: 32px; animation: fadeUp .5s ease;
+}
+.av-resultado.show { display: block; }
+@keyframes fadeUp { from { opacity:0; transform:translateY(16px) } to { opacity:1; transform:none } }
+.av-resultado-circle {
+  width: 120px; height: 120px; border-radius: 50%;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  margin: 0 auto 1.5rem;
+}
+.av-resultado-circle.aprovado { background: var(--green-bg); }
+.av-resultado-circle.reprovado { background: var(--red-bg); }
+.av-nota-big   { font-size: 2.2rem; font-weight: 800; line-height: 1; }
+.av-nota-total { font-size: 12px; font-weight: 600; opacity: .7; }
+.aprovado .av-nota-big { color: var(--green); }
+.reprovado .av-nota-big { color: var(--red); }
+.av-resultado-badge {
+  display: inline-block; padding: 5px 16px; border-radius: 99px;
+  font-size: 12px; font-weight: 800; letter-spacing: .07em; text-transform: uppercase;
+  margin-bottom: 14px;
+}
+.av-resultado-badge.aprovado { background: var(--green-bg); color: var(--green); }
+.av-resultado-badge.reprovado { background: var(--red-bg); color: var(--red); }
+.av-resultado-title { font-size: 1.6rem; font-weight: 800; margin-bottom: .5rem; }
+.aprovado.av-resultado-title { color: var(--green); }
+.reprovado.av-resultado-title { color: var(--red); }
+.av-resultado-msg { font-size: .95rem; line-height: 1.75; color: var(--text2); max-width: 480px; margin: 0 auto 1.5rem; }
+.av-resultado-nota { font-size: 14px; color: var(--text2); }
+.av-resultado-nota strong { color: var(--text); }
+
+/* ── RESPONSIVE ───────────────────────────────────────────────────── */
+@media (max-width: 520px) {
+  .av-container { padding: 20px 14px 60px; }
+  .av-card { padding: 1.25rem; }
+  .av-page-header { padding: 1.5rem; }
+  .av-timer-bar, .av-progress-row { padding: 8px 14px; }
+  .av-nav { padding: 0 14px; }
+  .av-nav-links a { padding: 5px 10px; font-size: .73rem; }
+}
+</style>
+</head>
+<body>
+<nav class="av-nav">
+  <a class="av-nav-logo" href="voz.html"><img src="logo-makarios-oficial-azul.png" alt="Makários"></a>
+  <div class="av-nav-links">
+    <a href="essencia.html">Essência</a>
+    <a href="caminho.html">Caminho</a>
+    <a href="voz.html">Voz</a>
+  </div>
+</nav>
+<div class="av-timer-bar">
+  <span class="av-timer-label">Tempo restante</span>
+  <div class="av-timer-track"><div class="av-timer-fill" id="timerFill"></div></div>
+  <span class="av-timer-count" id="timerCount">40:00</span>
+</div>
+<div class="av-progress-row">
+  <span id="progressText">0 de 15 confirmadas</span>
+  <div class="av-progress-track"><div class="av-progress-fill" id="progressFill"></div></div>
+</div>
+<div class="av-container">
+  <a class="av-back-link" href="voz.html">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3L5 8l5 5"/></svg>
+    Voltar para Voz
+  </a>
+  <div class="av-page-header">
+    <div class="av-volume-tag">Volume 3 · Voz</div>
+    <h1>Avaliação Final</h1>
+    <p>Responda com atenção. O resultado será exibido apenas após o envio.</p>
+    <div class="av-header-meta">
+      <span class="av-header-chip">📋 15 questões</span>
+      <span class="av-header-chip">⏱ 40 minutos</span>
+      <span class="av-header-chip">✉ Somente a primeira resposta é considerada</span>
+    </div>
+  </div>
+  
+
+  <div class="av-card" data-qid="q1" data-correct="b" data-type="single" data-explanation="A alternativa correta é B. O Sermão do Monte descreve a vida de quem está sob o governo do Rei: uma justiça que nasce no coração e se manifesta no mundo. Resposta: B) A constituição da Cultura do Reino — descrição de quem você se torna quando o Rei governa a sua vida" id="av-card-1"><div class="av-card-header"><div class="av-qnum">01</div><div class="av-card-meta"><span class="av-badge badge-single">UMA RESPOSTA CORRETA</span><div class="av-qtext">De acordo com a apostila, qual é a melhor descrição do Sermão do Monte dentro da Cultura do Reino?</div></div></div><div class="av-options" id="av-opts-1">
+      <div class="av-option" data-value="a"><input type="radio" name="q1" value="a" style="display:none"><span class="av-option-letter">A</span><span class="av-option-text">Um conjunto de regras morais que o crente deve se esforçar para cumprir</span></div>
+      <div class="av-option" data-value="b"><input type="radio" name="q1" value="b" style="display:none"><span class="av-option-letter">B</span><span class="av-option-text">A constituição da Cultura do Reino — descrição de quem você se torna quando o Rei governa a sua vida</span></div>
+      <div class="av-option" data-value="c"><input type="radio" name="q1" value="c" style="display:none"><span class="av-option-letter">C</span><span class="av-option-text">Um discurso voltado para multidões curiosas, com foco em milagres e curas</span></div>
+      <div class="av-option" data-value="d"><input type="radio" name="q1" value="d" style="display:none"><span class="av-option-letter">D</span><span class="av-option-text">Um manual de evangelismo para os discípulos levarem às nações</span></div>
+    </div><div class="av-confirm-row"><button class="av-confirm-btn" type="button" data-card="1">Confirmar resposta</button><span class="av-confirmed-badge" style="display:none">✓ Resposta confirmada</span></div></div>
+
+  <div class="av-card" data-qid="q2" data-correct="c" data-type="incorrect" data-explanation="A alternativa que deve ser marcada como incorreta é C. Ela contradiz o ensino bíblico ou o sentido correto do tema. O Sermão do Monte descreve a vida de quem está sob o governo do Rei: uma justiça que nasce no coração e se manifesta no mundo. As demais alternativas preservam melhor o conjunto do ensino das Escrituras." id="av-card-2"><div class="av-card-header"><div class="av-qnum">02</div><div class="av-card-meta"><span class="av-badge badge-incorrect">MARQUE A INCORRETA</span><div class="av-qtext">Sobre as três práticas de dependência ensinadas por Jesus no capítulo 6 do Sermão do Monte (dar, orar e jejuar), marque a afirmação <strong>INCORRETA</strong>:</div></div></div><div class="av-options" id="av-opts-2">
+      <div class="av-option" data-value="a"><input type="radio" name="q2" value="a" style="display:none"><span class="av-option-letter">A</span><span class="av-option-text">Jesus pressupõe que os discípulos farão essas práticas; o que Ele aborda é o como — o motivo e a postura por trás delas</span></div>
+      <div class="av-option" data-value="b"><input type="radio" name="q2" value="b" style="display:none"><span class="av-option-letter">B</span><span class="av-option-text">Fazer essas práticas em segredo é um exercício de confiança de que Deus vê, sabe e recompensa — independente da aprovação humana</span></div>
+      <div class="av-option" data-value="c"><input type="radio" name="q2" value="c" style="display:none"><span class="av-option-letter">C</span><span class="av-option-text">A oração do Pai-Nosso tem como petição central pedir que os planos do cristão deem certo e que a vontade de Deus coincida com os seus desejos</span></div>
+      <div class="av-option" data-value="d"><input type="radio" name="q2" value="d" style="display:none"><span class="av-option-letter">D</span><span class="av-option-text">A ansiedade, segundo Jesus, é sinal de fidelidade dividida — ainda tentando governar a própria vida enquanto Deus governa</span></div>
+    </div><div class="av-confirm-row"><button class="av-confirm-btn" type="button" data-card="2">Confirmar resposta</button><span class="av-confirmed-badge" style="display:none">✓ Resposta confirmada</span></div></div>
+
+  <div class="av-card" data-qid="q3" data-correct="a" data-type="single" data-explanation="" id="av-card-3"><div class="av-card-header"><div class="av-qnum">03</div><div class="av-card-meta"><span class="av-badge badge-single">UMA RESPOSTA CORRETA</span><div class="av-qtext">Por que a apostila opta pelo termo "esferas" e não "7 montes"? Qual é a diferença central entre os dois conceitos?</div></div></div><div class="av-options" id="av-opts-3">
+      <div class="av-option" data-value="a"><input type="radio" name="q3" value="a" style="display:none"><span class="av-option-letter">A</span><span class="av-option-text">O modelo dos "7 montes" carrega uma lógica de conquista e dominação cultural; o conceito de "esferas" chama o cristão a habitar cada área com fidelidade e serviço, não a subjugá-la</span></div>
+      <div class="av-option" data-value="b"><input type="radio" name="q3" value="b" style="display:none"><span class="av-option-letter">B</span><span class="av-option-text">O modelo dos "7 montes" é católico; o conceito de "esferas" é reformado e mais alinhado com a teologia protestante</span></div>
+      <div class="av-option" data-value="c"><input type="radio" name="q3" value="c" style="display:none"><span class="av-option-letter">C</span><span class="av-option-text">Os "7 montes" são apenas 7 áreas; as "esferas" permitem incluir mais campos missionários conforme a cultura muda</span></div>
+      <div class="av-option" data-value="d"><input type="radio" name="q3" value="d" style="display:none"><span class="av-option-letter">D</span><span class="av-option-text">O termo "montes" tem conotação geográfica; "esferas" é mais preciso para descrever o mundo digital e a globalização</span></div>
+    </div><div class="av-confirm-row"><button class="av-confirm-btn" type="button" data-card="3">Confirmar resposta</button><span class="av-confirmed-badge" style="display:none">✓ Resposta confirmada</span></div></div>
+
+  <div class="av-card" data-qid="q4" data-correct="b" data-type="single" data-explanation="A alternativa correta é B. A fé bíblica alcança toda a vida: trabalho, cultura e vocação devem ser vividos diante de Deus, para sua glória e serviço ao próximo. Resposta: B) Viver toda a vida — no trabalho, no descanso, nas decisões — consciente de estar sempre diante da presença, sob a autoridade e para a glória de Deus" id="av-card-4"><div class="av-card-header"><div class="av-qnum">04</div><div class="av-card-meta"><span class="av-badge badge-single">UMA RESPOSTA CORRETA</span><div class="av-qtext">O conceito latino <em>Coram Deo</em>, como apresentado na apostila, significa:</div></div></div><div class="av-options" id="av-opts-4">
+      <div class="av-option" data-value="a"><input type="radio" name="q4" value="a" style="display:none"><span class="av-option-letter">A</span><span class="av-option-text">Que o cristão deve buscar cargos de liderança em todas as esferas para expandir o Reino de Deus</span></div>
+      <div class="av-option" data-value="b"><input type="radio" name="q4" value="b" style="display:none"><span class="av-option-letter">B</span><span class="av-option-text">Viver toda a vida — no trabalho, no descanso, nas decisões — consciente de estar sempre diante da presença, sob a autoridade e para a glória de Deus</span></div>
+      <div class="av-option" data-value="c"><input type="radio" name="q4" value="c" style="display:none"><span class="av-option-letter">C</span><span class="av-option-text">Que a oração deve ser o primeiro ato do dia antes de qualquer atividade secular ou profissional</span></div>
+      <div class="av-option" data-value="d"><input type="radio" name="q4" value="d" style="display:none"><span class="av-option-letter">D</span><span class="av-option-text">A separação entre o espaço sagrado do culto e o espaço secular do trabalho e da política</span></div>
+    </div><div class="av-confirm-row"><button class="av-confirm-btn" type="button" data-card="4">Confirmar resposta</button><span class="av-confirmed-badge" style="display:none">✓ Resposta confirmada</span></div></div>
+
+  <div class="av-card" data-qid="q5" data-correct="d" data-type="incorrect" data-explanation="A alternativa que deve ser marcada como incorreta é D. Ela contradiz o ensino bíblico ou o sentido correto do tema. A fé bíblica alcança toda a vida: trabalho, cultura e vocação devem ser vividos diante de Deus, para sua glória e serviço ao próximo. As demais alternativas preservam melhor o conjunto do ensino das Escrituras." id="av-card-5"><div class="av-card-header"><div class="av-qnum">05</div><div class="av-card-meta"><span class="av-badge badge-incorrect">MARQUE A INCORRETA</span><div class="av-qtext">Sobre o Mandato Cultural (Gênesis 1.28 e 2.15), marque a afirmação <strong>INCORRETA</strong>:</div></div></div><div class="av-options" id="av-opts-5">
+      <div class="av-option" data-value="a"><input type="radio" name="q5" value="a" style="display:none"><span class="av-option-letter">A</span><span class="av-option-text">O mandato cultural não foi cancelado pela queda — foi complicado pela presença do pecado, mas continua vigente</span></div>
+      <div class="av-option" data-value="b"><input type="radio" name="q5" value="b" style="display:none"><span class="av-option-letter">B</span><span class="av-option-text">O trabalho é anterior à queda — o castigo foi a dificuldade do trabalho, não o trabalho em si</span></div>
+      <div class="av-option" data-value="c"><input type="radio" name="q5" value="c" style="display:none"><span class="av-option-letter">C</span><span class="av-option-text">Toda área da cultura — música, ciência, política, arte — é uma forma de "abrir" o que Deus já colocou no mundo</span></div>
+      <div class="av-option" data-value="d"><input type="radio" name="q5" value="d" style="display:none"><span class="av-option-letter">D</span><span class="av-option-text">O mandato de domínio em Gênesis 1.28 foi dado exclusivamente aos líderes espirituais de Israel, e apenas se aplica ao povo de Deus após a redenção em Cristo</span></div>
+    </div><div class="av-confirm-row"><button class="av-confirm-btn" type="button" data-card="5">Confirmar resposta</button><span class="av-confirmed-badge" style="display:none">✓ Resposta confirmada</span></div></div>
+
+  <div class="av-card" data-qid="q6" data-correct="b" data-type="single" data-explanation="A alternativa correta é B. A honra bíblica reconhece o valor dado por Deus às pessoas e às autoridades, sem transformar honra em bajulação, medo ou conivência com o pecado. Resposta: B) Valor, preço e estima — uma dívida devida, não um favor concedido" id="av-card-6"><div class="av-card-header"><div class="av-qnum">06</div><div class="av-card-meta"><span class="av-badge badge-single">UMA RESPOSTA CORRETA</span><div class="av-qtext">Segundo a apostila, o termo grego <em>timé</em> (τιμή), usado por Paulo em Romanos 13:7 para falar de honra, significa fundamentalmente:</div></div></div><div class="av-options" id="av-opts-6">
+      <div class="av-option" data-value="a"><input type="radio" name="q6" value="a" style="display:none"><span class="av-option-letter">A</span><span class="av-option-text">Elogio público e reconhecimento visível</span></div>
+      <div class="av-option" data-value="b"><input type="radio" name="q6" value="b" style="display:none"><span class="av-option-letter">B</span><span class="av-option-text">Valor, preço e estima — uma dívida devida, não um favor concedido</span></div>
+      <div class="av-option" data-value="c"><input type="radio" name="q6" value="c" style="display:none"><span class="av-option-letter">C</span><span class="av-option-text">Obediência irrestrita a qualquer autoridade</span></div>
+      <div class="av-option" data-value="d"><input type="radio" name="q6" value="d" style="display:none"><span class="av-option-letter">D</span><span class="av-option-text">Cordialidade social e boas maneiras</span></div>
+    </div><div class="av-confirm-row"><button class="av-confirm-btn" type="button" data-card="6">Confirmar resposta</button><span class="av-confirmed-badge" style="display:none">✓ Resposta confirmada</span></div></div>
+
+  <div class="av-card" data-qid="q7" data-correct="c" data-type="incorrect" data-explanation="A alternativa que deve ser marcada como incorreta é C. Ela contradiz o ensino bíblico ou o sentido correto do tema. A honra bíblica reconhece o valor dado por Deus às pessoas e às autoridades, sem transformar honra em bajulação, medo ou conivência com o pecado. As demais alternativas preservam melhor o conjunto do ensino das Escrituras." id="av-card-7"><div class="av-card-header"><div class="av-qnum">07</div><div class="av-card-meta"><span class="av-badge badge-incorrect">MARQUE A INCORRETA</span><div class="av-qtext">Pedro escreve em 1 Pedro 2:17: "Honrai a todos." A apostila desenvolve o conceito de Honra 360°. Marque a afirmação que <strong>NÃO</strong> corresponde ao ensinamento da apostila sobre essa honra abrangente:</div></div></div><div class="av-options" id="av-opts-7">
+      <div class="av-option" data-value="a"><input type="radio" name="q7" value="a" style="display:none"><span class="av-option-letter">A</span><span class="av-option-text">Todo ser humano carrega a imago Dei e, por isso, merece ser honrado independentemente do que pode oferecer</span></div>
+      <div class="av-option" data-value="b"><input type="radio" name="q7" value="b" style="display:none"><span class="av-option-letter">B</span><span class="av-option-text">A honra deve fluir para cima (líderes), para os lados (pares), para baixo (liderados) e também para quem discorda</span></div>
+      <div class="av-option" data-value="c"><input type="radio" name="q7" value="c" style="display:none"><span class="av-option-letter">C</span><span class="av-option-text">É aceitável ser mais cauteloso ao honrar quem discorda de você, reservando a honra plena para os aliados</span></div>
+      <div class="av-option" data-value="d"><input type="radio" name="q7" value="d" style="display:none"><span class="av-option-letter">D</span><span class="av-option-text">Quem diz amar a Deus mas não honra o irmão que vê é, segundo João, mentiroso</span></div>
+    </div><div class="av-confirm-row"><button class="av-confirm-btn" type="button" data-card="7">Confirmar resposta</button><span class="av-confirmed-badge" style="display:none">✓ Resposta confirmada</span></div></div>
+
+  <div class="av-card" data-qid="q8" data-correct="c" data-type="incorrect" data-explanation="A alternativa que deve ser marcada como incorreta é C. Ela contradiz o ensino bíblico ou o sentido correto do tema. A resposta foi revisada à luz do ensino bíblico geral: Cristo, a Palavra e a obra do Espírito são o critério para avaliar a alternativa correta. As demais alternativas preservam melhor o conjunto do ensino das Escrituras." id="av-card-8"><div class="av-card-header"><div class="av-qnum">08</div><div class="av-card-meta"><span class="av-badge badge-incorrect">MARQUE A INCORRETA</span><div class="av-qtext">A apostila usa Davi e Saul (1 Samuel 24) e os apóstolos em Atos 5 para ilustrar a distinção entre submissão e obediência. Marque a afirmação que <strong>NÃO</strong> corresponde à lição extraída desses exemplos:</div></div></div><div class="av-options" id="av-opts-8">
+      <div class="av-option" data-value="a"><input type="radio" name="q8" value="a" style="display:none"><span class="av-option-letter">A</span><span class="av-option-text">Davi não concordava com Saul, mas manteve um coração submisso e honrou a autoridade ungida</span></div>
+      <div class="av-option" data-value="b"><input type="radio" name="q8" value="b" style="display:none"><span class="av-option-letter">B</span><span class="av-option-text">Os apóstolos desobedeceram ao Sinédrio, mas não resistiram à prisão nem desonraram os membros do conselho</span></div>
+      <div class="av-option" data-value="c"><input type="radio" name="q8" value="c" style="display:none"><span class="av-option-letter">C</span><span class="av-option-text">Quando uma autoridade está errada, o crente deve resistir ativamente e expor publicamente o erro para que a comunidade saiba</span></div>
+      <div class="av-option" data-value="d"><input type="radio" name="q8" value="d" style="display:none"><span class="av-option-letter">D</span><span class="av-option-text">É possível desobedecer a uma instrução errada mantendo, ao mesmo tempo, um coração que honra — sem espírito de revolta</span></div>
+    </div><div class="av-confirm-row"><button class="av-confirm-btn" type="button" data-card="8">Confirmar resposta</button><span class="av-confirmed-badge" style="display:none">✓ Resposta confirmada</span></div></div>
+
+  <div class="av-card" data-qid="q9" data-correct="c" data-type="incorrect" data-explanation="A alternativa que deve ser marcada como incorreta é C. Ela contradiz o ensino bíblico ou o sentido correto do tema. A liderança cristã é serviço, mordomia e influência segundo o padrão de Cristo, que forma pessoas e conduz para a maturidade. As demais alternativas preservam melhor o conjunto do ensino das Escrituras." id="av-card-9"><div class="av-card-header"><div class="av-qnum">09</div><div class="av-card-meta"><span class="av-badge badge-incorrect">MARQUE A INCORRETA</span><div class="av-qtext">A apostila apresenta os Cinco Níveis de Liderança. Marque a descrição que <strong>NÃO</strong> corresponde corretamente a nenhum dos níveis descritos:</div></div></div><div class="av-options" id="av-opts-9">
+      <div class="av-option" data-value="a"><input type="radio" name="q9" value="a" style="display:none"><span class="av-option-letter">A</span><span class="av-option-text">Nível 1 — Posição: as pessoas seguem porque precisam; a influência está limitada ao cargo</span></div>
+      <div class="av-option" data-value="b"><input type="radio" name="q9" value="b" style="display:none"><span class="av-option-letter">B</span><span class="av-option-text">Nível 3 — Produção: a liderança se fortalece por resultados; a equipe confia na direção porque vê evidências práticas</span></div>
+      <div class="av-option" data-value="c"><input type="radio" name="q9" value="c" style="display:none"><span class="av-option-letter">C</span><span class="av-option-text">Nível 4 — Multiplicação: o líder cresce numericamente sua equipe por meio de campanhas de recrutamento intensivo</span></div>
+      <div class="av-option" data-value="d"><input type="radio" name="q9" value="d" style="display:none"><span class="av-option-letter">D</span><span class="av-option-text">Nível 5 — Personalidade: as pessoas seguem o líder por quem ele é; a influência é profunda e duradoura</span></div>
+    </div><div class="av-confirm-row"><button class="av-confirm-btn" type="button" data-card="9">Confirmar resposta</button><span class="av-confirmed-badge" style="display:none">✓ Resposta confirmada</span></div></div>
+
+  <div class="av-card" data-qid="q10" data-correct="c" data-type="single" data-explanation="A alternativa correta é C. A honra bíblica reconhece o valor dado por Deus às pessoas e às autoridades, sem transformar honra em bajulação, medo ou conivência com o pecado. Resposta: C) desonra e incredulidade dos habitantes criou um ambiente onde Jesus não fez muitas obras poderosas" id="av-card-10"><div class="av-card-header"><div class="av-qnum">10</div><div class="av-card-meta"><span class="av-badge badge-single">UMA RESPOSTA CORRETA</span><div class="av-qtext">A apostila "Cultura da Honra" cita um episódio em Mateus 13 para mostrar as consequências práticas da desonra. O que aconteceu quando Jesus voltou à sua cidade natal?</div></div></div><div class="av-options" id="av-opts-10">
+      <div class="av-option" data-value="a"><input type="radio" name="q10" value="a" style="display:none"><span class="av-option-letter">A</span><span class="av-option-text">Jesus foi recebido com celebração, mas optou por não fazer milagres para não gerar dependência</span></div>
+      <div class="av-option" data-value="b"><input type="radio" name="q10" value="b" style="display:none"><span class="av-option-letter">B</span><span class="av-option-text">As pessoas O rejeitaram por ciúme e Jesus Os amaldiçoou como julgamento</span></div>
+      <div class="av-option" data-value="c"><input type="radio" name="q10" value="c" style="display:none"><span class="av-option-letter">C</span><span class="av-option-text">A desonra e incredulidade dos habitantes criou um ambiente onde Jesus não fez muitas obras poderosas</span></div>
+      <div class="av-option" data-value="d"><input type="radio" name="q10" value="d" style="display:none"><span class="av-option-letter">D</span><span class="av-option-text">Jesus fez milagres mesmo assim, para provar Sua identidade a quem duvidava</span></div>
+    </div><div class="av-confirm-row"><button class="av-confirm-btn" type="button" data-card="10">Confirmar resposta</button><span class="av-confirmed-badge" style="display:none">✓ Resposta confirmada</span></div></div>
+
+  <div class="av-card" data-qid="q11" data-correct="b" data-type="single" data-explanation="A liderança bíblica não começa com cargo, mas com responsabilidade e influência. Jesus é o modelo maior: Ele formou pessoas, serviu com propósito e conduziu outros à vontade do Pai." id="av-card-11"><div class="av-card-header"><div class="av-qnum">11</div><div class="av-card-meta"><span class="av-badge badge-single">UMA RESPOSTA CORRETA</span><div class="av-qtext">Segundo a perspectiva bíblica trabalhada na aula sobre o perfil do líder, liderança deve ser compreendida principalmente como:</div></div></div><div class="av-options" id="av-opts-11">
+      <div class="av-option" data-value="a"><input type="radio" name="q11" value="a" style="display:none"><span class="av-option-letter">A</span><span class="av-option-text">Uma posição formal ocupada apenas por pessoas naturalmente carismáticas.</span></div>
+      <div class="av-option" data-value="b"><input type="radio" name="q11" value="b" style="display:none"><span class="av-option-letter">B</span><span class="av-option-text">A capacidade de influenciar, servir e assumir responsabilidade diante de Deus e das pessoas.</span></div>
+      <div class="av-option" data-value="c"><input type="radio" name="q11" value="c" style="display:none"><span class="av-option-letter">C</span><span class="av-option-text">Uma habilidade administrativa desvinculada do caráter e da vida espiritual.</span></div>
+      <div class="av-option" data-value="d"><input type="radio" name="q11" value="d" style="display:none"><span class="av-option-letter">D</span><span class="av-option-text">Uma função reservada exclusivamente aos pastores e líderes de ministério.</span></div>
+    </div><div class="av-confirm-row"><button class="av-confirm-btn" type="button" data-card="11">Confirmar resposta</button><span class="av-confirmed-badge" style="display:none">✓ Resposta confirmada</span></div></div>
+
+  <div class="av-card" data-qid="q12" data-correct="a,b,d" data-type="multi" data-explanation="O Pequeno Grupo é ambiente de discipulado, comunhão, cuidado, oração, Palavra e desenvolvimento de dons. Ele não é apenas reunião social nem simples estudo bíblico; é vida compartilhada para edificação do corpo de Cristo." id="av-card-12"><div class="av-card-header"><div class="av-qnum">12</div><div class="av-card-meta"><span class="av-badge badge-multi">MARQUE TODAS AS CORRETAS</span><div class="av-qtext">Sobre Pequenos Grupos/GRs, marque todas as alternativas corretas:</div></div></div><div class="av-options" id="av-opts-12">
+      <div class="av-option" data-value="a"><input type="checkbox" name="q12" value="a" style="display:none"><span class="av-option-letter">A</span><span class="av-option-text">São estruturas de discipulado e relacionamento intencional.</span></div>
+      <div class="av-option" data-value="b"><input type="checkbox" name="q12" value="b" style="display:none"><span class="av-option-letter">B</span><span class="av-option-text">Integram Palavra, oração, cuidado mútuo e comunhão.</span></div>
+      <div class="av-option" data-value="c"><input type="checkbox" name="q12" value="c" style="display:none"><span class="av-option-letter">C</span><span class="av-option-text">Existem apenas para gerar encontros sociais sem compromisso espiritual.</span></div>
+      <div class="av-option" data-value="d"><input type="checkbox" name="q12" value="d" style="display:none"><span class="av-option-letter">D</span><span class="av-option-text">Favorecem o amadurecimento, o discipulado e o desenvolvimento dos dons.</span></div>
+    </div><div class="av-confirm-row"><button class="av-confirm-btn" type="button" data-card="12">Confirmar resposta</button><span class="av-confirmed-badge" style="display:none">✓ Resposta confirmada</span></div></div>
+
+  <div class="av-card" data-qid="q13" data-correct="c" data-type="single" data-explanation="A Palavra é diagnóstico e agente de transformação. Ela discerne pensamentos e intenções do coração e substitui mentiras por verdade, evitando tanto legalismo quanto relativismo." id="av-card-13"><div class="av-card-header"><div class="av-qnum">13</div><div class="av-card-meta"><span class="av-badge badge-single">UMA RESPOSTA CORRETA</span><div class="av-qtext">No aconselhamento cristão, a suficiência da Palavra significa que a Bíblia:</div></div></div><div class="av-options" id="av-opts-13">
+      <div class="av-option" data-value="a"><input type="radio" name="q13" value="a" style="display:none"><span class="av-option-letter">A</span><span class="av-option-text">Serve apenas como frase de encerramento da conversa.</span></div>
+      <div class="av-option" data-value="b"><input type="radio" name="q13" value="b" style="display:none"><span class="av-option-letter">B</span><span class="av-option-text">Deve ser usada para impor regras externas sem tratar o coração.</span></div>
+      <div class="av-option" data-value="c"><input type="radio" name="q13" value="c" style="display:none"><span class="av-option-letter">C</span><span class="av-option-text">É autoridade final, diagnóstico do coração e agente de transformação.</span></div>
+      <div class="av-option" data-value="d"><input type="radio" name="q13" value="d" style="display:none"><span class="av-option-letter">D</span><span class="av-option-text">É útil apenas para questões espirituais simples, mas não para maturidade.</span></div>
+    </div><div class="av-confirm-row"><button class="av-confirm-btn" type="button" data-card="13">Confirmar resposta</button><span class="av-confirmed-badge" style="display:none">✓ Resposta confirmada</span></div></div>
+
+  <div class="av-card" data-qid="q14" data-correct="d" data-type="single" data-explanation="A maturidade do líder aparece quando ele guarda o coração, reconhece limites e não toma para si o peso que pertence ao Espírito Santo. Encaminhar casos complexos também pode ser sinal de humildade e zelo." id="av-card-14"><div class="av-card-header"><div class="av-qnum">14</div><div class="av-card-meta"><span class="av-badge badge-single">UMA RESPOSTA CORRETA</span><div class="av-qtext">Qual postura expressa maturidade bíblica no líder que aconselha?</div></div></div><div class="av-options" id="av-opts-14">
+      <div class="av-option" data-value="a"><input type="radio" name="q14" value="a" style="display:none"><span class="av-option-letter">A</span><span class="av-option-text">Assumir sozinho a responsabilidade de transformar a vida do aconselhado.</span></div>
+      <div class="av-option" data-value="b"><input type="radio" name="q14" value="b" style="display:none"><span class="av-option-letter">B</span><span class="av-option-text">Ignorar limites pessoais para provar espiritualidade.</span></div>
+      <div class="av-option" data-value="c"><input type="radio" name="q14" value="c" style="display:none"><span class="av-option-letter">C</span><span class="av-option-text">Quebrar sigilo sempre que achar conveniente.</span></div>
+      <div class="av-option" data-value="d"><input type="radio" name="q14" value="d" style="display:none"><span class="av-option-letter">D</span><span class="av-option-text">Guardar o próprio coração, depender do Espírito e reconhecer quando precisa encaminhar ou pedir ajuda.</span></div>
+    </div><div class="av-confirm-row"><button class="av-confirm-btn" type="button" data-card="14">Confirmar resposta</button><span class="av-confirmed-badge" style="display:none">✓ Resposta confirmada</span></div></div>
+
+  <div class="av-card" data-qid="q15" data-correct="b" data-type="single" data-explanation="A alternativa correta é B. A apostila usa a metáfora do trem: o destino é a visão; os trilhos são os valores. Sem os trilhos, o trem não chega. Sem o destino, os trilhos sustentam um movimento sem sentido. Paulo perseguia um alvo (Fp 3:14) — a obra de Deus começa com clareza de direção." id="av-card-15"><div class="av-card-header"><div class="av-qnum">15</div><div class="av-card-meta"><span class="av-badge badge-single">UMA RESPOSTA CORRETA</span><div class="av-qtext">Qual é a distinção entre visão e valores, segundo a apostila?</div></div></div><div class="av-options" id="av-opts-15">
+      <div class="av-option" data-value="a"><input type="radio" name="q15" value="a" style="display:none"><span class="av-option-letter">A</span><span class="av-option-text">Visão e valores são sinônimos — ambos definem ao mesmo tempo o propósito e a identidade da igreja</span></div>
+      <div class="av-option" data-value="b"><input type="radio" name="q15" value="b" style="display:none"><span class="av-option-letter">B</span><span class="av-option-text">Visão é a direção que Deus deu para a casa; valores são os princípios práticos que sustentam essa visão no dia a dia</span></div>
+      <div class="av-option" data-value="c"><input type="radio" name="q15" value="c" style="display:none"><span class="av-option-letter">C</span><span class="av-option-text">Valores são mais importantes que a visão, pois definem como a cultura interna da igreja funciona</span></div>
+      <div class="av-option" data-value="d"><input type="radio" name="q15" value="d" style="display:none"><span class="av-option-letter">D</span><span class="av-option-text">A visão é definida pelos membros em conjunto; os valores são determinados exclusivamente pela liderança</span></div>
+    </div><div class="av-confirm-row"><button class="av-confirm-btn" type="button" data-card="15">Confirmar resposta</button><span class="av-confirmed-badge" style="display:none">✓ Resposta confirmada</span></div></div>
+  <div class="av-submit-area" id="submitArea">
+    <h3>Enviar avaliação</h3>
+    <p>Todas as respostas foram confirmadas. Digite seu nome e envie para registrar sua participação.</p>
+    <label for="avNome">Nome completo</label>
+    <input class="av-nome-input" id="avNome" type="text" placeholder="Digite seu nome completo">
+    <button class="av-submit-btn" id="submitBtn" type="button">Enviar avaliação</button>
+    <div class="av-submit-sent" id="submitSent">✓ Avaliação registrada com sucesso.</div>
+  </div>
+  <div class="av-resultado" id="resultado"></div>
+</div>
+<footer style="border-top:1px solid var(--border);text-align:center;padding:24px 16px;color:var(--text3);font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase">Escola Makários · Igreja Emaús, Goiânia</footer>
+<iframe name="av_submit_frame" style="display:none"></iframe>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  var APP_URL   = 'https://script.google.com/macros/s/AKfycbwYahR6Kd00Sc4dsaoMYSiapUbaXW9z-s2UFcwbYBh_WT_DtBpHyKTY0O02qOlXF9aq/exec';
+  var EXERCICIO = 'Voz — Avaliação Final';
+  var TOTAL     = 15;
+  var TOTAL_SECS = 40 * 60;
+
+  // ── option click ──────────────────────────────────────────────
+  document.querySelectorAll('.av-card').forEach(function(card) {
+    var isMulti = card.dataset.type === 'multi';
+    card.querySelectorAll('.av-option').forEach(function(opt) {
+      opt.addEventListener('click', function() {
+        if (opt.classList.contains('locked')) return;
+        if (isMulti) {
+          opt.classList.toggle('selected');
+        } else {
+          card.querySelectorAll('.av-option').forEach(function(o) {
+            o.classList.remove('selected');
+          });
+          opt.classList.add('selected');
+        }
+        // update letter color
+        card.querySelectorAll('.av-option').forEach(function(o) {
+          var letter = o.querySelector('.av-option-letter');
+          if (!letter) return;
+          if (o.classList.contains('selected')) {
+            letter.style.background = 'var(--blue)';
+            letter.style.color = '#fff';
+          } else {
+            letter.style.background = 'var(--border)';
+            letter.style.color = 'var(--text2)';
+          }
+        });
+      });
+    });
+  });
+
+  // ── confirm button ────────────────────────────────────────────
+  var confirmed = 0;
+  document.querySelectorAll('.av-confirm-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var n = parseInt(btn.dataset.card);
+      var card = document.getElementById('av-card-' + n);
+      var sel = card.querySelectorAll('.av-option.selected');
+      if (!sel.length) { alert('Selecione uma alternativa antes de confirmar.'); return; }
+
+      card.querySelectorAll('.av-option').forEach(function(o) { o.classList.add('locked'); });
+      card.classList.add('confirmed');
+      btn.style.display = 'none';
+      var badge = btn.nextElementSibling;
+      if (badge) { badge.style.display = 'flex'; }
+
+      confirmed++;
+      updateProgress();
+      if (confirmed === TOTAL) showSubmitArea();
+    });
+  });
+
+  // ── progress ──────────────────────────────────────────────────
+  function updateProgress() {
+    var pct = Math.round(confirmed / TOTAL * 100);
+    var fill = document.getElementById('progressFill');
+    var txt  = document.getElementById('progressText');
+    if (fill) fill.style.width = pct + '%';
+    if (txt)  txt.textContent = confirmed + ' de ' + TOTAL + ' confirmada' + (confirmed === 1 ? '' : 's');
+  }
+
+  // ── submit area ───────────────────────────────────────────────
+  function showSubmitArea() {
+    var area = document.getElementById('submitArea');
+    if (area) {
+      area.style.display = 'block';
+      setTimeout(function() { area.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }, 100);
+    }
+  }
+
+  // ── calc score ─────────────────────────────────────────────────
+  function calcScore() {
+    var hits = 0;
+    document.querySelectorAll('.av-card').forEach(function(card) {
+      var correct = card.dataset.correct.split(',').map(function(x) { return x.trim(); }).sort();
+      var sel = [];
+      card.querySelectorAll('.av-option.selected').forEach(function(o) { sel.push(o.dataset.value); });
+      sel.sort();
+      if (correct.join(',') === sel.join(',')) hits++;
+    });
+    return hits;
+  }
+
+  // ── reveal answers ─────────────────────────────────────────────
+  function revealAnswers() {
+    document.querySelectorAll('.av-card').forEach(function(card) {
+      var correct = card.dataset.correct.split(',').map(function(x) { return x.trim(); });
+      card.querySelectorAll('.av-option').forEach(function(opt) {
+        var v = opt.dataset.value;
+        var letter = opt.querySelector('.av-option-letter');
+        if (correct.indexOf(v) !== -1) {
+          opt.classList.add('reveal-correct');
+          if (letter) { letter.style.background = 'var(--green)'; letter.style.color = '#fff'; }
+        } else if (opt.classList.contains('selected')) {
+          opt.classList.add('reveal-wrong');
+          if (letter) { letter.style.background = 'var(--red)'; letter.style.color = '#fff'; }
+        }
+      });
+    });
+  }
+
+  // ── show result ────────────────────────────────────────────────
+  function showResult(hits) {
+    var pct = Math.round(hits / TOTAL * 100);
+    var aprovado = pct >= 60;
+    var cls   = aprovado ? 'aprovado' : 'reprovado';
+    var title = aprovado ? 'Aprovado!' : 'Em processo';
+    var msg   = aprovado
+      ? 'Parabéns. Você demonstrou domínio dos fundamentos da fé cristã. Que esse conhecimento se aprofunde em convicção viva, obediência fiel e caráter formado pela Palavra.'
+      : 'Este resultado é um ponto de partida, não um rótulo. Revise o conteúdo das apostilas, volte às questões e permita que a Palavra forme em você raízes cada vez mais profundas. Entre em contato com a Vitória Gonçalves pelo (62) 99199-0501 — ela poderá orientar seus próximos passos.';
+    var el = document.getElementById('resultado');
+    el.innerHTML =
+      '<div class="av-resultado-circle ' + cls + '">' +
+        '<span class="av-nota-big">' + hits + '</span>' +
+        '<span class="av-nota-total">de ' + TOTAL + '</span>' +
+      '</div>' +
+      '<div class="av-resultado-badge ' + cls + '">' + (aprovado ? '✓ Aprovado' : '● Em processo') + '</div>' +
+      '<div class="av-resultado-title ' + cls + '">' + title + '</div>' +
+      '<p class="av-resultado-msg">' + msg + '</p>' +
+      '<p class="av-resultado-nota">Nota: <strong>' + hits + '/' + TOTAL + ' · ' + pct + '%</strong></p>';
+    el.classList.add('show');
+    setTimeout(function() { el.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 100);
+  }
+
+  // ── submit ─────────────────────────────────────────────────────
+  document.getElementById('submitBtn').addEventListener('click', function() {
+    var nome = (document.getElementById('avNome').value || '').trim();
+    if (!nome) { alert('Informe seu nome completo antes de enviar.'); return; }
+
+    clearInterval(window._avTimer);
+    revealAnswers();
+    var hits = calcScore();
+
+    var form = document.createElement('form');
+    form.method = 'GET'; form.action = APP_URL;
+    form.target = 'av_submit_frame'; form.style.display = 'none';
+    var fields = { exercicio: EXERCICIO, nome: nome, pontuacao: String(hits), nota: hits + '/' + TOTAL, data: new Date().toLocaleString('pt-BR') };
+    Object.keys(fields).forEach(function(k) {
+      var inp = document.createElement('input'); inp.name = k; inp.value = fields[k]; form.appendChild(inp);
+    });
+    document.body.appendChild(form); form.submit();
+    setTimeout(function() { form.remove(); }, 1000);
+
+    document.getElementById('submitBtn').disabled = true;
+    document.getElementById('avNome').disabled = true;
+    var sent = document.getElementById('submitSent');
+    if (sent) { sent.classList.add('show'); sent.style.display = 'block'; }
+
+    showResult(hits);
+  });
+
+  // ── timer ──────────────────────────────────────────────────────
+  var remaining = TOTAL_SECS;
+  function tick() {
+    var m = Math.floor(remaining / 60);
+    var s = remaining % 60;
+    var disp = document.getElementById('timerCount');
+    var fill = document.getElementById('timerFill');
+    if (disp) disp.textContent = String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0');
+    if (fill) fill.style.width = (remaining / TOTAL_SECS * 100) + '%';
+    if (remaining <= 300) {
+      if (disp) disp.classList.add('urgent');
+      if (fill) fill.classList.add('urgent');
+    }
+    if (remaining <= 0) {
+      clearInterval(window._avTimer);
+      if (disp) disp.textContent = '00:00';
+      showSubmitArea();
+      var nome = (document.getElementById('avNome').value || '').trim();
+      if (nome) {
+        document.getElementById('submitBtn').click();
+      } else {
+        alert('O tempo acabou! Digite seu nome e clique em Enviar avaliação.');
+      }
+      return;
+    }
+    remaining--;
+  }
+  tick();
+  window._avTimer = setInterval(tick, 1000);
+
+  updateProgress();
+});
+</script>
+</body>
+</html>
