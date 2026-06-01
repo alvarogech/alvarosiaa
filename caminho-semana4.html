@@ -27,6 +27,41 @@
     --radius: 16px;
     --radius-sm: 10px;
   }
+  /* NAV */
+  nav {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 60px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .nav-logo {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--accent);
+    text-decoration: none;
+    letter-spacing: -0.02em;
+  }
+  .nav-links { display: flex; gap: 6px; }
+  .nav-links a {
+    text-decoration: none;
+    font-size: 0.8rem;
+    font-weight: 700;
+    padding: 6px 14px;
+    border-radius: 20px;
+    color: var(--text2);
+    transition: all 0.2s;
+  }
+  .nav-links a:hover { background: var(--surface2); color: var(--accent); }
+  .nav-links a.active { background: var(--accent-light); color: var(--accent); }
+  .nav-logo img { height: 36px; width: auto; display: block; }
+
   html { scroll-behavior: smooth; }
   body { font-family: 'Barlow', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; line-height: 1.6; }
   .header { background: var(--accent); color: #FFFFFF; padding: 2.5rem 1.5rem 2.5rem; text-align: center; position: relative; overflow: hidden; }
@@ -104,7 +139,8 @@
   .header-logo-wrap { display: flex; justify-content: center; margin-bottom: 12px; }
   .header-logo-img { height: 90px; width: auto; }
   .back-bar { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0.6rem 1.5rem; }
-  .back-link { font-family: 'Barlow', sans-serif; font-size: 12px; font-weight: 700; color: var(--accent); text-decoration: none; letter-spacing: 0.02em; }
+  .back-link { font-family: 'Barlow', sans-serif; font-size: 12px; font-weight: 700; color: var(--accent); text-decoration: none; letter-spacing: 0.02em; display: inline-flex; align-items: center; gap: 6px; }
+.back-link svg { width: 16px; height: 16px; flex-shrink: 0; }
   .back-link:hover { color: var(--accent-dark); }
   @media (max-width: 480px) { .question-card, .registro-card { padding: 1.25rem; } .header { padding: 2rem 1rem 1.75rem; } .header-logo-img { height: 70px; } }
 </style>
@@ -112,7 +148,7 @@
 <body>
 <!-- NAV -->
 <nav>
-<a class="nav-logo" href="#"><img alt="Makários" class="header-logo-img" src="logo-makarios-oficial-azul.png"/></a>
+<a class="nav-logo" href="#"><img alt="Makários" class="makarios-logo-official" src="logo-makarios-oficial-azul.png"/></a>
 <div class="nav-links">
 <a href="essencia.html">Essência</a>
 <a class="active" href="caminho.html">Caminho</a>
@@ -126,7 +162,7 @@
 <div class="container">
 <!-- BACK -->
 <a class="back-link" href="caminho.html">
-<svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" viewbox="0 0 16 16">
+<svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" viewBox="0 0 16 16" width="16" height="16" style="flex-shrink:0">
 <path d="M10 3L5 8l5 5"></path>
 </svg>
     Voltar para Caminho
